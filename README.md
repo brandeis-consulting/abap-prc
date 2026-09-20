@@ -112,8 +112,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Related
 
-- **ABAP Application Patterns** — reusable patterns built on the same infrastructure.
-  <!-- TODO: link the repository -->
-- **Training and project support** — [Brandeis Consulting](https://www.brandeis.de/)
+- **Training and project support** — [Fullstack Development with ABAP and AI - Brandeis Consulting](https://www.brandeis.de/en/fullstack-development)
+- **ABAP Processing Center Landing Page** — [Landing Page: The ABAP Processing Center - Brandeis Consulting](https://www.brandeis.de/en/abap-processing-center)
 
 ABAP-PRC is free and you can use it entirely without us.
