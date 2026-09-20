@@ -1,0 +1,62 @@
+@Metadata.layer: #CUSTOMER
+
+//@UI.headerInfo: { typeName: 'Affected object', typeNamePlural: 'Affected objects' }
+
+annotate entity ZR_PRC_ObjectForMessage with
+
+{
+  @EndUserText.label: 'Processed Object'
+  @UI.lineItem: [ { position: 10,
+                    type: #WITH_INTENT_BASED_NAVIGATION,
+                    semanticObject: 'ZPRC_ProcessedObject',
+                    semanticObjectAction: 'show',
+                    semanticObjectBinding: [ { element: 'UUID', localElement: 'ProcessedObjectUUID' } ] } ]
+  ExternalProcessedObjectID;
+
+  @EndUserText.label: 'Created By'
+  @UI.lineItem: [ { position: 20 } ]
+  CreatedBy;
+
+  @EndUserText.label: 'Created At'
+  @UI.lineItem: [ { position: 30 } ]
+  CreatedAt;
+
+  @UI.hidden: true
+  StepUUID;
+
+  @UI.hidden: true
+  ProcessedObjectUUID;
+
+  @UI.hidden: true
+  ProcessName;
+
+  @UI.hidden: true
+  StartState;
+
+  @UI.hidden: true
+  EndState;
+
+  @UI.hidden: true
+  MessageClass;
+
+  @UI.hidden: true
+  MessageNumber;
+
+  @UI.hidden: true
+  MessageSeverity;
+
+  @UI.hidden: true
+  MessageVariable1;
+
+  @UI.hidden: true
+  MessageVariable2;
+
+  @UI.hidden: true
+  MessageVariable3;
+
+  @UI.hidden: true
+  MessageVariable4;
+
+  @UI.hidden: true
+  MessageSeverityCode;
+}

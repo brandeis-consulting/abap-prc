@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZPRC_DEMO_EVENT_EQUI</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Event Handling for equipments</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_EVENT_EQUI</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Successfully assigned to Service Contract &apos;10000343&apos; - &apos;00100&apos;.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_EVENT_EQUI</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Service Contract &apos;10000343&apos; has errors, see details.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_EVENT_EQUI</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Service Contract &apos;10000343&apos; has status &quot;Completed&quot; and cannot be changed.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_EVENT_EQUI</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Business Partner &apos;4711&apos; of Contract &apos;10000343&apos; is currently blocked.</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

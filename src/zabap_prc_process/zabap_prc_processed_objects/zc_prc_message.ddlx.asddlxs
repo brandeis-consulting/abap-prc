@@ -1,0 +1,12 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: { typeName: 'Message',
+                  typeNamePlural: 'Messages',
+                  title: { type: #STANDARD, value: 'MessageClass' },
+                  description: { type: #STANDARD, value: 'MessageText' } 
+}
+@UI.lineItem: [ { criticality: 'MessageSeverityCode' } ]
+
+annotate entity ZC_PRC_Message with
+{
+}

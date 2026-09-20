@@ -1,0 +1,143 @@
+managed implementation in class ZBP_PRC_PROCESSED_OBJECT unique;
+strict ( 2 );
+extensible;
+with privileged mode disabling NoCheckWhenPrivileged;
+
+define authorization context NoCheckWhenPrivileged
+{
+  'ZPRC_PROC';
+}
+
+define behavior for ZR_PRC_ProcessedObject alias ProcessedObject
+extensible
+persistent table zprc_proc_object
+etag master LocalLastChangedAt
+lock master
+authorization master ( instance )
+with additional save
+
+{
+  field ( readonly, numbering : managed ) UUID;
+
+  field ( readonly )
+  CreatedAt,
+  CreatedBy,
+  LastChangedAt,
+  LastChangedBy,
+  LocalLastChangedAt;
+
+  internal create;
+
+  update;
+  delete;
+
+  action ( features : instance ) resumeProcessing;
+
+  side effects { action resumeProcessing affects $self; }
+
+  static factory action createProcessedObject parameter ZA_PRC_CreateProcessedObject [1];
+
+  determination determineStepTotal on save { field state; }
+
+  association _ProcessedStep { create; }
+
+  mapping for zprc_proc_object
+    {
+      UUID                        = uuid;
+      LatestStepUUID              = latest_step_uuid;
+      runUUID                     = run_uuid;
+      ProcessName                 = process_name;
+      MailAddress                 = mail_address;
+      FactoryClassName            = factory_class_name;
+      PayloadJson                 = payload_json;
+      State                       = state;
+      StepTotal                   = step_total;
+      DoNotProcessBefore          = do_not_process_before;
+      QueueID                     = queue_id;
+      QueuePosition               = queue_pos;
+      ExternalProcessedObjectID   = ext_processed_object_id;
+      ExternalProcessedObjectUUID = ext_processed_object_uuid;
+      retryCount                  = retry_count;
+      retryDateTime               = retry_datetime;
+      CreatedBy                   = created_by;
+      CreatedAt                   = created_at;
+      LastChangedAt               = last_changed_at;
+      LastChangedBy               = last_changed_by;
+      LocalLastChangedAt          = local_last_changed_at;
+    }
+}
+
+define behavior for ZR_PRC_ProcessedStep alias ProcessedStep
+extensible
+persistent table zprc_proc_step
+lock dependent by _ProcessedObject
+authorization dependent by _ProcessedObject
+with additional save
+{
+
+  field ( readonly, numbering : managed ) StepUUID;
+  field ( readonly ) ProcessedObjectUUID;
+  update;
+  delete;
+  association _ProcessedObject;
+  association _ProcessedMessage { create; }
+
+  determination messageSeverityCode on save { field MessageSeverity; }
+
+  mapping for zprc_proc_step
+    {
+      StepUUID            = step_uuid;
+      ProcessedObjectUUID = processed_object_uuid;
+      StartState          = start_state;
+      EndState            = end_state;
+      MessageText         = message_text;
+      MessageClass        = msgid;
+      MessageNumber       = msgno;
+      MessageSeverity     = msgty;
+      MessageVariable1    = msgv1;
+      MessageVariable2    = msgv2;
+      MessageVariable3    = msgv3;
+      MessageVariable4    = msgv4;
+      MessageSeverityCode = message_severity_code;
+      CreatedBy           = created_by;
+      CreatedAt           = created_at;
+    }
+
+}
+
+define behavior for ZR_PRC_ProcessedMessage alias ProcessedMessage
+extensible
+persistent table zprc_proc_msg
+lock dependent by _ProcessedObject
+authorization dependent by _ProcessedObject
+with additional save
+{
+
+  field ( readonly, numbering : managed ) UUID;
+  field ( readonly ) ProcessedStepUUID, ProcessedObjectUUID;
+  update;
+  delete;
+  association _ProcessedStep;
+  association _ProcessedObject;
+
+  determination messageSeverityCode on save { field MessageSeverity; }
+
+  mapping for zprc_proc_msg
+    {
+      UUID                = uuid;
+      ProcessedStepUUID   = processed_step_uuid;
+      ProcessedObjectUUID = processed_object_uuid;
+      CreatedAt           = created_at;
+      CreatedBy           = created_by;
+      MessageSeverityCode = message_severity_code;
+      MessageText         = message_text;
+      MessageClass        = msgid;
+      MessageNumber       = msgno;
+      MessageSeverity     = msgty;
+      MessageVariable1    = msgv1;
+      MessageVariable2    = msgv2;
+      MessageVariable3    = msgv3;
+      MessageVariable4    = msgv4;
+    }
+
+}

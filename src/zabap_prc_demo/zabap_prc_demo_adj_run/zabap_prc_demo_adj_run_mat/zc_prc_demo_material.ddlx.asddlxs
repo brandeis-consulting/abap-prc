@@ -1,0 +1,29 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+    typeName: 'Material',
+    typeNamePlural: 'Material',
+    title: {
+        type: #STANDARD,
+        value: 'Description'
+    },
+    description: {
+        type: #STANDARD,
+        value: 'Description'
+    }
+}
+
+annotate entity ZC_PRC_DEMO_Material with
+{
+  @EndUserText.label: 'Identifier'
+  @Search.defaultSearchElement: true
+  @UI.lineItem: [{ position: 10 }]
+  @UI.selectionField: [{ position: 10 }]
+  Identifier;
+
+  @EndUserText.label: 'Description'
+  @Search.defaultSearchElement: true
+  @UI.lineItem: [{ position: 20 }]
+  @UI.selectionField: [{ position: 20 }]
+  Description;
+}

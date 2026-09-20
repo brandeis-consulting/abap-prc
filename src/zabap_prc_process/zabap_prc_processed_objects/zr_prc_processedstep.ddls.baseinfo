@@ -1,0 +1,12 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZPRC_PROC_STEP"
+    ],
+    "ASSOCIATED": [
+      "ZI_PRC_MESSAGESEVERITYVH",
+      "ZR_PRC_PROCESSEDMESSAGE",
+      "ZR_PRC_PROCESSEDOBJECT"
+    ]
+  }
+}

@@ -1,0 +1,81 @@
+@Metadata.layer: #CUSTOMER
+
+
+//// Add this in the consumption layer
+//@UI.headerInfo: { typeName: 'Error',
+//                  typeNamePlural: 'Errors',
+//                  title: { type: #STANDARD, value: 'MessageClass' },
+//                  description: { type: #STANDARD, value: 'MessageText' } 
+//}
+//
+//@UI.lineItem: [ { criticality: 'MessageSeverityCode' } ]
+
+annotate entity ZR_PRC_Message with
+
+{
+  @EndUserText.label: 'Message Text'
+  @UI.facet: [ { id: 'idProcessedSteps',
+                 type: #LINEITEM_REFERENCE,
+                 label: 'Affected Objects',
+                 position: 20,
+                 targetElement: '_ObjectsForMessage' },
+               { id: 'idMessageInfo',
+                 label: 'Message Information',
+                 type: #IDENTIFICATION_REFERENCE,
+                 targetQualifier: 'MSG_INFO' } ]
+  @UI.lineItem: [ { position: 10,
+                    importance: #HIGH,
+                    criticality: 'MessageSeverityCode',
+                    criticalityRepresentation: #WITH_ICON },
+                  { position: 15,
+                    type: #FOR_ACTION,
+                    dataAction: 'resumeProcessing',
+                    label: 'Resume Processing',
+                    inline: true,
+                    invocationGrouping: #ISOLATED } ]
+  @UI.identification: [ { position: 3, qualifier: 'MSG_INFO' } ]
+  MessageText;
+  
+  @EndUserText.label: 'Process Name'
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZI_PRC_ProcessNameVH', element: 'ProcessName' } } ]
+  @UI.lineItem: [ { position: 4, importance: #HIGH } ]
+  @UI.selectionField: [ { position: 4 } ]
+  ProcessName;
+
+  @EndUserText.label: 'Affected Object Count'
+  @UI.lineItem: [ { position: 20, importance: #HIGH } ]
+  AffectedObjectCount;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZI_PRC_MessageSeverityVH', element: 'Value' } } ]
+  @EndUserText.label: 'Message Severity'
+  @UI.selectionField: [ { position: 30 } ]
+  @UI.identification: [ { position: 5, qualifier: 'MSG_INFO' } ]
+  MessageSeverity;
+
+  @EndUserText.label: 'Message Class'
+  @UI.identification: [ { position: 10, qualifier: 'MSG_INFO' } ]
+  MessageClass;
+
+  @EndUserText.label: 'Message Number'
+  @UI.identification: [ { position: 20, qualifier: 'MSG_INFO' } ]
+  MessageNumber;
+
+  @EndUserText.label: 'Message Variable 1'
+  @UI.identification: [ { position: 30, qualifier: 'MSG_INFO' } ]
+  MessageVariable1;
+
+  @EndUserText.label: 'Message Variable 2'
+  @UI.identification: [ { position: 40, qualifier: 'MSG_INFO' } ]
+  MessageVariable2;
+
+  @EndUserText.label: 'Message Variable 3'
+  @UI.identification: [ { position: 50, qualifier: 'MSG_INFO' } ]
+  MessageVariable3;
+
+  @EndUserText.label: 'Message Variable 4'
+  @UI.identification: [ { position: 60, qualifier: 'MSG_INFO' } ]
+  MessageVariable4;
+
+  @EndUserText.label: 'Message Severity Code'
+  MessageSeverityCode;
+}

@@ -1,0 +1,5 @@
+@EndUserText.label: 'DCL for ZR_PRC_MESSAGE'
+@MappingRole: true
+define role ZR_PRC_Message {
+     grant select on ZR_PRC_Message where (ProcessName) = aspect pfcg_auth( ZPRC_PROC, ZPRCNAME, ACTVT = '03' );         
+}

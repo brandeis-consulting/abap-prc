@@ -1,0 +1,10 @@
+@EndUserText.label: 'Run app'
+define service ZUI_PRC_RUN_O4 {
+  expose ZC_PRC_Run                  as Run;
+  expose ZC_PRC_RunParameter         as RunParameter;
+  expose ZC_PRC_ProcessedObject      as ProcessedObject;
+  expose ZC_PRC_ProcessedStep        as ProcessedStep;
+  expose ZC_PRC_ProcessedMessage     as ProcessedMessage;
+  expose ZC_PRC_RunExecutionStatusVH;
+  expose ZC_PRC_RunExecutionTypeVH;
+}

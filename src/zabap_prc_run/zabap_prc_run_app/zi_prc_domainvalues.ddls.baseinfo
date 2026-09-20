@@ -1,0 +1,8 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "DDCDS_CUSTOMER_DOMAIN_VALUE",
+      "DDCDS_CUSTOMER_DOMAIN_VALUE_T"
+    ]
+  }
+}

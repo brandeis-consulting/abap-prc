@@ -1,0 +1,13 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZI_PRC_OBJECTLATESTMESSAGE",
+      "ZPRC_PROC_OBJECT",
+      "ZPRC_PROC_STEP"
+    ],
+    "ASSOCIATED": [
+      "ZI_PRC_MESSAGESEVERITYVH",
+      "ZR_PRC_OBJECTFORMESSAGE"
+    ]
+  }
+}

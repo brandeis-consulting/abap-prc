@@ -1,0 +1,43 @@
+managed implementation in class zbp_r_prc_demo_equipment unique;
+strict ( 2 );
+with draft;
+
+define behavior for ZR_PRC_DEMO_Equipment alias Equipment
+persistent table zprc_demo_equi
+draft table zprc_demo_equi_d
+etag master LocalLastChangedAt
+lock master total etag LastChangedAt
+authorization master ( global )
+early numbering
+with additional save
+{
+  field ( readonly ) CreatedBy, CreatedAt, LastChangedBy, LastChangedAt, LocalLastChangedAt;
+  field ( readonly : update, mandatory : create ) Identifier;
+  field ( mandatory ) EquipmentCategory;
+
+  create;
+  update;
+  delete;
+
+  factory action copy_by_reference [1];
+
+  event equipment_created;
+  event equipment_deleted;
+
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Edit;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for zprc_demo_equi
+    {
+      Identifier         = id;
+      EquipmentCategory  = equipment_category_id;
+      CreatedBy          = created_by;
+      CreatedAt          = created_at;
+      LastChangedBy      = last_changed_by;
+      LastChangedAt      = last_changed_at;
+      LocalLastChangedAt = local_last_changed_at;
+    }
+}

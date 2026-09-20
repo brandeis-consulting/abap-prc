@@ -1,0 +1,11 @@
+@EndUserText.label: 'Service Contracts'
+define service ZUI_PRC_DEMO_SrvCtr_O4 {
+  expose ZC_PRC_DEMO_ServiceContract    as ServiceContract;
+  expose ZI_PRC_DEMO_ServiceContract    as ServiceContractVH;
+  expose ZC_PRC_DEMO_ServiceContractItm as ServiceContractItem;
+  expose ZC_PRC_DEMO_BusinessPartner    as BusinessPartner;
+  expose ZI_PRC_DEMO_LifecycleStatus    as LifecycleStatus;
+  expose ZI_PRC_DEMO_ErrorStatus        as ErrorStatus;
+  expose ZC_PRC_DEMO_Material           as Material;
+  expose ZC_PRC_DEMO_Equipment          as Equipment;
+}

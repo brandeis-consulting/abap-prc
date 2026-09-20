@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZPRC_DEMO_ADJUST_RUN</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Adjustment Run</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_ADJUST_RUN</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>No rate components to process.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_ADJUST_RUN</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Contract &amp;1 - &amp;2: rate component adjusted.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_ADJUST_RUN</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Billing plan overlap, settlement period violates item contract duration.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_ADJUST_RUN</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Contract &amp;1: Locked by another user.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_ADJUST_RUN</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Contract &amp;1: Sum of billing plan items deviates from item net value.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_ADJUST_RUN</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Contract &amp;1: Successfully processed.</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

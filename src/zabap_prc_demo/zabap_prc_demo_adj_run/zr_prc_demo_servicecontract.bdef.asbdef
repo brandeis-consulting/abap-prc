@@ -1,0 +1,59 @@
+managed implementation in class zbp_prc_demo_servicecontract unique;
+strict ( 2 );
+
+define behavior for ZR_PRC_DEMO_ServiceContract alias ServiceContract
+persistent table zprc_demo_srvctr
+lock master
+authorization master ( instance )
+{
+  create;
+  update;
+  delete;
+  field ( readonly, numbering : managed ) UUID;
+  association _ServiceContractItem { create; }
+
+  static action adjustViaSelectOptions parameter ZA_PRC_DEMO_AdjustParamSelOpt result [1] ZA_PRC_RunActionResponse;// { default function GetDefaultsForAdjSelOpt; }
+
+  mapping for zprc_demo_srvctr
+    {
+      UUID               = UUID;
+      Description        = description;
+      ServiceContractID  = service_contract_id;
+      SoldToPartyID      = sold_to_party_id;
+      ShipToPartyID      = ship_to_party_id;
+      LifecycleStatus    = lifecycle_status;
+      ErrorStatus        = error_status;
+      LocalCreatedBy     = local_created_by;
+      LocalCreatedAt     = local_created_at;
+      LocalLastChangedBy = local_last_changed_by;
+      LocalLastChangedAt = local_last_changed_at;
+      LastChangedAt      = last_changed_at;
+    }
+}
+
+define behavior for ZR_PRC_DEMO_ServiceContractItm alias ServiceContractItem
+persistent table zprc_demo_sc_itm
+lock dependent by _ServiceContract
+authorization dependent by _ServiceContract
+{
+  update;
+  delete;
+  field ( readonly, numbering : managed ) UUID;
+  field ( readonly ) ParentUUID;
+
+  association _ServiceContract;
+  mapping for zprc_demo_sc_itm
+    {
+      UUID            = UUID;
+      ParentUUID      = parent_uuid;
+      ItemNumber      = item_number;
+      ProductId       = product_id;
+      Quantity        = quantity;
+      QuantityUom     = quantity_uom;
+      Currency        = currency;
+      NetPrice        = net_price;
+      DiscountPercent = discount_percent;
+      EquipmentId     = equipment_id;
+    }
+
+}

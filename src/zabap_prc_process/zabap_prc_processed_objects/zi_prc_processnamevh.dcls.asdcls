@@ -1,0 +1,5 @@
+@EndUserText.label: 'DCL for ZI_PRC_PROCESSNAMEVH'
+@MappingRole: true
+define role ZI_PRC_PROCESSNAMEVH {
+    grant select on ZI_PRC_PROCESSNAMEVH where (ProcessName) = aspect pfcg_auth( ZPRC_PROC, ZPRCNAME, ACTVT = '03' );
+}

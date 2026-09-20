@@ -1,0 +1,33 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "Demo: Service Contracts",
+    "originalLanguage": "en"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "ZABAP_PROCESSING_CENTER"
+  },
+  "ui5AppDetails": {
+    "appId": "abap.demo.processingcenter.demosrvctr",
+    "icfPath": "/sap/bc/ui5_ui5/sap/zprcdemosrvctr"
+  },
+  "navigation": {
+    "targetMappingId": "5AF3C81B9D2E1FE1AC9CFF4A896E0069_TM",
+    "semanticObject": "ABAP_PRC_Demo_ServiceContract",
+    "action": "show",
+    "desktop": true,
+    "tablet": true
+  },
+  "tiles": [
+    {
+      "id": "5AF3C81B9D2E1FE1AC9CFA2975800069",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Demo: Service Contracts",
+        "subtitle": "Mass Rate Adjustment"
+      }
+    }
+  ]
+}

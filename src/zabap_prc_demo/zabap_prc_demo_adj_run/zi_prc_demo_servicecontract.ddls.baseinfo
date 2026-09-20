@@ -1,0 +1,12 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZPRC_DEMO_SRVCTR"
+    ],
+    "ASSOCIATED": [
+      "ZC_PRC_DEMO_BUSINESSPARTNER",
+      "ZI_PRC_DEMO_ERRORSTATUS",
+      "ZI_PRC_DEMO_LIFECYCLESTATUS"
+    ]
+  }
+}

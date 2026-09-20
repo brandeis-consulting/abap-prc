@@ -1,0 +1,15 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZR_PRC_RUNERRORS",
+      "ZR_PRC_RUNPROGRESS",
+      "ZR_PRC_RUNSUCCESS",
+      "ZPRC_RUN"
+    ],
+    "ASSOCIATED": [
+      "ZC_PRC_RUNEXECUTIONSTATUSVH",
+      "ZC_PRC_RUNEXECUTIONTYPEVH",
+      "ZR_PRC_RUNPARAMETER"
+    ]
+  }
+}

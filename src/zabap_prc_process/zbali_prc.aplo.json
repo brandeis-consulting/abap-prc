@@ -1,0 +1,14 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "ABAP Processing Center",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "subobjects": [
+    {
+      "name": "PRC_RETRY",
+      "description": "ABAP Processing Center - Processing Objects"
+    }
+  ]
+}

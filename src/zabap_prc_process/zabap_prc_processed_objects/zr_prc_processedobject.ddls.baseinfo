@@ -1,0 +1,11 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZPRC_PROC_OBJECT"
+    ],
+    "ASSOCIATED": [
+      "ZI_PRC_PROCESSEDOBJECTAGGR",
+      "ZR_PRC_PROCESSEDSTEP"
+    ]
+  }
+}

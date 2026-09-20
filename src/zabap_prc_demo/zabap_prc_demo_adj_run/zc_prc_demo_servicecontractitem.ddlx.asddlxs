@@ -1,0 +1,62 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: { typeName: 'Service Contract Item',
+                  typeNamePlural: 'Service Contract Items',
+                  title: { type: #STANDARD, value: 'ItemNumber' },
+                  description.value: '_ServiceContract.Description' }
+annotate view ZC_PRC_DEMO_ServiceContractItm with
+{
+  @UI.hidden: true
+  UUID;
+
+  @UI.hidden: true
+  ParentUUID;
+
+  @EndUserText.label: 'Item Position'
+  @UI.identification: [ { position: 10 } ]
+  @UI.lineItem: [ { position: 10 } ]
+  @UI.selectionField: [ { position: 10 } ]
+  ItemNumber;
+
+  @Consumption.valueHelpDefinition: [{
+      entity: {
+          name: 'ZR_PRC_DEMO_Material',
+          element: 'Identifier'
+      }
+  }]
+  @EndUserText.label: 'Service'
+  @UI.lineItem: [ { position: 20, type: #WITH_INTENT_BASED_NAVIGATION, semanticObject: 'Material', semanticObjectAction: 'show', semanticObjectBinding: [{element: 'Identifier', localElement: 'ProductId'}]  } ]
+  @UI.identification: [ { position: 20, type: #WITH_INTENT_BASED_NAVIGATION, semanticObject: 'Material', semanticObjectAction: 'show', semanticObjectBinding: [{element: 'Identifier', localElement: 'ProductId'}]  } ]
+  @UI.selectionField: [ { position: 20 } ]
+  ProductId;
+
+  @EndUserText.label: 'Quantity'
+  @UI.identification: [ { position: 30 } ]
+  @UI.lineItem: [ { position: 30 } ]
+  @UI.selectionField: [ { position: 30 } ]
+  Quantity;
+
+  @EndUserText.label: 'Unit of Measure'
+  @UI.identification: [ { position: 40 } ]
+  @UI.lineItem: [ { position: 40 } ]
+  @UI.selectionField: [ { position: 40 } ]
+  QuantityUom;
+
+  @EndUserText.label: 'Net price'
+  @UI.identification: [ { position: 50 } ]
+  @UI.lineItem: [ { position: 50 } ]
+  @UI.selectionField: [ { position: 50 } ]
+  NetPrice;
+
+  @UI.hidden: true
+  //  @EndUserText.label: 'Currency'
+  //  @UI.identification: [ { position: 60 } ]
+  //  @UI.lineItem: [ { position: 60 } ]
+  //  @UI.selectionField: [ { position: 60 } ]
+  Currency;
+
+  @EndUserText.label: 'Discount (in %)'
+  @UI.identification: [ { position: 70 } ]
+  @UI.lineItem: [ { position: 70 } ]
+  @UI.selectionField: [ { position: 70 } ]
+  DiscountPercent;
+}

@@ -1,0 +1,13 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZR_PRC_DEMO_EQUIPMENT"
+    ],
+    "ASSOCIATED": [
+      "ZC_PRC_DEMO_EQUIPMENTCATEGORY"
+    ],
+    "BASE": [
+      "ZR_PRC_DEMO_EQUIPMENT"
+    ]
+  }
+}

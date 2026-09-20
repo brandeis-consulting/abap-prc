@@ -1,0 +1,15 @@
+extension implementation in class zbp_r_prc_processedobjectext unique;
+
+extend behavior for ProcessedObject
+{
+  event zz_objectProcessedTransition for side effects;
+
+  side effects
+  {
+    event zz_objectProcessedTransition affects $self;
+  }
+}
+
+extend behavior for ProcessedStep
+{
+}

@@ -1,0 +1,53 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Demo: Service Contract Adjustment Run",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "catalogName": "ZAJC_PRC_DEMO_ADJUST_RUN"
+  },
+  "parameters": {
+    "singleValueParameters": [
+      {
+        "name": "P_DISC",
+        "value": ""
+      },
+      {
+        "name": "P_EQCAT",
+        "value": ""
+      },
+      {
+        "name": "P_MAT",
+        "value": ""
+      },
+      {
+        "name": "P_UUID",
+        "value": ""
+      }
+    ],
+    "valueRangesParameters": [
+      {
+        "name": "S_CTR",
+        "valueRanges": []
+      },
+      {
+        "name": "S_ERR",
+        "valueRanges": []
+      },
+      {
+        "name": "S_LIFE",
+        "valueRanges": []
+      },
+      {
+        "name": "S_SHIP",
+        "valueRanges": []
+      },
+      {
+        "name": "S_SOLD",
+        "valueRanges": []
+      }
+    ]
+  }
+}

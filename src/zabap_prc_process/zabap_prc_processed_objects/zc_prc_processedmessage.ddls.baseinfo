@@ -1,0 +1,16 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZR_PRC_PROCESSEDMESSAGE"
+    ],
+    "ASSOCIATED": [
+      "ZC_PRC_PROCESSEDOBJECT",
+      "ZC_PRC_PROCESSEDSTEP",
+      "ZR_PRC_PROCESSEDOBJECT",
+      "ZR_PRC_PROCESSEDSTEP"
+    ],
+    "BASE": [
+      "ZR_PRC_PROCESSEDMESSAGE"
+    ]
+  }
+}

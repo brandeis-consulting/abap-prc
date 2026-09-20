@@ -1,0 +1,14 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZR_PRC_RUNPARAMETER"
+    ],
+    "ASSOCIATED": [
+      "ZC_PRC_RUN",
+      "ZR_PRC_RUN"
+    ],
+    "BASE": [
+      "ZR_PRC_RUNPARAMETER"
+    ]
+  }
+}

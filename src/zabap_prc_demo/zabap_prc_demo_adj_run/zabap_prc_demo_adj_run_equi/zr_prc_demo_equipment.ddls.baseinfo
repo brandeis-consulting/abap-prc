@@ -1,0 +1,10 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZPRC_DEMO_EQUI"
+    ],
+    "ASSOCIATED": [
+      "ZC_PRC_DEMO_EQUIPMENTCATEGORY"
+    ]
+  }
+}

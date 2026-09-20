@@ -1,0 +1,181 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: { typeName: 'Processed Object',
+                  typeNamePlural: 'Processed Objects',
+                  title: { type: #STANDARD, value: 'ExternalProcessedObjectID' },
+                  description: { type: #STANDARD, value: 'MessageText' } }
+
+@UI.lineItem: [ { criticality: 'MessageSeverityCode' } ]
+
+annotate view ZC_PRC_ProcessedObject with
+
+{
+  @UI.facet: [
+  { id: 'idCollection', type: #COLLECTION, label: 'Processed Object' },
+               { id: 'idLatestInformation',
+                 parentId: 'idCollection',
+                 type: #FIELDGROUP_REFERENCE,
+                 label: 'Current Status',
+                 targetQualifier: 'qLatestInfos' },
+               { id: 'idDelayAndQueue',
+                 parentId: 'idCollection',
+                 type: #FIELDGROUP_REFERENCE,
+                 label: 'Queue and Delay',
+                 targetQualifier: 'qQueueAndDelay' },
+               { id: 'idExecInfo',
+                 parentId: 'idCollection',
+                 type: #FIELDGROUP_REFERENCE,
+                 label: 'Execution Information',
+                 targetQualifier: 'qExecInfos',
+                 isPartOfPreview: false },
+               { id: 'idProcObject',
+                 parentId: 'idCollection',
+                 type: #FIELDGROUP_REFERENCE,
+                 label: 'Processed Object IDs',
+                 targetQualifier: 'qProcObjects',
+                 isPartOfPreview: false },
+               { id: 'idErrorHandling',
+                 parentId: 'idCollection',
+                 type: #FIELDGROUP_REFERENCE,
+                 label: 'Error Handling',
+                 targetQualifier: 'qErrorHandling',
+                 isPartOfPreview: false },
+               { id: 'idProcessedSteps',
+                 type: #LINEITEM_REFERENCE,
+                 label: 'Processed Steps',
+                 position: 40,
+                 targetElement: '_ProcessedStep' },
+               { id: 'idProcessedMessages',
+                 type: #LINEITEM_REFERENCE,
+                 label: 'Processed Messages',
+                 position: 50,
+                 targetElement: '_AllProcessedMessages' } ]
+  @UI.identification: [ { position: 15,
+                      qualifier: 'qLatestInfos',
+                      type: #FOR_ACTION,
+                      dataAction: 'resumeProcessing',
+                      label: 'Resume Processing',
+                      inline: true,
+                      invocationGrouping: #ISOLATED } ]
+  @UI.lineItem: [ { position: 15,
+                    type: #FOR_ACTION,
+                    dataAction: 'resumeProcessing',
+                    label: 'Resume Processing',
+                    inline: true,
+                    invocationGrouping: #ISOLATED } ]
+  UUID;
+
+  @UI.hidden: true
+  link;
+
+  @UI.hidden: true
+  LatestStepUUID;
+
+  @EndUserText.label: 'Processed Object'
+  @UI.selectionField: [ { position: 5 } ]
+  @UI.fieldGroup: [ { position: 5, qualifier: 'qProcObjects' } ]
+  @UI.lineItem: [ { position: 5, importance: #HIGH, type: #WITH_URL, url: 'link' } ]
+  ExternalProcessedObjectID;
+
+  @EndUserText.label: 'Processed Object UUID'
+  @UI.fieldGroup: [ { position: 7, qualifier: 'qProcObjects' } ]
+  ExternalProcessedObjectUUID;
+
+  @EndUserText.label: 'Message'
+  @UI.fieldGroup: [ { qualifier: 'qLatestInfos',
+                      position: 10,
+                      importance: #HIGH,
+                      criticality: 'MessageSeverityCode',
+                      criticalityRepresentation: #WITH_ICON },
+                    { qualifier: 'qHeader',
+                      position: 10,
+                      importance: #HIGH,
+                      criticality: 'MessageSeverityCode',
+                      criticalityRepresentation: #WITH_ICON } ]
+  @UI.lineItem: [ { position: 10,
+                    importance: #HIGH,
+                    criticality: 'MessageSeverityCode',
+                    criticalityRepresentation: #WITH_ICON } ]
+  MessageText;
+
+  @EndUserText.label: 'Processed Steps'
+  @UI.dataPoint: { qualifier: 'StepCounter',
+                   visualization: #PROGRESS,
+                   title: 'Title',
+                   description: 'Description',
+                   targetValueElement: 'StepTotal' }
+  @UI.lineItem: [ { position: 15, type: #AS_DATAPOINT, importance: #HIGH } ]
+  StepCounter;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZI_PRC_MessageSeverityVH', element: 'Value' } } ]
+  @EndUserText.label: 'Message Severity'
+  @UI.selectionField: [ { position: 30 } ]
+  MessageSeverity;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZI_PRC_ProcessNameVH', element: 'ProcessName' } } ]
+  @UI.identification: [ { position: 3 } ]
+  @UI.selectionField: [ { position: 11 } ]
+  ProcessName;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZI_PRC_StateVH', element: 'State' } } ]
+  @EndUserText.label: 'State'
+  @UI.fieldGroup: [ { position: 20, qualifier: 'qHeader'     },
+                    { position: 20, qualifier: 'qLatestInfos' } ]
+  @UI.lineItem: [ { position: 20, importance: #MEDIUM } ]
+  @UI.selectionField: [ { position: 20 } ]
+  State;
+
+  @EndUserText.label: 'Do Not Process Before'
+  @UI.fieldGroup: [ { position: 30, qualifier: 'qQueueAndDelay' } ]
+  @UI.lineItem: [ { position: 60, importance: #MEDIUM } ]
+  DoNotProcessBefore;
+
+  @EndUserText.label: 'Queue ID'
+  @UI.fieldGroup: [ { position: 10, qualifier: 'qQueueAndDelay' } ]
+  QueueID;
+
+  @EndUserText.label: 'Queue Position'
+  @UI.fieldGroup: [ { position: 20, qualifier: 'qQueueAndDelay' } ]
+  QueuePosition;
+
+  @EndUserText.label: 'Next Retry'
+  @UI.fieldGroup: [ { position: 20, qualifier: 'qErrorHandling' } ]
+  @UI.lineItem: [ { position: 50, importance: #MEDIUM } ]
+  RetryDateTime;
+
+  @EndUserText.label: 'Retry Count'
+  @UI.fieldGroup: [ { position: 30, qualifier: 'qErrorHandling' } ]
+  @UI.lineItem: [ { position: 45, importance: #MEDIUM } ]
+  RetryCount;
+
+  @UI.fieldGroup: [ { position: 10, qualifier: 'qExecInfos' } ]
+  @UI.lineItem: [ { position: 30, importance: #MEDIUM } ]
+  LastChangedAt;
+
+  @UI.fieldGroup: [ { position: 20, qualifier: 'qExecInfos' } ]
+  @UI.lineItem: [ { position: 120, importance: #MEDIUM } ]
+  @UI.selectionField: [ { position: 50 } ]
+  LastChangedBy;
+
+  @EndUserText.label: 'Mail Address for error reporting'
+  @UI.fieldGroup: [ { position: 10, qualifier: 'qErrorHandling' } ]
+  MailAddress;
+
+  @UI.hidden: true
+  LocalLastChangedAt;
+
+  @EndUserText.label: 'Factory Class Name'
+  FactoryClassName;
+
+  @EndUserText.label: 'Created At'
+  CreatedAt;
+
+  @EndUserText.label: 'Created By'
+  CreatedBy;
+
+  @EndUserText.label: 'Message Severity Code'
+  MessageSeverityCode;
+
+  @EndUserText.label: 'Step Total'
+  StepTotal;
+}

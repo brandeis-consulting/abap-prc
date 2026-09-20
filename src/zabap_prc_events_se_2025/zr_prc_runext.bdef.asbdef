@@ -1,0 +1,9 @@
+extension implementation in class zbp_r_prc_runext unique;
+
+extend behavior for Run
+{
+
+  event zz_runChanged for side effects;
+  side effects { event zz_runChanged affects $self; }
+
+}

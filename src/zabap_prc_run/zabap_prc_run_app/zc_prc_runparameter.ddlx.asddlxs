@@ -1,0 +1,31 @@
+@Metadata.layer: #CUSTOMER
+annotate entity ZC_PRC_RunParameter
+    with
+{
+  @EndUserText.label: 'Parameter Name'
+  @UI.lineItem: [ { position: 30 } ]
+  @UI.selectionField: [ { position: 30 } ]
+  ParameterName;
+ 
+  @UI.lineItem: [ { position: 40 } ]
+  @EndUserText.label: 'Operator'
+  @UI.selectionField: [ { position: 40 } ]
+  Operator;
+ 
+  @EndUserText.label: 'Sign'
+  @UI.lineItem: [ { position: 35 } ]
+  @UI.selectionField: [ { position: 35 } ]
+  Sign;
+ 
+  @EndUserText.label: 'Low'
+  @UI.lineItem: [ { position: 60 } ]
+  @UI.selectionField: [ { position: 60 } ]
+  @Search.defaultSearchElement: true
+  Low;
+ 
+  @EndUserText.label: 'High'
+  @UI.lineItem: [ { position: 70 } ]
+  @UI.selectionField: [ { position: 70 } ]
+  @Search.defaultSearchElement: true
+  High;
+}

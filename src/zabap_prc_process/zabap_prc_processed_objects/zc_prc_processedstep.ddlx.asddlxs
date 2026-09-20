@@ -1,0 +1,39 @@
+@Metadata.layer: #CUSTOMER
+
+annotate entity ZC_PRC_ProcessedStep with
+
+{
+  @UI.hidden: true
+  StepUUID;
+
+  @UI.hidden: true
+  ProcessedObjectUUID;
+
+  @EndUserText.label: 'Message Text'
+  @UI.identification: [ { position: 20 } ]
+  @UI.lineItem: [ { position: 20,
+                    importance: #HIGH,
+                    criticality: 'MessageSeverityCode',
+                    criticalityRepresentation: #WITH_ICON
+                    } ]
+  MessageText;
+
+  @EndUserText.label: 'Message Number'
+  MessageNumber;
+
+  @EndUserText.label: 'Start State'
+  @UI.identification: [ { position: 30 } ]
+  @UI.lineItem: [ { position: 30, importance: #MEDIUM } ]
+  StartState;
+
+  @EndUserText.label: 'End State'
+  @UI.identification: [ { position: 40 } ]
+  @UI.lineItem: [ { position: 40, importance: #MEDIUM } ]
+  EndState;
+
+  @UI.hidden: true
+  CreatedBy;
+
+  @UI.lineItem: [ { position: 50, importance: #MEDIUM } ]
+  CreatedAt;
+}

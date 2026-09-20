@@ -1,0 +1,8 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZI_PRC_DEMO_SERVICECONTRACT",
+      "ZI_PRC_DEMO_SERVICECONTRACTITM"
+    ]
+  }
+}

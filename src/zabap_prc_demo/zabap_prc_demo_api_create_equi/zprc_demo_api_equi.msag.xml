@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Create Equipments</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>No serial number provided.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Successfully validated.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Equipment exists already.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Equipment created.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Error during assignment of serial number 4711 to Sales Order SO000 - 01.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Linked equipment to SalesOrder SO002-04.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Superordinary equipment 0815 has errors.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Equipment installed on Truck 0815.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Equipment &amp;1:</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>Validation not successful.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>Equipment creation not successful.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>Equipment requires no installation.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_DEMO_API_EQUI</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>Equipment requires installation.</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

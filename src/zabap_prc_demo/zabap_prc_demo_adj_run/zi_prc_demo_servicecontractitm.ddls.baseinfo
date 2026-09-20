@@ -1,0 +1,11 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZPRC_DEMO_SC_ITM"
+    ],
+    "ASSOCIATED": [
+      "ZC_PRC_DEMO_MATERIAL",
+      "ZI_PRC_DEMO_EQUIPMENTVH"
+    ]
+  }
+}

@@ -1,0 +1,3 @@
+{"version":3,"file":"Component-preload.js","sections":[{"offset":{"line":1,"column":0},"map":{"version":3,"names":["sap","ui","define","Component","extend","metadata","manifest"],"sources":["Component-dbg.js"],"mappings":"AAAAA,IAAIC,GAAGC,kDACH,CAAC,4BA+
+CD,SAAUC,GACN,aAEA,OAAOA,EAAUC,OAAO,uCAAwC,CAC5DC,SAAU,CACNC,SAAU,SAGtB","ignoreList":[],"sourceRoot":""}},{"offset":{"line":2,"column":0},"map":{"version":3,"names":[],"sources":["Component-preload.js?bundle-code-0"],"mappings":"AAAA;AACA","sourcesConte+
+nt":["sap.ui.require.preload({\n"],"sourceRoot":""}}]}                                                                                                                                                                                                         

@@ -1,0 +1,2 @@
+sap.ui.define(["sap/fe/core/AppComponent"],function(e){"use strict";return e.extend("abap.processing_center.run.no_fcl.Component",{metadata:{manifest:"json"}})});                                                                                             
+//# sourceMappingURL=Component.js.map                                                                                                                                                                                                                          

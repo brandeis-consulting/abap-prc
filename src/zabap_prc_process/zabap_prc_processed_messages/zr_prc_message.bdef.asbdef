@@ -1,0 +1,24 @@
+managed implementation in class zbp_prc_message unique;
+strict ( 2 );
+
+define behavior for ZR_PRC_Message alias Message
+lock master
+authorization master ( instance )
+with unmanaged save
+{
+  field ( readonly ) ProcessName, MessageClass, MessageNumber, MessageSeverity, MessageVariable1, MessageVariable2, MessageVariable3, MessageVariable4, MessageText;
+  action ( features : instance ) resumeProcessing result [1] $self;
+
+  association _ObjectsForMessage { }
+}
+
+define behavior for ZR_PRC_ObjectForMessage alias Objects
+lock dependent by _Message
+authorization dependent by _Message
+with unmanaged save
+{
+  field ( numbering : managed ) StepUUID;
+  field ( readonly ) ProcessName, StepUUID, MessageNumber, MessageClass, MessageSeverity, MessageVariable1, MessageVariable2, MessageVariable3, MessageVariable4, MessageText;
+
+  association _Message;
+}

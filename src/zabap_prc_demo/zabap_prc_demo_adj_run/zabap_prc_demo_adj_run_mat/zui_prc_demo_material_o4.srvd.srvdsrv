@@ -1,0 +1,4 @@
+@EndUserText.label: 'Material'
+define service ZUI_PRC_DEMO_MATERIAL_O4 {
+  expose ZC_PRC_DEMO_Material as Material;
+}

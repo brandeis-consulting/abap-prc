@@ -1,0 +1,6 @@
+@EndUserText.label: 'Processed Messages'
+define service ZUI_prc_processed_messages_O4 {
+  expose ZC_PRC_Message           as Message;
+  expose ZI_PRC_MessageSeverityVH;
+  expose ZC_PRC_ObjectForMessage  as ObjectForMessage;
+}

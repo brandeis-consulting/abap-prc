@@ -1,0 +1,3 @@
+{"version":3,"file":"GoToApplicationRuns.js","names":["sap","ui","define","MessageToast","goToApplicationRuns","oContext","aSelectedContexts","ushell","Container","getServiceAsync","then","oCrossAppNav","toExternal","target","semanticObject","action"],"s+
+ources":["GoToApplicationRuns-dbg.js"],"mappings":"AAAAA,IAAIC,GAAGC,OAAO,CACV,sBACD,SAASC,GACR,aAEA,MAAO,CAOHC,oBAAqB,SAASC,EAAUC,GAC5BN,IAAIO,OAAOC,UAAUC,gBAAgB,8BAA8BC,KAAK,SAAUC,GAC1EA,EAAaC,WAAW,CACpBC,OAAQ,CACJC,eAAgB,eAChBC,OAAQ,SAGxB,EACZ,EAER","+
+ignoreList":[]}                                                                                                                                                                                                                                                

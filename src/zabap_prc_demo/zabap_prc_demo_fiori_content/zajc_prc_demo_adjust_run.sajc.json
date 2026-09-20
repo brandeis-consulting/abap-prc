@@ -1,0 +1,39 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Demo: Service Contract Adjustment Run",
+    "originalLanguage": "en"
+  },
+  "generalInformation": {
+    "className": "ZCL_PRC_DEMO_ADJUST_RUN_JOB"
+  },
+  "parameters": [
+    {
+      "name": "S_CTR"
+    },
+    {
+      "name": "S_SOLD"
+    },
+    {
+      "name": "S_SHIP"
+    },
+    {
+      "name": "S_LIFE"
+    },
+    {
+      "name": "S_ERR"
+    },
+    {
+      "name": "P_EQCAT"
+    },
+    {
+      "name": "P_MAT"
+    },
+    {
+      "name": "P_DISC"
+    },
+    {
+      "name": "P_UUID"
+    }
+  ]
+}

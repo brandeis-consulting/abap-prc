@@ -1,0 +1,33 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "ABAP Processing Center - Processed Message",
+    "originalLanguage": "en"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "ZABAP_PROCESSING_CENTER"
+  },
+  "ui5AppDetails": {
+    "appId": "abap.processing_center.processed_message",
+    "icfPath": "/sap/bc/ui5_ui5/zuiprcprocmsg"
+  },
+  "navigation": {
+    "targetMappingId": "5AF3C81B9D2E1FE1AC84C345048F4069_TM",
+    "semanticObject": "ABAP_PRC_ProcessedMessage",
+    "action": "show",
+    "desktop": true,
+    "tablet": true
+  },
+  "tiles": [
+    {
+      "id": "5AF3C81B9D2E1FE1AC84BEAB5D948069",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Processing Center",
+        "subtitle": "Processed Messages"
+      }
+    }
+  ]
+}

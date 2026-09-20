@@ -1,0 +1,68 @@
+managed implementation in class zbp_prc_run unique;
+strict ( 2 );
+extensible;
+
+with privileged mode disabling NoCheckWhenPrivileged;
+
+define authorization context NoCheckWhenPrivileged {
+//    'ZPRC_PROC';
+}
+
+define behavior for ZR_PRC_Run alias Run
+extensible
+persistent table zprc_run
+with additional save
+lock master
+authorization master ( global )
+{
+  create;
+  update;
+  delete;
+  field ( readonly, numbering : managed ) UUID;
+
+  static factory action initiateRun parameter ZA_PRC_InitiateRunParameter [1];
+  action triggerChangedEvent;
+
+  association _Parameter { create; }
+
+  mapping for zprc_run
+    {
+      uuid                     = uuid;
+      ApplicationName          = app_name;
+      JobName                  = job_name;
+      JobID                    = job_id;
+      JobCount                 = job_count;
+      JobStart                 = job_start;
+      JobEnd                   = job_end;
+      LogHandle                = log_handle;
+      ExecutionType            = execution_type;
+      ExecutionStatus          = execution_status;
+      NumberOfErrors           = number_of_errors;
+      NumberOfSuccess          = number_of_success;
+      CurrentlyProcessedNumber = currently_processed_number;
+      TotalNumber              = total_number;
+      CreatedBy                = created_by;
+    }
+
+}
+
+define behavior for ZR_PRC_RunParameter //alias <alias_name>
+persistent table zprc_run_params
+lock dependent by _Run
+authorization dependent by _Run
+{
+  delete;
+  field ( readonly, numbering : managed ) UUID;
+  field ( readonly ) JobUUID;
+  association _Run;
+  mapping for zprc_run_params
+    {
+      UUID          = uuid;
+      JobUUID       = job_uuid;
+      ParameterName = parameter_name;
+      operator      = operator;
+      sign          = sign;
+      low           = low;
+      high          = high;
+    }
+}

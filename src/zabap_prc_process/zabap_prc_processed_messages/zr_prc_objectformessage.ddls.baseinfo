@@ -1,0 +1,12 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZI_PRC_OBJECTLATESTMESSAGE",
+      "ZR_PRC_PROCESSEDOBJECT",
+      "ZR_PRC_PROCESSEDSTEP"
+    ],
+    "ASSOCIATED": [
+      "ZR_PRC_MESSAGE"
+    ]
+  }
+}

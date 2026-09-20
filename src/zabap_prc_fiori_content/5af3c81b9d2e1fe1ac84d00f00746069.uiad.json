@@ -1,0 +1,33 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "ABAP Processing Center - Processed Object",
+    "originalLanguage": "en"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "ZABAP_PROCESSING_CENTER"
+  },
+  "ui5AppDetails": {
+    "appId": "abap.processing_center.processed_object",
+    "icfPath": "/sap/bc/ui5_ui5/zuiprcprocobj"
+  },
+  "navigation": {
+    "targetMappingId": "5AF3C81B9D2E1FE1AC84D00F00746069_TM",
+    "semanticObject": "ABAP_PRC_ProcessedObject",
+    "action": "show",
+    "desktop": true,
+    "tablet": true
+  },
+  "tiles": [
+    {
+      "id": "5AF3C81B9D2E1FE1AC84CDC158414069",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Processing Center",
+        "subtitle": "Processed Object"
+      }
+    }
+  ]
+}

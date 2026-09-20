@@ -1,0 +1,7 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZPRC_DEMO_EQ_CAT"
+    ]
+  }
+}

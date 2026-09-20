@@ -1,0 +1,3 @@
+sap.ui.define(["sap/m/MessageToast"],function(n){"use strict";return{goToApplicationRuns:function(n,t){sap.ushell.Container.getServiceAsync("CrossApplicationNavigation").then(function(n){n.toExternal({target:{semanticObject:"ABAP_PRC_Run",action:"show"}}+
+)})}}});                                                                                                                                                                                                                                                       
+//# sourceMappingURL=GoToApplicationRuns.js.map                                                                                                                                                                                                                

@@ -1,0 +1,4 @@
+@EndUserText.label: 'Business Partner'
+define service ZUI_PRC_DEMO_BUPA_O4 {
+  expose ZC_PRC_DEMO_BusinessPartner;
+}

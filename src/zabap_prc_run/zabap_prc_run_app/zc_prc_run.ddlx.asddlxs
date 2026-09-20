@@ -1,0 +1,140 @@
+@Metadata.layer: #CUSTOMER
+
+@Search.searchable: true
+
+annotate entity ZC_PRC_Run with
+
+{
+ @Consumption.valueHelpDefinition: [ { entity: { name: 'ZC_PRC_RunAppNameVH', element: 'ApplicationName' } } ]
+  @EndUserText.label: 'App Name'
+  @UI.selectionField: [ { position: 5 } ]
+  ApplicationName;
+
+  @EndUserText.label: 'Job Name'
+  @Search.defaultSearchElement: true
+  @Search.fuzzinessThreshold: 0.7
+  @UI.facet: [ { purpose: #HEADER,
+                 position: 5,
+                 type: #FIELDGROUP_REFERENCE,
+                 targetQualifier: 'ExecutionStatus',
+                 label: 'Execution Status' },
+               { purpose: #HEADER, position: 10, type: #DATAPOINT_REFERENCE, targetQualifier: 'CurrentlyProcessedNumber' },
+               { purpose: #HEADER, position: 11, type: #DATAPOINT_REFERENCE, targetQualifier: 'NumberOfErrors' },
+               { purpose: #HEADER, position: 12, type: #DATAPOINT_REFERENCE, targetQualifier: 'NumberOfSuccess' },
+               { id: 'idExecInfo', position: 30, label: 'Run Details', type: #COLLECTION },
+               { parentId: 'idExecInfo', label: 'Execution Details', type: #FIELDGROUP_REFERENCE, targetQualifier: 'qExecRun' },
+               { parentId: 'idExecInfo',
+                 label: 'User and Execution Time',
+                 type: #FIELDGROUP_REFERENCE,
+                 targetQualifier: 'qExecUserDate' },
+               { parentId: 'idExecInfo',
+                 label: 'Application Job and Log',
+                 type: #FIELDGROUP_REFERENCE,
+                 targetQualifier: 'qExecJobAndLog' },
+               { label: 'Run Parameter',
+                 type: #LINEITEM_REFERENCE,
+                 position: 50,
+                 targetElement: '_Parameter' },
+               { purpose: #STANDARD, label: 'Processed Objects with Errors', type: #SELECTIONPRESENTATIONVARIANT_REFERENCE, targetQualifier: 'spVariant', position: 10, targetElement: '_ProcessedObjectsErrors' },
+               { purpose: #STANDARD, label: 'Processed Objects with Success', type: #PRESENTATIONVARIANT_REFERENCE, targetQualifier: 'pVariant', position: 20, targetElement: '_ProcessedObjectsSuccess' }
+//               { label: 'Processed Objects with Success', type: #LINEITEM_REFERENCE, position: 20, targetElement: '_ProcessedObjectsSuccess' } 
+]
+  @UI.identification: [ { qualifier: 'qExecJob', position: 10, inline: true } ]
+  @UI.lineItem: [ { position: 10, importance: #HIGH } ]
+  JobName;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZC_PRC_RunExecutionStatusVH', element: 'Value' } } ]
+  @EndUserText.label: 'Execution Status'
+  @UI.fieldGroup: [ { qualifier: 'qExecRun', position: 5 },
+                    { qualifier: 'ExecutionStatus', position: 5, label: 'Status' } ]
+  @UI.lineItem: [ { position: 15, importance: #MEDIUM } ]
+  @UI.selectionField: [ { position: 15 } ]
+  @UI.textArrangement: #TEXT_ONLY
+  ExecutionStatus;
+
+  @EndUserText.label: 'Processed'
+  @UI.dataPoint: { qualifier: 'CurrentlyProcessedNumber',
+                   targetValueElement: 'TotalNumber',
+                   visualization: #PROGRESS,
+                   title: 'Progress' }
+  @UI.lineItem: [ { position: 17, type: #AS_DATAPOINT, importance: #HIGH } ]
+  CurrentlyProcessedNumber;
+
+  @EndUserText.label: 'Numbers of Errors'
+  @UI.dataPoint: { qualifier: 'NumberOfErrors',
+                   visualization: #NUMBER,
+                   title: 'Number of Errors',
+                   criticality: 'SeverityCodeError' }
+  @UI.lineItem: [ { position: 18, type: #AS_DATAPOINT, importance: #MEDIUM } ]
+  NumberOfErrors;
+
+  @EndUserText.label: 'Numbers of Success'
+  @UI.dataPoint: { qualifier: 'NumberOfSuccess',
+                   visualization: #NUMBER,
+                   title: 'Number of Successes',
+                   criticality: 'SeverityCodeSuccess' }
+  @UI.lineItem: [ { position: 19, type: #AS_DATAPOINT, importance: #MEDIUM } ]
+  NumberOfSuccess;
+
+  @EndUserText.label: 'Job ID'
+  @UI.fieldGroup: [ { qualifier: 'qExecJobAndLog', position: 10 } ]
+  JobID;
+
+  @EndUserText.label: 'Job Count'
+  @UI.fieldGroup: [ { qualifier: 'qExecJobAndLog', position: 20 } ]
+  JobCount;
+
+  @UI.fieldGroup: [ { qualifier: 'qHeaderMessage',
+                      position: 5,
+                      label: '',
+                      type: #WITH_INTENT_BASED_NAVIGATION,
+                      semanticObject: 'ApplicationLog',
+                      semanticObjectAction: 'showDetails' },
+                    { qualifier: 'qExecJobAndLog',
+                      label: 'Application Log',
+                      position: 40,
+                      inline: true,
+                      criticality: 'MessageSeverity',
+                      criticalityRepresentation: #WITH_ICON,
+                      type: #WITH_INTENT_BASED_NAVIGATION,
+                      semanticObject: 'ApplicationLog',
+                      semanticObjectAction: 'showDetails' } ]
+  @UI.lineItem: [ { position: 300,
+                    label: 'Application Log',
+                    importance: #LOW,
+                    type: #WITH_INTENT_BASED_NAVIGATION,
+                    semanticObject: 'ApplicationLog',
+                    semanticObjectAction: 'showDetails' } ]
+  @UI.textArrangement: #TEXT_ONLY
+  LogHandle;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZC_PRC_RunExecutionTypeVH', element: 'Value' } } ]
+  @EndUserText.label: 'Execution Type'
+  @UI.fieldGroup: [ { qualifier: 'qExecRun', position: 7, inline: true } ]
+  @UI.textArrangement: #TEXT_ONLY
+  ExecutionType;
+
+  @UI.fieldGroup: [ { qualifier: 'qExecUserDate', position: 40 } ]
+  @UI.lineItem: [ { position: 250, importance: #LOW } ]
+  @UI.selectionField: [ { position: 40 } ]
+  CreatedBy;
+
+  @Consumption.filter.selectionType: #INTERVAL
+  @EndUserText.label: 'Run Start'
+  @UI.fieldGroup: [ { qualifier: 'qExecUserDate', position: 20 } ]
+  @UI.identification: [ { qualifier: 'EXEC_INFO', position: 20, inline: true } ]
+  @UI.lineItem: [ { position: 200, importance: #LOW } ]
+  JobStart;
+
+  @Consumption.filter.selectionType: #INTERVAL
+  @EndUserText.label: 'Run End'
+  @UI.fieldGroup: [ { qualifier: 'qExecUserDate', position: 30 } ]
+  @UI.identification: [ { qualifier: 'EXEC_INFO', position: 30, inline: true } ]
+  JobEnd;
+
+  @EndUserText.label: 'Total Number'
+  TotalNumber;
+  
+  @UI.hidden: true
+  MessageSeverity;
+}

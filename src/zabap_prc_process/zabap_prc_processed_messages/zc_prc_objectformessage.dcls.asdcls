@@ -1,0 +1,5 @@
+@EndUserText.label: 'DCL for ZC_PRC_OBJECTFORMESSAGE'
+@MappingRole: true
+define role ZC_PRC_ObjectForMessage {
+    grant select on ZC_PRC_ObjectForMessage where inheriting conditions from entity ZR_PRC_ObjectForMessage;
+}

@@ -1,0 +1,30 @@
+@Metadata.layer: #CUSTOMER
+
+annotate entity ZC_PRC_ProcessedMessage with
+
+{
+  @UI.hidden
+  UUID;
+
+  @UI.hidden
+  ProcessedStepUUID;
+
+  @UI.hidden
+  ProcessedObjectUUID;
+
+  @UI.lineItem: [ { position: 10 } ]
+  MessageText;
+
+  @UI.lineItem: [ { position: 50, importance: #MEDIUM } ]
+  CreatedAt;
+
+  // Msgid;
+  // Msgno;
+  // Msgty;
+  // Msgv1;
+  // Msgv2;
+  // Msgv3;
+  // Msgv4;
+  // MessageSeverityCode;
+  // CreatedBy;
+}

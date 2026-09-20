@@ -1,0 +1,33 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "Demo: Equipment",
+    "originalLanguage": "en"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "ZABAP_PROCESSING_CENTER"
+  },
+  "ui5AppDetails": {
+    "appId": "abap.demo.processingcenter.demoequi",
+    "icfPath": "/sap/bc/ui5_ui5/sap/zprcdemoequi"
+  },
+  "navigation": {
+    "targetMappingId": "5AF3C81B9D2E1FE1ACCB2291D75B8069_TM",
+    "semanticObject": "ABAP_PRC_Demo_Equipment",
+    "action": "show",
+    "desktop": true,
+    "tablet": true
+  },
+  "tiles": [
+    {
+      "id": "5AF3C81B9D2E1FE1ACCB1D78E059C069",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Demo: Equipment",
+        "subtitle": "Show and Manage"
+      }
+    }
+  ]
+}

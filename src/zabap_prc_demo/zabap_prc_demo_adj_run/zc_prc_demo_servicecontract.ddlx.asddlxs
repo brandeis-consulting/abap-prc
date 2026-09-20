@@ -1,0 +1,118 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: { typeName: 'Service Contract',
+                  typeNamePlural: 'Service Contracts',
+                  title: { type: #STANDARD, value: 'Description' },
+                  description.value: 'description' }
+
+@UI.lineItem: [ { criticality: 'ErrorStatusCriticality' } ]
+
+@UI.presentationVariant: [ { qualifier: 'qPV',
+                             id: '3',
+                             text: 'Hello PV',
+                             maxItems: 100,
+                             sortOrder: [ { by: 'S_CTR', direction: #ASC } ] } ]
+
+@UI.selectionPresentationVariant: [ { qualifier: 'qSPV',
+                                      id: '1',
+                                      text: 'Hello SPV',
+                                      selectionVariantQualifier: 'qSV',
+                                      presentationVariantQualifier: 'qPV' } ]
+
+@UI.selectionVariant: [ { qualifier: 'qSV', id: '2', text: 'Hello SV' } ]
+
+annotate view ZC_PRC_DEMO_ServiceContract with
+
+{
+  @UI.hidden
+  UUID;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZI_PRC_DEMO_ServiceContract', element: 'ServiceContractID' } } ]
+  @EndUserText.label: 'Service Contract'
+  @UI.facet: [ { id: 'Main', type: #IDENTIFICATION_REFERENCE, label: 'Service Contract Details', position: 10 },
+               { id: 'idItems',
+                 type: #LINEITEM_REFERENCE,
+                 label: 'Service Contract Items',
+                 targetElement: '_ServiceContractItem',
+                 position: 20 } ]
+  @UI.identification: [ { position: 10 } ]
+  @UI.lineItem: [ { position: 10 } ]
+  @UI.selectionField: [ { position: 10 } ]
+  @UI.textArrangement: #TEXT_LAST
+//  servicecontractid;
+  S_CTR;
+
+  @UI.hidden
+  Description;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZC_PRC_DEMO_BusinessPartner', element: 'Identifier' } } ]
+  @EndUserText.label: 'Sold-To Party'
+  @UI.fieldGroup: [ { qualifier: 'fgSoldToParty',
+                      type: #AS_CONTACT,
+                      label: 'Sold-to-Party Contact Card',
+                      iconUrl: '',
+                      position: 70,
+                      value: '_SoldToParty' } ]
+  @UI.identification: [ { position: 30,
+                          type: #WITH_INTENT_BASED_NAVIGATION,
+                          semanticObject: 'BusinessPartner',
+                          semanticObjectAction: 'Show',
+                          semanticObjectBinding: [ { element: 'Identifier', localElement: 'S_SOLD' } ] } ]
+  @UI.lineItem: [ { position: 30,
+                    type: #WITH_INTENT_BASED_NAVIGATION,
+                    semanticObject: 'BusinessPartner',
+                    semanticObjectAction: 'Show',
+                    semanticObjectBinding: [ { element: 'Identifier', localElement: 'S_SOLD' } ] } ]
+  @UI.selectionField: [ { position: 30 } ]
+  //  SoldToPartyID;
+  @UI.textArrangement: #TEXT_FIRST
+  S_SOLD;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZC_PRC_DEMO_BusinessPartner', element: 'Identifier' } } ]
+  @EndUserText.label: 'Ship-To Party'
+  @UI.identification: [ { position: 40,
+                          type: #WITH_INTENT_BASED_NAVIGATION,
+                          semanticObject: 'BusinessPartner',
+                          semanticObjectAction: 'Show',
+                          semanticObjectBinding: [ { element: 'Identifier', localElement: 'S_SHIP' } ] } ]
+  @UI.lineItem: [ { position: 40,
+                    type: #WITH_INTENT_BASED_NAVIGATION,
+                    semanticObject: 'BusinessPartner',
+                    semanticObjectAction: 'Show',
+                    semanticObjectBinding: [ { element: 'Identifier', localElement: 'S_SHIP' } ] } ]
+  @UI.selectionField: [ { position: 40 } ]
+  //  ShipToPartyID;
+  S_SHIP;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZI_PRC_DEMO_LifecycleStatus', element: 'Value' } } ]
+  @UI.identification: [ { position: 50 } ]
+  @UI.lineItem: [ { position: 50 } ]
+  @UI.selectionField: [ { position: 50 } ]
+  //  LifecycleStatus;
+  S_LIFE;
+
+  @Consumption.valueHelpDefinition: [ { entity: { name: 'ZI_PRC_DEMO_ErrorStatus', element: 'Value' } } ]
+  @UI.identification: [ { position: 55 } ]
+  @UI.lineItem: [ { position: 55 } ]
+  @UI.selectionField: [ { position: 55 } ]
+  //  ErrorStatus;
+  S_ERR;
+
+  @UI.hidden
+  ErrorStatusCriticality;
+
+  @UI.hidden
+  LocalCreatedAt;
+
+  @UI.hidden
+  LocalCreatedBy;
+
+  @UI.hidden
+  LocalLastChangedAt;
+
+  @UI.hidden
+  LocalLastChangedBy;
+
+  @UI.hidden
+  LastChangedAt;
+}

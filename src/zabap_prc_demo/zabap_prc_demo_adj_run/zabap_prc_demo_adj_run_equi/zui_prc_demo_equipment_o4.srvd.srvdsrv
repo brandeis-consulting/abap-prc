@@ -1,0 +1,5 @@
+@EndUserText.label: 'Equipment'
+define service ZUI_PRC_DEMO_EQUIPMENT_O4 {
+  expose ZC_PRC_DEMO_Equipment         as Equipment;
+  expose ZC_PRC_DEMO_EquipmentCategory as EquipmentCategory;
+}

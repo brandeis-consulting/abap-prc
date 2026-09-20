@@ -1,0 +1,6 @@
+extension for projection;
+
+extend behavior for Run
+{
+  use event zz_runChanged;
+}

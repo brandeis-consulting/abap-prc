@@ -1,0 +1,18 @@
+projection;
+strict ( 2 );
+extensible;
+use side effects;
+
+define behavior for ZC_PRC_ProcessedObject alias ProcessedObject
+extensible
+{
+  use delete;
+  use action resumeProcessing;
+  use association _ProcessedStep;
+}
+
+define behavior for ZC_PRC_ProcessedStep
+{
+  use delete;
+  use association _ProcessedObject;
+}
