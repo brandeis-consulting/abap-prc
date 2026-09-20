@@ -112,5 +112,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ## Related
 
-- **Training and project support** — [Fullstack Development with ABAP and AI - Brandeis Consulting](https://www.brandeis.de/en/fullstack-development)
+- **Training and project support** — [Fullstack Development with ABAP and AI - Brandeis Consulting](https://www.brandeis.de/en/full-stack-development)
 - **ABAP Processing Center Landing Page** — [Landing Page: The ABAP Processing Center - Brandeis Consulting](https://www.brandeis.de/en/abap-processing-center)
