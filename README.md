@@ -114,5 +114,3 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 - **Training and project support** — [Fullstack Development with ABAP and AI - Brandeis Consulting](https://www.brandeis.de/en/fullstack-development)
 - **ABAP Processing Center Landing Page** — [Landing Page: The ABAP Processing Center - Brandeis Consulting](https://www.brandeis.de/en/abap-processing-center)
-
-ABAP-PRC is free and you can use it entirely without us.
