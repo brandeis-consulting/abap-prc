@@ -85,7 +85,7 @@ CLASS zcl_prc_processing_engine IMPLEMENTATION.
 
         DATA(lo_bali_log) = cl_bali_log=>create_with_header( cl_bali_header_setter=>create( object      = 'ZBALI_PRC'
                                                                                             subobject   = 'PRC_RETRY'
-                                                                                            external_id = 'Retry' ) ).
+                                                                                            external_id = 'ABAP PRC Retry' ) ).
         LOOP AT states INTO DATA(ls_group)
              GROUP BY ( appName = ls_group-processName
                         queueID = ls_group-queueID )

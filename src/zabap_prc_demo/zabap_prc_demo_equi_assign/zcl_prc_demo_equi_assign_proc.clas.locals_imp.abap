@@ -1,15 +1,13 @@
 CLASS lcl_root DEFINITION INHERITING FROM zcl_prc_transition_handlr_base ABSTRACT.
   PROTECTED SECTION.
     METHODS get_message_prefix_for_log REDEFINITION.
-
-    DATA mv_processed_object TYPE zr_prc_processedobject-ExternalProcessedObjectID.
 ENDCLASS.
 
 
 CLASS lcl_root IMPLEMENTATION.
 
   METHOD get_message_prefix_for_log.
-    MESSAGE i009(zprc_demo_api_equi) WITH mv_processed_object INTO DATA(message_prefix).
+    MESSAGE i009(zprc_demo_api_equi) WITH i_processed_object_ext_id INTO DATA(message_prefix).
     r_message = CORRESPONDING #( sy ).
   ENDMETHOD.
 
@@ -26,15 +24,16 @@ ENDCLASS.
 
 CLASS lcl_validate IMPLEMENTATION.
   METHOD perform_transition.
-    WAIT UP TO 1 SECONDS.
-    CASE sy-uzeit MOD 4.
-      WHEN 1.
-        MESSAGE e003(zprc_demo_event_equi) INTO DATA(lv_dummy_message) ##NEEDED.
-        get_message_handler( )->add_message_from_sy( ).
-      WHEN 2.
-        MESSAGE e004(zprc_demo_event_equi) INTO lv_dummy_message ##NEEDED.
-        get_message_handler( )->add_message_from_sy( ).
-    ENDCASE.
+    DATA(lv_equipment_id) = i_processed_object_ext_id.
+
+    UPDATE zprc_demo_sc_itm
+      SET equipment_id = ''
+      WHERE equipment_id = @lv_equipment_id.
+
+    IF sy-subrc <> 0.
+      MESSAGE e002(zprc_demo_event_equi) WITH i_processed_object_ext_id INTO DATA(lv_dummy_message) ##NEEDED.
+      get_message_handler( )->add_message_from_sy( ).
+    ENDIF.
   ENDMETHOD.
 
   METHOD get_failure_message.
@@ -43,8 +42,7 @@ CLASS lcl_validate IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_success_message.
-    MESSAGE s001(zprc_demo_event_equi) INTO DATA(lv_dummy_message) ##NEEDED.
+    MESSAGE s001(zprc_demo_event_equi) WITH i_processed_object_ext_id INTO DATA(lv_dummy_message) ##NEEDED.
     r_message = CORRESPONDING #( sy ).
   ENDMETHOD.
 ENDCLASS.
-.

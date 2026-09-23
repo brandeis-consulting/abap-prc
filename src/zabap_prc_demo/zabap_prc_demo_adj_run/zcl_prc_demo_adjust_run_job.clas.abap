@@ -89,8 +89,8 @@ CLASS zcl_prc_demo_adjust_run_job IMPLEMENTATION.
                                               ( processedObject     = i-id
                                                 processedObjectUUID = i-uuid
                                                 runUUID             = mv_current_run_uuid
-                                                factoryClassName    = zcl_prc_demo_create_equi_proc=>co_class_name
-                                                processName         = zcl_prc_demo_create_equi_proc=>co_process_name ) )
+                                                factoryClassName    = zcl_prc_demo_adj_run_proc=>co_class_name
+                                                processName         = zcl_prc_demo_adj_run_proc=>co_process_name ) )
         i_perform_commit           = abap_true
         i_trigger_processing       = zcl_prc_processing_api=>execution_mode-direct_execution ).
   ENDMETHOD.

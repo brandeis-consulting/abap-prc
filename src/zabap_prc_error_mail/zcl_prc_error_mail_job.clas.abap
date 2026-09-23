@@ -43,6 +43,12 @@ CLASS zcl_prc_error_mail_job IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD _send_mail_for_entries.
+    IF i_mail_address IS INITIAL OR i_failed_processed_objects IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    DATA(lv_process_name) = i_failed_processed_objects[ 1 ]-processName.
+
     TRY.
         DATA(lv_main) = cl_bcs_mail_textpart=>create_text_html( _get_mail_html( i_failed_processed_objects ) ).
         DATA(lo_mail_api) = cl_bcs_mail_message=>create_instance( ).
@@ -58,10 +64,8 @@ CLASS zcl_prc_error_mail_job IMPLEMENTATION.
         ENDTRY.
 
         lo_mail_api->set_sender( 'no_reply@abap-processing-center.de' ).
-        DATA(lv_mail_recipient) = 'ITSM_Sales_Asset_Management_Service@jungheinrich.com'.
-        lo_mail_api->add_recipient( CONV #( lv_mail_recipient ) ).
-*        DATA(lv_system_id) = zcl_system_host_util=>get_instance( )->get_logical_system( ).
-        lo_mail_api->set_subject( |Error in equipment transition| ).
+        lo_mail_api->add_recipient( CONV #( condense( i_mail_address ) ) ).
+        lo_mail_api->set_subject( |ABAP Processing Center: Errors in process { lv_process_name }| ).
         lo_mail_api->set_main( lv_main ).
 
         " TODO: variable is assigned but never used (ABAP cleaner)
@@ -75,34 +79,46 @@ CLASS zcl_prc_error_mail_job IMPLEMENTATION.
 
 
   METHOD _get_mail_html.
+    DATA lv_created_at TYPE timestamp.
+
+    DATA(lv_process_name) = VALUE ty_failed_objects-processName( ).
+    IF i_failed_processed_objects IS NOT INITIAL.
+      lv_process_name = i_failed_processed_objects[ 1 ]-processName.
+    ENDIF.
+
     r_result = |<!DOCTYPE html>| &&
     |<html>| &&
-    |<body>| &&
-    |<p>Dear Sales Asset Management Service Team,</p> | &&
-    |<p>adding the following Equipments was not not possible. </p>| &&
+    |<body style="font-family: Arial, sans-serif; font-size: 14px;">| &&
+    |<p>Hello,</p>| &&
+    |<p>the following objects of process <strong>{ lv_process_name }</strong> could not be processed successfully in the ABAP Processing Center.</p>| &&
     |<table style="border-collapse: collapse; width: 100%; font-family: Arial, sans-serif; font-size: 14px;">| &&
-    | <thead> | &&
-    |  <tr style="background-color: #0078D4; color: white;">| &&
-    |    <th style="padding: 10px; border: 1px solid #d1d1d1; text-align: left;">Equipment ID</th>| &&
-    |    <th style="padding: 10px; border: 1px solid #d1d1d1; text-align: left;">Error Message</th>| &&
-    |    <th style="padding: 10px; border: 1px solid #d1d1d1; text-align: left;">Created at</th>| &&
-    |  </tr>| &&
-    | </thead> | &&
-    |  <tbody> <tr>|.
+    |<thead>| &&
+    |<tr style="background-color: #0078D4; color: white;">| &&
+    |<th style="padding: 10px; border: 1px solid #d1d1d1; text-align: left;">Object ID</th>| &&
+    |<th style="padding: 10px; border: 1px solid #d1d1d1; text-align: left;">Error Message</th>| &&
+    |<th style="padding: 10px; border: 1px solid #d1d1d1; text-align: left;">Created At (UTC)</th>| &&
+    |</tr>| &&
+    |</thead>| &&
+    |<tbody>|.
 
     LOOP AT i_failed_processed_objects INTO DATA(ls_entry).
-      r_result = |{ r_result }  <tr style="background-cor: #f8f9fa;"> | &&
-                 |                <td style="padding: 10px; border: 1px solid #d1d1d1;">{ ls_entry-ExternalProcessedObjectID }</td>| &&
-                 |                <td style="padding: 10px; border: 1px solid #d1d1d1;">{ ls_entry-MessageText }</td>| &&
-                 |                <td style="padding: 10px; border: 1px solid #d1d1d1;">{ CONV timestamp( ls_entry-CreatedAt ) TIMESTAMP = ENVIRONMENT TIMEZONE = 'UTC' }</td>| &&
-                 |              </tr>|.
+      " cut off fractional seconds instead of rounding
+      lv_created_at = trunc( ls_entry-CreatedAt ).
+      r_result = r_result &&
+                 |<tr style="background-color: #f8f9fa;">| &&
+                 |<td style="padding: 10px; border: 1px solid #d1d1d1;">{ ls_entry-ExternalProcessedObjectID }</td>| &&
+                 |<td style="padding: 10px; border: 1px solid #d1d1d1;">{ ls_entry-MessageText }</td>| &&
+                 |<td style="padding: 10px; border: 1px solid #d1d1d1;">{ lv_created_at TIMESTAMP = SPACE TIMEZONE = 'UTC' }</td>| &&
+                 |</tr>|.
     ENDLOOP.
 
     r_result = r_result &&
-    |<tbody></table>| &&
-
-    |<div style="margin-top: 15px; padding: 12px; background-color: #FFF4CE; border-left: 4px solid #FFB900; font-family: Arial, sans-serif;"> | &&
-    |<strong>Action Required:</strong><br>Kindly investigate and resolve the issue listed above.</div><p>Thank you.</p> | &&
+    |</tbody>| &&
+    |</table>| &&
+    |<div style="margin-top: 15px; padding: 12px; background-color: #FFF4CE; border-left: 4px solid #FFB900; font-family: Arial, sans-serif;">| &&
+    |<strong>Action required:</strong><br>Please investigate and resolve the issues listed above.</div>| &&
+    |<p>Thank you.</p>| &&
+    |<p style="color: #6a6d70; font-size: 12px;">This is an automatically generated message from the ABAP Processing Center. Please do not reply.</p>| &&
     |</body>| &&
     |</html>|.
   ENDMETHOD.

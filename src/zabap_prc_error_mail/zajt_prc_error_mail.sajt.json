@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "Error Mail",
+    "description": "ABAP Processing Center: Error Mail",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
   },
