@@ -98,7 +98,7 @@ In abapGit: *New Online Repository*.
 | --- | --- |
 | URL | `https://github.com/brandeis-consulting/abap-prc` |
 | Package | `ZABAP_PROCESSING_CENTER` |
-| Branch / Tag | **the release tag**, e.g. `v0.1.0` — not `main` |
+| Branch / Tag | `main` |
 | Folder logic | `FULL` |
 
 Pull all packages. On **S/4HANA 2023** the developer excludes
@@ -128,9 +128,9 @@ authorisation defaults (SUSH).
 
 | Tile | App ID | BSP application | Service group | Semantic object | Action |
 | --- | --- | --- | --- | --- | --- |
-| Run | `abap.processing_center.run` | `ZUIPRCRUN` | `ZUI_PRC_RUN_O4` (0001) | `ABAP_PRC_Run` | `show` |
-| Processed Object | `abap.processing_center.processed_object` | `ZUIPRCPROCOBJ` | `ZUI_PRC_PROCESSED_OBJECT_O4` (0001) | `ABAP_PRC_ProcessedObject` | `show` |
-| Processed Messages | `abap.processing_center.processed_message` | `ZUIPRCPROCMSG` | `ZUI_PRC_PROCESSED_MESSAGES_O4` (0001) | `ABAP_PRC_ProcessedMessage` | `show` |
+| Run | `abap.processing_center.run` | `ZUIPRCRUN` | `ZUI_PRC_RUN_O4`  | `ABAP_PRC_Run` | `show` |
+| Processed Object | `abap.processing_center.processed_object` | `ZUIPRCPROCOBJ` | `ZUI_PRC_PROCESSED_OBJECT_O4`  | `ABAP_PRC_ProcessedObject` | `show` |
+| Processed Messages | `abap.processing_center.processed_message` | `ZUIPRCPROCMSG` | `ZUI_PRC_PROCESSED_MESSAGES_O4` | `ABAP_PRC_ProcessedMessage` | `show` |
 
 The service group carries the name of the service binding; the number in brackets is the
 service version.
@@ -171,11 +171,9 @@ you build anything with it.
 
 | Tile | App ID | BSP application | Service group | Semantic object | Action |
 | --- | --- | --- | --- | --- | --- |
-| Demo: Equipment | `abap.demo.processingcenter.demoequi` | `ZPRCDEMOEQUI` | `ZUI_PRC_DEMO_EQUIPMENT_O4` (0001) | `ABAP_PRC_Demo_Equipment` | `show` |
-| Demo: Service Contracts | `abap.demo.processingcenter.demosrvctr` | `ZPRCDEMOSRVCTR` | `ZUI_PRC_DEMO_SRVCTR_O4` (0001) | `ABAP_PRC_Demo_ServiceContract` | `show` |
+| Demo: Equipment | `abap.demo.processingcenter.demoequi` | `ZPRCDEMOEQUI` | `ZUI_PRC_DEMO_EQUIPMENT_O4`  | `ABAP_PRC_Demo_Equipment` | `show` |
+| Demo: Service Contracts | `abap.demo.processingcenter.demosrvctr` | `ZPRCDEMOSRVCTR` | `ZUI_PRC_DEMO_SRVCTR_O4`  | `ABAP_PRC_Demo_ServiceContract` | `show` |
 
-The demo apps also need the value-help service groups `ZUI_PRC_DEMO_BUPA_O4` (0001) and
-`ZUI_PRC_DEMO_MATERIAL_O4` (0001).
 
 Plus one application job: `ZAJC_PRC_DEMO_ADJUST_RUN` / `ZAJT_PRC_DEMO_ADJUST_RUN`
 (`ZCL_PRC_DEMO_ADJUST_RUN_JOB`).
