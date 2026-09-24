@@ -14,7 +14,7 @@ CLASS lcl_root IMPLEMENTATION.
 ENDCLASS.
 
 
-CLASS lcl_validate DEFINITION INHERITING FROM lcl_root.
+CLASS lcl_assign_to_srv_ctr DEFINITION INHERITING FROM lcl_root.
   PROTECTED SECTION.
     METHODS get_success_message REDEFINITION.
     METHODS get_failure_message REDEFINITION.
@@ -22,7 +22,7 @@ CLASS lcl_validate DEFINITION INHERITING FROM lcl_root.
 ENDCLASS.
 
 
-CLASS lcl_validate IMPLEMENTATION.
+CLASS lcl_assign_to_srv_ctr IMPLEMENTATION.
   METHOD perform_transition.
     DATA(lv_equipment_id) = i_processed_object_ext_id.
 

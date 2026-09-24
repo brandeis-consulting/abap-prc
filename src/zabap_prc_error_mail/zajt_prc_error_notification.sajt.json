@@ -1,27 +1,17 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "ABAP Processing Center: Retry Job",
+    "description": "ABAP Processing Center: Error Notification (via Mail)",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
   },
   "generalInformation": {
-    "catalogName": "ZAJC_PRC_RETRY_JOB"
+    "catalogName": "ZAJC_PRC_ERROR_NOTIFICATION"
   },
   "parameters": {
-    "singleValueParameters": [
-      {
-        "name": "P_IGNR",
-        "value": ""
-      }
-    ],
     "valueRangesParameters": [
       {
         "name": "S_PROC",
-        "valueRanges": []
-      },
-      {
-        "name": "S_UUID",
         "valueRanges": []
       }
     ]

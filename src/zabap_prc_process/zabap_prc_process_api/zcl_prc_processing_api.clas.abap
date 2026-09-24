@@ -104,7 +104,8 @@ CLASS zcl_prc_processing_api IMPLEMENTATION.
     TYPES tt_proc_obj TYPE STANDARD TABLE OF zprc_proc_object WITH DEFAULT KEY.
 
     CHECK i_create_processed_objects IS NOT INITIAL.
-
+    DATA lv_timestamp TYPE timestampl.
+    GET TIME STAMP FIELD lv_timestamp.
     DATA(lt_proc_obj) = VALUE tt_proc_obj( FOR k IN i_create_processed_objects
                                            ( do_not_process_before     = k-doNotProcessBefore
                                              factory_class_name        = k-factoryClassName
@@ -116,7 +117,11 @@ CLASS zcl_prc_processing_api IMPLEMENTATION.
                                              queue_id                  = k-queueID
                                              queue_pos                 = k-queuePosition
                                              run_uuid                  = k-runUUID
-                                             State                     = zif_prc_process=>co_start ) ).
+                                             State                     = zif_prc_process=>co_start
+                                             created_at                = lv_timestamp
+                                             created_by                = sy-uname
+                                             last_changed_by           = sy-uname
+                                             last_changed_at           = lv_timestamp ) ).
 
     LOOP AT lt_proc_obj ASSIGNING FIELD-SYMBOL(<fs>).
       TRY.

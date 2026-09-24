@@ -10,16 +10,13 @@
   },
   "parameters": [
     {
-      "name": "S_PROC",
-      "readOnly": true
+      "name": "S_PROC"
     },
     {
-      "name": "P_IGNR",
-      "readOnly": true
+      "name": "P_IGNR"
     },
     {
-      "name": "S_UUID",
-      "readOnly": true
+      "name": "S_UUID"
     }
   ]
 }

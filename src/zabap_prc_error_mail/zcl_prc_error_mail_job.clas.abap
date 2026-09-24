@@ -6,7 +6,7 @@ CLASS zcl_prc_error_mail_job DEFINITION
     INTERFACES if_apj_dt_exec_object.
     INTERFACES if_apj_rt_exec_object.
 
-    METHODS execute_synchronously.
+    CONSTANTS c_process_name   TYPE zif_prc_run=>ty_run_parameter VALUE 'S_PROC'.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -19,7 +19,9 @@ CLASS zcl_prc_error_mail_job DEFINITION
            END OF ty_failed_objects,
            tt_failed_objects TYPE STANDARD TABLE OF ty_failed_objects WITH DEFAULT KEY.
 
-    METHODS _get_failed_processed_objects RETURNING VALUE(r_failed_processed_objects) TYPE tt_failed_objects.
+    METHODS _get_failed_processed_objects   IMPORTING it_parameters                     TYPE if_apj_rt_exec_object=>tt_templ_val
+                                            RETURNING VALUE(r_failed_processed_objects) TYPE tt_failed_objects.
+
     METHODS _send_mail_for_entries IMPORTING i_failed_processed_objects TYPE tt_failed_objects
                                              i_mail_address             TYPE char0256.
 
@@ -31,15 +33,17 @@ ENDCLASS.
 
 CLASS zcl_prc_error_mail_job IMPLEMENTATION.
 
-
-  METHOD if_apj_rt_exec_object~execute.
-    execute_synchronously( ).
-  ENDMETHOD.
-
-
   METHOD if_apj_dt_exec_object~get_parameters.
     CLEAR: et_parameter_def,
            et_parameter_val.
+
+    et_parameter_def = VALUE #( ( changeable_ind = abap_true
+                                  mandatory_ind  = abap_true
+                                  datatype       = 'C'
+                                  selname        = c_process_name
+                                  kind           = if_apj_dt_exec_object=>select_option
+                                  length         = 30
+                                  param_text     = 'Process Name' ) ).
   ENDMETHOD.
 
   METHOD _send_mail_for_entries.
@@ -124,6 +128,11 @@ CLASS zcl_prc_error_mail_job IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD _get_failed_processed_objects.
+    DATA lt_process_name_range TYPE RANGE OF ZR_PRC_ProcessedObject-ProcessName.
+
+    lt_process_name_range = VALUE #( FOR line IN it_parameters WHERE ( selname = c_process_name )
+                                     ( CORRESPONDING #( line ) ) ).
+
     DATA(lv_system_date) = cl_abap_context_info=>get_system_date( ).
 
     CONVERT DATE lv_system_date TIME '000000'
@@ -136,15 +145,16 @@ CLASS zcl_prc_error_mail_job IMPLEMENTATION.
              \_LatestStep-MessageText,
              \_LatestStep-CreatedAt
 
-      WHERE \_LatestStep-MessageSeverity  = 'E'
+      WHERE ProcessName                  IN @lt_process_name_range
+        AND \_LatestStep-MessageSeverity  = 'E'
         AND CreatedAt < @lv_cutoff
         AND MailAddress                  IS NOT INITIAL
       INTO TABLE @r_failed_processed_objects.
   ENDMETHOD.
 
 
-  METHOD execute_synchronously.
-    DATA(lt_failed_processed_objects) = _get_failed_processed_objects( ).
+  METHOD if_apj_rt_exec_object~execute.
+    DATA(lt_failed_processed_objects) = _get_failed_processed_objects( it_parameters ).
 
     IF lt_failed_processed_objects IS INITIAL.
       RETURN.

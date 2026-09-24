@@ -37,7 +37,8 @@ CLASS zcl_prc_demo_create_equi_init IMPLEMENTATION.
         i_create_processed_objects = VALUE #( FOR i = 1 UNTIL i > 20
                                               ( processName      = zcl_prc_demo_create_equi_proc=>co_process_name
                                                 FactoryClassName = zcl_prc_demo_create_equi_proc=>co_class_name
-                                                processedObject  = |EQUI{ i ALIGN = RIGHT PAD = '0' WIDTH = 3 }| ) )
+                                                processedObject  = |EQUI{ i ALIGN = RIGHT PAD = '0' WIDTH = 3 }|
+                                                mailAddress = 'demo@abap-processing-center.de' ) )
         i_perform_commit           = abap_true
         i_trigger_processing       = zcl_prc_processing_api=>execution_mode-direct_execution ).
   ENDMETHOD.

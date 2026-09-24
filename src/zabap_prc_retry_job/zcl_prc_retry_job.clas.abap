@@ -21,8 +21,11 @@ ENDCLASS.
 
 CLASS zcl_prc_retry_job IMPLEMENTATION.
   METHOD if_apj_dt_exec_object~get_parameters.
+    CLEAR: et_parameter_def,
+           et_parameter_val.
+
     et_parameter_def = VALUE #(
-        datatype = 'C'
+        datatype = 'C' changeable_ind = abap_true
         ( selname = c_process_name   kind = if_apj_dt_exec_object=>select_option length = 30  param_text = 'Process Name' )
         ( selname = p_ignore_restart kind = if_apj_dt_exec_object=>parameter     length = 1   param_text = 'Overrule Resume Scheduling' )
         ( selname = s_uuid           kind = if_apj_dt_exec_object=>select_option length = 32  param_text = 'Processed Object UUID' ) ).

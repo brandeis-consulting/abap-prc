@@ -31,7 +31,7 @@ CLASS zcl_prc_demo_equi_assign_proc IMPLEMENTATION.
   METHOD zif_prc_process~get_transition_handler.
     CASE i_start_state.
       WHEN zif_prc_process~co_start.
-        ro_transition_handler = NEW lcl_validate( ).
+        ro_transition_handler = NEW lcl_assign_to_srv_ctr( ).
       WHEN OTHERS.
         " unexpected state
         ASSERT 1 = 2.

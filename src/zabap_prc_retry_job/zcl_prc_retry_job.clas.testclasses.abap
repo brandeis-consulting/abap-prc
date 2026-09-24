@@ -1,6 +1,6 @@
 CLASS ltc_execute_process DEFINITION FOR TESTING DURATION SHORT RISK LEVEL HARMLESS.
   PUBLIC SECTION.
-    METHODS execute FOR TESTING.
+    METHODS execute FOR TESTING raising cx_apj_rt_content.
 ENDCLASS.
 
 CLASS ltc_execute_process IMPLEMENTATION.

@@ -77,7 +77,7 @@ CLASS lhc_equipment IMPLEMENTATION.
 
     LOOP AT keys INTO DATA(key).
 
-      DATA(reference) = VALUE #( references[ KEY entity
+      DATA(reference) = VALUE #( references[ KEY id
                                              %tky = key-%tky ] OPTIONAL ).
       IF reference IS INITIAL.
         CONTINUE.
