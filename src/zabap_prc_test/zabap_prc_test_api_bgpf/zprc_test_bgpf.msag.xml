@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZPRC_TEST_BGPF</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>PRC Test: bgPF aus adjust_numbers</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_TEST_BGPF</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Testinstanz &amp;1 wurde verarbeitet (performed)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_TEST_BGPF</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Testinstanz &amp;1 konnte nicht verarbeitet werden</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>
