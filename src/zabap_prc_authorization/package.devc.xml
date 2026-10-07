@@ -4,6 +4,8 @@
   <asx:values>
    <DEVC>
     <CTEXT>Authorizations</CTEXT>
+    <LANGUAGE>E</LANGUAGE>
+    <MASTERLANG>E</MASTERLANG>
     <PACKKIND>5</PACKKIND>
     <SRV_CHECK>X</SRV_CHECK>
    </DEVC>

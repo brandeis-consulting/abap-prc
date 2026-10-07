@@ -4,6 +4,8 @@
   <asx:values>
    <DEVC>
     <CTEXT>Demo: Fiori Content for ABAP-PRC</CTEXT>
+    <LANGUAGE>E</LANGUAGE>
+    <MASTERLANG>E</MASTERLANG>
     <SRV_CHECK>X</SRV_CHECK>
    </DEVC>
   </asx:values>
