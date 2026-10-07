@@ -83,9 +83,10 @@ CLASS zcl_prc_processing_engine IMPLEMENTATION.
                                   i_ignore_retry_scheduling = ignore_retry_scheduling
                         IMPORTING e_states                  = DATA(states) ).
 
-        DATA(lo_bali_log) = cl_bali_log=>create_with_header( cl_bali_header_setter=>create( object      = 'ZBALI_PRC'
-                                                                                            subobject   = 'PRC_RETRY'
-                                                                                            external_id = 'ABAP PRC Retry' ) ).
+        DATA(lo_bali_log) = cl_bali_log=>create_with_header(
+                                cl_bali_header_setter=>create( object      = 'ZBALI_PRC'
+                                                               subobject   = 'PRC_RETRY'
+                                                               external_id = 'ABAP PRC Retry' ) ).
         LOOP AT states INTO DATA(ls_group)
              GROUP BY ( appName = ls_group-processName
                         queueID = ls_group-queueID )
@@ -115,6 +116,7 @@ CLASS zcl_prc_processing_engine IMPLEMENTATION.
                                                       i_start_state      = start_state
                                                       i_processed_object = <fs_state>-ExternalProcessedObjectID ).
                     lo_transition_handler->initialize(
+                        i_process_name              = <fs_state>-ProcessName
                         i_message_handler           = lo_message_handler
                         i_processed_object_ext_id   = <fs_state>-ExternalProcessedObjectID
                         i_processed_object_ext_uuid = <fs_state>-ExternalProcessedObjectUUID ).

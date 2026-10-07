@@ -258,16 +258,17 @@ ENDCLASS.
 CLASS lsc_ProcessedObject IMPLEMENTATION.
   METHOD save_modified.
     IF lhc_processedobject=>gt_processed_objects IS NOT INITIAL.
-      zcl_prc_processing_api=>get_instance( )->execute_asynch_for_proc_obj( lhc_processedobject=>gt_processed_objects ).
+      zcl_prc_processing_api=>get_instance( )->process_asynchronously_bgpf(
+          VALUE #( FOR k IN lhc_processedobject=>gt_processed_objects
+                   ( selname = zcl_prc_retry_job=>s_uuid sign = 'I' option = 'EQ' low = k ) ) ).
     ENDIF.
 
     TRY.
         DATA lt_processed_object_uuid TYPE STANDARD TABLE OF zr_prc_processedobject-uuid WITH DEFAULT KEY.
-        lt_processed_object_uuid = VALUE #( FOR k IN update-processedobject
-                                            ( k-uuid ) ).
+        lt_processed_object_uuid = VALUE #( FOR l IN update-processedobject
+                                            ( l-uuid ) ).
         CALL METHOD ('ZBP_R_PRC_PROCESSEDOBJECTEXT')=>raise_processed_object
-          EXPORTING
-            it_processed_object_uuid = lt_processed_object_uuid.
+          EXPORTING it_processed_object_uuid = lt_processed_object_uuid.
       CATCH cx_sy_dyn_call_illegal_class
             cx_sy_dyn_call_illegal_method.
         " nothing to do, the event raiser class is not available in this installation

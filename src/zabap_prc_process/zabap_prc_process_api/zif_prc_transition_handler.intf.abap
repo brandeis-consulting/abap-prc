@@ -16,7 +16,8 @@ INTERFACE zif_prc_transition_handler PUBLIC.
   "! @parameter i_processed_object_ext_id | Key of the object to be processed.
   "! @parameter i_processed_object_ext_uuid |
   "! @parameter i_message_handler         | Fresh handler for this transition.
-  METHODS initialize IMPORTING i_processed_object_ext_id   TYPE ZR_PRC_ProcessedObject-ExternalProcessedObjectID
+  METHODS initialize IMPORTING i_process_name type zprc_process_name optional
+                               i_processed_object_ext_id   TYPE ZR_PRC_ProcessedObject-ExternalProcessedObjectID
                                i_processed_object_ext_uuid TYPE ZR_PRC_ProcessedObject-ExternalProcessedObjectUUID
                                i_message_handler           TYPE REF TO zif_prc_message_handler.
 

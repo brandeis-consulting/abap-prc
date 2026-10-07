@@ -9,7 +9,6 @@ CLASS zcl_prc_message_handler DEFINITION PUBLIC FINAL CREATE PRIVATE.
     CLASS-METHODS create_message_handler IMPORTING i_bali_log               TYPE REF TO if_bali_log OPTIONAL
                                          RETURNING VALUE(r_message_handler) TYPE REF TO zif_prc_message_handler.
 
-  PROTECTED SECTION.
   PRIVATE SECTION.
     METHODS constructor IMPORTING i_bali_log TYPE REF TO if_bali_log.
 
@@ -31,10 +30,7 @@ CLASS zcl_prc_message_handler DEFINITION PUBLIC FINAL CREATE PRIVATE.
 ENDCLASS.
 
 
-
 CLASS zcl_prc_message_handler IMPLEMENTATION.
-
-
   METHOD append_message.
     APPEND CORRESPONDING #( i_message ) TO mt_messages ASSIGNING FIELD-SYMBOL(<fs>).
 
@@ -63,29 +59,24 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-
   METHOD append_messages.
     LOOP AT i_messages INTO DATA(ls_message).
       append_message( ls_message ).
     ENDLOOP.
   ENDMETHOD.
 
-
   METHOD constructor.
     m_bali_log = i_bali_log.
   ENDMETHOD.
-
 
   METHOD create_message_handler.
     r_message_handler = NEW zcl_prc_message_handler( i_bali_log ).
   ENDMETHOD.
 
-
   METHOD fail.
     mv_failed = abap_true.
     RAISE EXCEPTION NEW zcx_prc_unit_of_work_failed( ).
   ENDMETHOD.
-
 
   METHOD set_message_header.
     ms_header = CORRESPONDING #( i_header ).
@@ -112,7 +103,6 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
     APPEND ms_header TO mt_messages.
   ENDMETHOD.
 
-
   METHOD zif_prc_message_handler~add_bapi_result.
     r_message_handler = me.
 
@@ -123,7 +113,6 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
       fail( ).
     ENDIF.
   ENDMETHOD.
-
 
   METHOD zif_prc_message_handler~add_EML_modify_result.
     r_message_handler = me.
@@ -141,7 +130,6 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-
   METHOD zif_prc_message_handler~add_message_from_sy.
     r_message_handler = me.
 
@@ -151,7 +139,6 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
       fail( ).
     ENDIF.
   ENDMETHOD.
-
 
   METHOD zif_prc_message_handler~add_message_from_text.
     r_message_handler = me.
@@ -165,9 +152,7 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
     ENDIF.
   ENDMETHOD.
 
-
   METHOD zif_prc_message_handler~close_failed.
-
     set_message_header( CORRESPONDING #( sy ) ).
     fail( ).
   ENDMETHOD.
@@ -182,16 +167,13 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
                                                                  assign_to_current_appl_job = abap_true ).
   ENDMETHOD.
 
-
   METHOD zif_prc_message_handler~get_header.
     r_message = ms_header.
   ENDMETHOD.
 
-
   METHOD zif_prc_message_handler~get_messages.
     r_messages = mt_messages.
   ENDMETHOD.
-
 
   METHOD zif_prc_message_handler~has_errors.
     r_has_errors = mv_failed.
@@ -202,16 +184,13 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
     set_message_header( i_header_message ).
   ENDMETHOD.
 
-
   METHOD zif_prc_message_handler~set_log_message_prefix.
     m_log_message_prefix = i_log_message_prefix.
   ENDMETHOD.
 
-
   METHOD zif_prc_message_handler~set_success_header.
     set_message_header( i_header_message ).
   ENDMETHOD.
-
 
   METHOD zif_prc_message_handler~simulate_save.
     r_message_handler = me.
@@ -228,7 +207,7 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
     DATA(lv_subrc_bad) = xsdbool( sy-subrc <> 0 ).
 
     zif_prc_message_handler~add_EML_modify_result( i_failed   = lt_failed
-                                                i_reported = lt_reported ).
+                                                   i_reported = lt_reported ).
     IF lv_subrc_bad = abap_true.
       fail( ).
     ENDIF.

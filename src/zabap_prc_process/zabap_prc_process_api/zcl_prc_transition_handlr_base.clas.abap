@@ -84,6 +84,7 @@ CLASS zcl_prc_transition_handlr_base DEFINITION PUBLIC ABSTRACT CREATE PUBLIC.
     DATA mo_handler                  TYPE REF TO zif_prc_message_handler.
     DATA m_processed_object_ext_id   TYPE ZR_PRC_ProcessedObject-ExternalProcessedObjectID.
     DATA m_processed_object_ext_uuid TYPE ZR_PRC_ProcessedObject-ExternalProcessedObjectUUID.
+    DATA m_process_name              TYPE zprc_process_name.
 ENDCLASS.
 
 
@@ -108,6 +109,7 @@ CLASS zcl_prc_transition_handlr_base IMPLEMENTATION.
     mo_handler = i_message_handler.
     m_processed_object_ext_id = i_processed_object_ext_id.
     m_processed_object_ext_uuid = i_processed_object_ext_uuid.
+    m_process_name = i_process_name.
 
     mo_handler->set_log_message_prefix( get_message_prefix_for_log( EXPORTING i_processed_object_ext_id = m_processed_object_ext_id
                                                                               i_processed_object_ext_uuid = m_processed_object_ext_uuid ) ).
