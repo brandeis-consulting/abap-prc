@@ -11,15 +11,6 @@ CLASS zcl_prc_processing_api DEFINITION
     TYPES ty_reported                    TYPE RESPONSE FOR REPORTED EARLY zr_prc_processedobject.
     TYPES ty_mapped                      TYPE RESPONSE FOR MAPPED EARLY ZR_PRC_ProcessedObject.
 
-    METHODS add_processed_objects_and_exec IMPORTING i_processed_objects_to_create TYPE tt_processed_objects_to_create
-                                           EXPORTING e_failed                      TYPE ty_failed
-                                                     e_reported                    TYPE ty_reported
-                                                     e_mapped                      TYPE ty_mapped.
-
-    METHODS execute_synchronously       IMPORTING it_parameters            TYPE if_apj_rt_exec_object=>tt_templ_val OPTIONAL.
-    METHODS execute_asynchronously      IMPORTING it_parameters            TYPE if_apj_rt_exec_object=>tt_templ_val OPTIONAL.
-    METHODS execute_asynch_for_proc_obj IMPORTING it_processed_object_uuid TYPE tt_processed_object_uuid.
-
     TYPES:
       BEGIN OF ENUM ty_execution_mode STRUCTURE execution_mode BASE TYPE i,
         no_execution       VALUE IS INITIAL,
@@ -29,6 +20,10 @@ CLASS zcl_prc_processing_api DEFINITION
       END OF ENUM ty_execution_mode STRUCTURE execution_mode.
 
     TYPES tt_create_processed_objects TYPE STANDARD TABLE OF ZA_PRC_CreateProcessedObject WITH DEFAULT KEY.
+
+    METHODS process_synchronously       IMPORTING it_parameters TYPE if_apj_rt_exec_object=>tt_templ_val OPTIONAL.
+    METHODS process_asynchronously_bgpf IMPORTING it_parameters TYPE if_apj_rt_exec_object=>tt_templ_val OPTIONAL.
+    METHODS process_asynchronously_job  IMPORTING it_parameters TYPE if_apj_rt_exec_object=>tt_templ_val OPTIONAL.
 
     METHODS create_processed_objects IMPORTING i_create_processed_objects TYPE tt_create_processed_objects
                                                i_perform_commit           TYPE abap_bool         DEFAULT abap_false
@@ -61,11 +56,11 @@ CLASS zcl_prc_processing_api IMPLEMENTATION.
            MAPPED e_mapped.
   ENDMETHOD.
 
-  METHOD execute_asynchronously.
+  METHOD process_asynchronously_bgpf.
     TRY.
         cl_bgmc_process_factory=>get_default(
             )->create(
-            )->set_name( |ZCL_PRC_JOB async execution|
+            )->set_name( |ABAP Processing Center - asynchronous bgPF execution|
             )->set_operation_tx_uncontrolled( NEW zcl_prc_bgpf( it_parameters )
             )->save_for_execution( ).
       CATCH cx_bgmc INTO DATA(lx_bgmc).
@@ -73,12 +68,36 @@ CLASS zcl_prc_processing_api IMPLEMENTATION.
     ENDTRY.
   ENDMETHOD.
 
-  METHOD execute_asynch_for_proc_obj.
-    execute_asynchronously( VALUE #(  FOR k IN it_processed_object_uuid
-                                     ( selname = zcl_prc_retry_job=>s_uuid sign = 'I' option = 'EQ' low = k ) ) ).
+  METHOD process_asynchronously_job.
+    DATA lt_job_parameter TYPE cl_apj_rt_api=>tt_job_parameter_value.
+
+    LOOP AT it_parameters INTO FINAL(ls_parameter).
+      READ TABLE lt_job_parameter WITH KEY name COMPONENTS name = ls_parameter-selname ASSIGNING FIELD-SYMBOL(<fs_job_parameter>).
+      IF sy-subrc <> 0.
+        APPEND VALUE #( name = ls_parameter-selname ) TO lt_job_parameter ASSIGNING <fs_job_parameter>.
+      ENDIF.
+      APPEND VALUE #( sign   = ls_parameter-sign
+                      option = ls_parameter-option
+                      low    = ls_parameter-low
+                      high   = ls_parameter-high ) TO <fs_job_parameter>-t_value.
+    ENDLOOP.
+
+    TRY.
+        cl_apj_rt_api=>generate_jobkey( IMPORTING ev_jobname  = DATA(jobname)
+                                                  ev_jobcount = DATA(JobCount) ).
+        cl_apj_rt_api=>schedule_job( iv_job_template_name   = zcl_prc_retry_job=>c_apj_template_name
+                                     iv_job_text            = |ABAP-PRC: Trigger processing asynch via APJ|
+                                     is_start_info          = VALUE #( start_immediately = abap_true )
+                                     it_job_parameter_value = lt_job_parameter
+                                     iv_jobname             = jobname
+                                     iv_jobcount            = JobCount ).
+      CATCH cx_apj_rt INTO DATA(lo_exception).
+        DATA(lv_text) = lo_exception->get_text( ).
+        ASSERT |No Error| = lv_text.
+    ENDTRY.
   ENDMETHOD.
 
-  METHOD execute_synchronously.
+  METHOD process_synchronously.
     zcl_prc_processing_engine=>get_instance( )->execute_synchronously( it_parameters ).
   ENDMETHOD.
 
@@ -89,16 +108,6 @@ CLASS zcl_prc_processing_api IMPLEMENTATION.
     r_instance = g_instance.
   ENDMETHOD.
 
-  METHOD add_processed_objects_and_exec.
-    _add_processed_objects( EXPORTING i_processed_objects_to_create = i_processed_objects_to_create
-                            IMPORTING e_reported                    = e_reported
-                                      e_failed                      = e_failed
-                                      e_mapped                      = e_mapped ).
-    COMMIT ENTITIES.
-    zcl_prc_processing_engine=>get_instance( )->execute_synchronously(
-        VALUE #( FOR mapped IN e_mapped-processedobject
-                 ( selname = zcl_prc_retry_job=>s_uuid sign = 'I' option = 'EQ' low = mapped-uuid ) ) ).
-  ENDMETHOD.
 
   METHOD create_processed_objects.
     TYPES tt_proc_obj TYPE STANDARD TABLE OF zprc_proc_object WITH DEFAULT KEY.
@@ -144,46 +153,11 @@ CLASS zcl_prc_processing_api IMPLEMENTATION.
       WHEN execution_mode-no_execution.
         " do nothing
       WHEN execution_mode-direct_execution.
-        zcl_prc_processing_engine=>get_instance( )->execute_synchronously( lt_processing_parameters ).
+        process_synchronously( lt_processing_parameters ).
       WHEN execution_mode-bgpf_execution.
-        TRY.
-            cl_bgmc_process_factory=>get_default(
-                )->create(
-                )->set_name( |Start ABAP-PRC execution via BGPF|
-                )->set_operation_tx_uncontrolled( NEW zcl_prc_bgpf( lt_processing_parameters )
-                )->save_for_execution( ).
-          CATCH cx_bgmc INTO DATA(lx_bgmc).
-            ASSERT lx_bgmc IS NOT BOUND.
-        ENDTRY.
-
+        process_asynchronously_bgpf( lt_processing_parameters ).
       WHEN execution_mode-appl_job_execution.
-        DATA lt_job_parameter TYPE cl_apj_rt_api=>tt_job_parameter_value.
-
-        LOOP AT lt_processing_parameters INTO FINAL(ls_parameter).
-          READ TABLE lt_job_parameter WITH KEY name COMPONENTS name = ls_parameter-selname ASSIGNING FIELD-SYMBOL(<fs_job_parameter>).
-          IF sy-subrc <> 0.
-            APPEND VALUE #( name = ls_parameter-selname ) TO lt_job_parameter ASSIGNING <fs_job_parameter>.
-          ENDIF.
-          APPEND VALUE #( sign   = ls_parameter-sign
-                          option = ls_parameter-option
-                          low    = ls_parameter-low
-                          high   = ls_parameter-high ) TO <fs_job_parameter>-t_value.
-        ENDLOOP.
-
-        TRY.
-            cl_apj_rt_api=>generate_jobkey( IMPORTING ev_jobname  = DATA(jobname)
-                                                      ev_jobcount = DATA(JobCount) ).
-            cl_apj_rt_api=>schedule_job( iv_job_template_name   = zcl_prc_retry_job=>c_apj_template_name
-                                         iv_job_text            = |ABAP-PRC: Trigger processing asynch via APJ|
-                                         is_start_info          = VALUE #( start_immediately = abap_true )
-                                         it_job_parameter_value = lt_job_parameter
-                                         iv_jobname             = jobname
-                                         iv_jobcount            = JobCount ).
-          CATCH cx_apj_rt INTO DATA(lo_exception).
-            DATA(lv_text) = lo_exception->get_text( ).
-            ASSERT |No Error| = lv_text.
-        ENDTRY.
-
+        process_asynchronously_job( lt_processing_parameters ).
     ENDCASE.
   ENDMETHOD.
 ENDCLASS.

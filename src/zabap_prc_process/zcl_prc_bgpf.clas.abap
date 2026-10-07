@@ -20,6 +20,6 @@ CLASS ZCL_PRC_BGPF IMPLEMENTATION.
 
 
   METHOD if_bgmc_op_single_tx_uncontr~execute.
-    zcl_prc_processing_api=>get_instance( )->execute_synchronously( mt_parameters ).
+    zcl_prc_processing_api=>get_instance( )->process_synchronously( mt_parameters ).
   ENDMETHOD.
 ENDCLASS.

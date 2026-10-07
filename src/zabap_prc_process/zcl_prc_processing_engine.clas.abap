@@ -285,7 +285,9 @@ CLASS zcl_prc_processing_engine IMPLEMENTATION.
            REPORTED DATA(lt_reported)
            FAILED DATA(lt_failed)
            MAPPED DATA(lt_mapped).
-    ASSERT lt_failed IS INITIAL AND lt_reported IS INITIAL.
+    IF lt_failed IS NOT INITIAL OR lt_reported IS NOT INITIAL.
+      ASSERT lt_failed IS INITIAL AND lt_reported IS INITIAL.
+    ENDIF.
 
     DATA(lt_all_messages) = i_message_handler->get_messages( ).
     MODIFY ENTITIES OF ZR_PRC_ProcessedObject PRIVILEGED
