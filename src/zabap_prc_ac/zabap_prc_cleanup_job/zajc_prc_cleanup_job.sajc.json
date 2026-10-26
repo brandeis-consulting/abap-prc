@@ -1,0 +1,22 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "ABAP Processing Center: Clean-up Job for Runs and Proc. Obj.",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "className": "ZCL_PRC_CLEANUP_JOB"
+  },
+  "parameters": [
+    {
+      "name": "P_DAYS"
+    },
+    {
+      "name": "P_TEST"
+    },
+    {
+      "name": "S_PROC"
+    }
+  ]
+}

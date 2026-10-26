@@ -1,0 +1,14 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: DTEL/ZPRC_STATE/DDTEXT, maxlen=60
+#: DTEL/ZPRC_STATE/REPTEXT, maxlen=55
+#: DTEL/ZPRC_STATE/SCRTEXT_L, maxlen=40
+#: DTEL/ZPRC_STATE/SCRTEXT_M, maxlen=20
+#: DTEL/ZPRC_STATE/SCRTEXT_S, maxlen=10
+msgid "State"
+msgstr "Zustand"

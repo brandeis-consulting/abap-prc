@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: CLAS/ZBP_PRC_RUN/CLASS 00001, maxlen=60
+msgid "Business Logic for Run Business Object"
+msgstr "Geschäftslogik für das Business-Objekt Lauf"

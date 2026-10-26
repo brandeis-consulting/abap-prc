@@ -1,0 +1,20 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: DTEL/ZPRC_MESSAGE_TEXT/SCRTEXT_S, maxlen=7
+msgid "Message"
+msgstr "Nachr."
+
+#: DTEL/ZPRC_MESSAGE_TEXT/REPTEXT, maxlen=12
+#: DTEL/ZPRC_MESSAGE_TEXT/SCRTEXT_L, maxlen=12
+#: DTEL/ZPRC_MESSAGE_TEXT/SCRTEXT_M, maxlen=12
+msgid "Message Text"
+msgstr "Nachr.text"
+
+#: DTEL/ZPRC_MESSAGE_TEXT/DDTEXT, maxlen=60
+msgid "Message text"
+msgstr "Nachrichtentext"

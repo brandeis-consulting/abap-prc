@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: CLAS/ZBP_R_PRC_MESSAGEEXT/CLASS 00001, maxlen=60
+msgid "Behavior Implementation for ZR_PRC_MESSAGEEXT"
+msgstr "Verhaltensimplementierung für ZR_PRC_MESSAGEEXT"

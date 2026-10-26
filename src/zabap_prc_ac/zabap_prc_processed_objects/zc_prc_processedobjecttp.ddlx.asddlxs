@@ -1,0 +1,15 @@
+@Metadata.layer: #PARTNER
+
+annotate entity ZC_PRC_ProcessedObjectTP with
+
+{
+  // Link to the business object - the virtual element exists in the app projection only
+  @EndUserText.label: 'Processed Object'
+  @UI.selectionField: [ { position: 5 } ]
+  @UI.fieldGroup: [ { position: 5, qualifier: 'qProcObjects' } ]
+  @UI.lineItem: [ { position: 5, importance: #HIGH, type: #WITH_URL, url: 'link' } ]
+  ExternalProcessedObjectID;
+
+  @UI.hidden: true
+  link;
+}

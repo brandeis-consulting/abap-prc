@@ -1,0 +1,10 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZI_PRC_RUNPARAMETER"
+    ],
+    "ASSOCIATED": [
+      "ZR_PRC_RUN"
+    ]
+  }
+}

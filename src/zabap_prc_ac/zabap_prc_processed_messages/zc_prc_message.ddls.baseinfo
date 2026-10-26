@@ -1,0 +1,15 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZR_PRC_MESSAGETP"
+    ],
+    "ASSOCIATED": [
+      "ZC_PRC_OBJECTFORMESSAGE",
+      "ZI_PRC_MESSAGESEVERITYVH",
+      "ZR_PRC_OBJECTFORMESSAGETP"
+    ],
+    "BASE": [
+      "ZR_PRC_MESSAGETP"
+    ]
+  }
+}

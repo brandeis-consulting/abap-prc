@@ -1,6 +1,0 @@
-extension for projection;
-
-extend behavior for ProcessedObject
-{
-  use event zz_objectProcessedTransition;
-}

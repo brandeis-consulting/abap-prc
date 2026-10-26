@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>ABAP-PRC: Notifications</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Notification prepared: &amp;1 objects of process &amp;2 with errors</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>No objects of process &amp;1 with errors left - nothing to send</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Mail sent to &amp;1&amp;2&amp;3&amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>No mail address maintained for user &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Notification prepared for run &amp;1: &amp;2 of &amp;3 objects successful</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Notification could not be sent</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Payload of the notification is invalid</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Launchpad URL unknown - mail without links</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Run &amp;1 not found</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>Mail service: &amp;1&amp;2&amp;3&amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_NOTIFICATION</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>Notification to &amp;1&amp;2&amp;3&amp;4 could not be sent</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

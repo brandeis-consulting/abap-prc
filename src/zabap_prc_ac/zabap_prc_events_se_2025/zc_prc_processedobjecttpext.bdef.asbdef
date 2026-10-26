@@ -1,0 +1,6 @@
+extension for projection;
+
+extend behavior for ZC_PRC_ProcessedObjectTP
+{
+  use event zz_objectProcessedTransition;
+}

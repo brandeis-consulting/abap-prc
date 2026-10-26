@@ -1,0 +1,33 @@
+@Metadata.layer: #CORE
+
+annotate entity ZI_PRC_ProcessedMessage with
+
+{
+  @UI.hidden: true
+  UUID;
+
+  @UI.hidden: true
+  ProcessedObjectUUID;
+
+  @UI.hidden: true
+  ProcessedStepUUID;
+
+  @EndUserText.label: 'Message Text'
+  @UI.identification: [ { position: 20 } ]
+  @UI.lineItem: [ { position: 10,
+                    importance: #HIGH,
+                    criticality: 'MessageSeverityCode',
+                    criticalityRepresentation: #WITH_ICON } ]
+  MessageText;
+
+  @EndUserText.label: 'Start State'
+  @UI.lineItem: [ { position: 20 } ]
+  StartState;
+
+  @EndUserText.label: 'End State'
+  @UI.lineItem: [ { position: 30 } ]
+  EndState;
+
+  @UI.lineItem: [ { position: 40 } ]
+  CreatedAt;
+}

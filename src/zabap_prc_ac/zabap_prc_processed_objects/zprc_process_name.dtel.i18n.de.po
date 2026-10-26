@@ -1,0 +1,20 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: DTEL/ZPRC_PROCESS_NAME/SCRTEXT_S, maxlen=10
+msgid "Proc. Name"
+msgstr "Proz.-Name"
+
+#: DTEL/ZPRC_PROCESS_NAME/REPTEXT, maxlen=55
+#: DTEL/ZPRC_PROCESS_NAME/SCRTEXT_L, maxlen=40
+#: DTEL/ZPRC_PROCESS_NAME/SCRTEXT_M, maxlen=20
+msgid "Process Name"
+msgstr "Prozessname"
+
+#: DTEL/ZPRC_PROCESS_NAME/DDTEXT, maxlen=60
+msgid "Process name"
+msgstr "Prozessname"

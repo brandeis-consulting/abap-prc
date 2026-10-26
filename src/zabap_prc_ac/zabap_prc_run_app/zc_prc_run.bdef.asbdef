@@ -1,0 +1,16 @@
+projection;
+strict ( 2 );
+extensible;
+use side effects;
+
+// Side effects only; the transactional projection is ZC_PRC_RunTP
+define behavior for ZC_PRC_Run alias Run
+extensible
+{
+  use association _Parameter;
+}
+
+define behavior for ZC_PRC_RunParameter alias RunParameter
+{
+  use association _Run;
+}

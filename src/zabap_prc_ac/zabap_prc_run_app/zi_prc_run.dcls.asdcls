@@ -1,0 +1,6 @@
+@EndUserText.label: 'DCL for ZI_PRC_Run'
+@MappingRole: true
+define role ZI_PRC_Run {
+  grant select on ZI_PRC_Run
+    where ( ApplicationName ) = aspect pfcg_auth( ZPRC_RUN, ZPRCRUNAPP, ACTVT = '03' );
+}

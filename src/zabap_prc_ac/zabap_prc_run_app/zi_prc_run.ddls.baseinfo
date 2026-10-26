@@ -1,0 +1,13 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZR_PRC_RUNPROGRESS",
+      "ZPRC_RUN"
+    ],
+    "ASSOCIATED": [
+      "ZC_PRC_RUNEXECUTIONSTATUSVH",
+      "ZI_PRC_PROCESSEDOBJECT",
+      "ZI_PRC_RUNPARAMETER"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZR_PRC_RUNTP"
+    ],
+    "ASSOCIATED": [
+      "ZC_PRC_PROCESSEDOBJECT",
+      "ZC_PRC_RUNEXECUTIONSTATUSVH",
+      "ZC_PRC_RUNPARAMETER",
+      "ZR_PRC_PROCESSEDOBJECTTP",
+      "ZR_PRC_RUNPARAMETERTP"
+    ],
+    "BASE": [
+      "ZR_PRC_RUNTP"
+    ]
+  }
+}

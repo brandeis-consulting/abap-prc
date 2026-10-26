@@ -1,0 +1,94 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: MESS/ZPRC_PROCESS_MESSAGE020/TEXT, maxlen=73
+msgid "&1 of &2 objects not resumed (no authorization or locked)"
+msgstr "&1 von &2 Objekten nicht fortgesetzt (keine Berechtigung oder gesperrt)"
+
+#: MESS/ZPRC_PROCESS_MESSAGE011/TEXT, maxlen=73
+msgid "Abort text of the step session: &1&2&3&4"
+msgstr "Abbruchtext der Schritt-Session: &1&2&3&4"
+
+#: MESS/ZPRC_PROCESS_MESSAGE014/TEXT, maxlen=73
+msgid "Error analysis: &1&2&3&4"
+msgstr "Fehleranalyse: &1&2&3&4"
+
+#: MESS/ZPRC_PROCESS_MESSAGE010/TEXT, maxlen=73
+msgid "Lock object &1 is not available"
+msgstr "Sperrobjekt &1 ist nicht verfügbar"
+
+#: MESS/ZPRC_PROCESS_MESSAGE004/TEXT, maxlen=73
+msgid "No authorization to create processed objects for process '&1'"
+msgstr "Keine Berechtigung zum Anlegen verarbeiteter Objekte für Prozess '&1'"
+
+#: MESS/ZPRC_PROCESS_MESSAGE003/TEXT, maxlen=73
+msgid "No authorization to create runs for application '&1'"
+msgstr "Keine Berechtigung zum Anlegen von Läufen für Anwendung '&1'"
+
+#: MSAG/ZPRC_PROCESS_MESSAGE/STEXT, maxlen=60
+msgid "Process Message"
+msgstr "Prozessnachrichten"
+
+#: MESS/ZPRC_PROCESS_MESSAGE005/TEXT, maxlen=73
+msgid "Process class &1 cannot be instantiated"
+msgstr "Prozessklasse &1 kann nicht instanziiert werden"
+
+#: MESS/ZPRC_PROCESS_MESSAGE021/TEXT, maxlen=73
+msgid "Process class &1 cannot be loaded: &2&3&4"
+msgstr "Prozessklasse &1 kann nicht geladen werden: &2&3&4"
+
+#: MESS/ZPRC_PROCESS_MESSAGE007/TEXT, maxlen=73
+msgid "Process class &1 has no transition handler for state &2"
+msgstr "Prozessklasse &1 hat keinen Transition-Handler für Zustand &2"
+
+#: MESS/ZPRC_PROCESS_MESSAGE008/TEXT, maxlen=73
+msgid "Process class &1 needs a proposed end state after state &2"
+msgstr "Prozessklasse &1 benötigt einen vorgeschlagenen Endzustand nach &2"
+
+#: MESS/ZPRC_PROCESS_MESSAGE009/TEXT, maxlen=73
+msgid "Processed object is locked by another user or process"
+msgstr "Verarbeitetes Objekt ist durch anderen Benutzer oder Prozess gesperrt"
+
+#: MESS/ZPRC_PROCESS_MESSAGE001/TEXT, maxlen=73
+msgid "Processing object &1 failed. Stopped working on queue &2."
+msgstr "Verarbeitung von Objekt &1 fehlgeschlagen. Queue &2 wurde gestoppt."
+
+#: MESS/ZPRC_PROCESS_MESSAGE018/TEXT, maxlen=73
+msgid "Processing step aborted by a program error"
+msgstr "Verarbeitungsschritt durch Programmfehler abgebrochen"
+
+#: MESS/ZPRC_PROCESS_MESSAGE019/TEXT, maxlen=73
+msgid "Processing step aborted: &1&2&3&4"
+msgstr "Verarbeitungsschritt abgebrochen: &1&2&3&4"
+
+#: MESS/ZPRC_PROCESS_MESSAGE016/TEXT, maxlen=73
+msgid "Save failed; the business object reported no error"
+msgstr "Sichern fehlgeschlagen; Business-Objekt meldete keinen Fehler"
+
+#: MESS/ZPRC_PROCESS_MESSAGE015/TEXT, maxlen=73
+msgid "Save simulation failed; the business object reported no error"
+msgstr "Sichern-Simulation fehlgeschlagen; Business-Objekt meldete keinen Fehler"
+
+#: MESS/ZPRC_PROCESS_MESSAGE012/TEXT, maxlen=73
+msgid "See the short dumps (ST22) of user &1 from &2 UTC"
+msgstr "Siehe Kurzdumps (ST22) von Benutzer &1 ab &2 UTC"
+
+#: MESS/ZPRC_PROCESS_MESSAGE013/TEXT, maxlen=73
+msgid "Short dump &1 in program &2 (ST22)"
+msgstr "Kurzdump &1 in Programm &2 (ST22)"
+
+#: MESS/ZPRC_PROCESS_MESSAGE002/TEXT, maxlen=73
+msgid "Transition failed without error message"
+msgstr "Übergang ohne Fehlermeldung fehlgeschlagen"
+
+#: MESS/ZPRC_PROCESS_MESSAGE006/TEXT, maxlen=73
+msgid "Transition from &1 to &2 is not defined in process class &3"
+msgstr "Übergang von &1 nach &2 ist in Prozessklasse &3 nicht definiert"
+
+#: MESS/ZPRC_PROCESS_MESSAGE017/TEXT, maxlen=73
+msgid "Transition from state &1 completed successfully"
+msgstr "Übergang aus Zustand &1 erfolgreich abgeschlossen"

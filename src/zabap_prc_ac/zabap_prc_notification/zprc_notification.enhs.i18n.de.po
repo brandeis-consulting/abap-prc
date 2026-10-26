@@ -1,0 +1,18 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: TLGS/ENHSZPRC_NOTIFICATION 06/0000030007TEXT, maxlen=255
+msgid "ABAP Processing Center Notifications"
+msgstr "ABAP Processing Center Benachrichtigungen"
+
+#: TLGS/ENHSZPRC_NOTIFICATION 06/0000020007TEXT, maxlen=255
+msgid "Mail, Fiori Notification,...?"
+msgstr "Mail, Fiori-Benachrichtigung, ...?"
+
+#: TLGS/ENHSZPRC_NOTIFICATION 06/0000010007TEXT, maxlen=255
+msgid "Send notifications for errors occured during processing"
+msgstr "Benachrichtigungen für Fehler bei der Verarbeitung senden"

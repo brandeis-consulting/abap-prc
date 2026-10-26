@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: DOMA/ZPRC_MESSAGE_TEXT/DDTEXT A, maxlen=60
+msgid "Message text (lower case)"
+msgstr "Nachrichtentext (Groß-/Kleinschreibung)"

@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: INTF/ZIF_PRC_PROCESSED_OBJECT_EVENT/CLASS 00001, maxlen=60
+msgid "Raise entity event"
+msgstr "Entity-Event auslösen"

@@ -1,8 +1,0 @@
-{
-  "BASEINFO": {
-    "FROM": [
-      "ZR_PRC_PROCESSEDMESSAGE",
-      "ZR_PRC_PROCESSEDSTEP"
-    ]
-  }
-}

@@ -1,0 +1,10 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZI_PRC_LATESTHEADERMESSAGE"
+    ],
+    "ASSOCIATED": [
+      "ZR_PRC_MESSAGETP"
+    ]
+  }
+}

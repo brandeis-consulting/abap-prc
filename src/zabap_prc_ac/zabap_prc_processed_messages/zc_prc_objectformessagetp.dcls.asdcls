@@ -1,0 +1,6 @@
+@EndUserText.label: 'DCL for ZC_PRC_ObjectForMessageTP'
+@MappingRole: true
+define role ZC_PRC_ObjectForMessageTP {
+  grant select on ZC_PRC_ObjectForMessageTP
+    where inheriting conditions from entity ZR_PRC_ObjectForMessageTP;
+}

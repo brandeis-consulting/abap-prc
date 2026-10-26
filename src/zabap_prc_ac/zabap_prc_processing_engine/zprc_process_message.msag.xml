@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+    <STEXT>Process Message</STEXT>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Processing object &amp;1 failed. Stopped working on queue &amp;2.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Transition failed without error message</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>No authorization to create runs for application &apos;&amp;1&apos;</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>No authorization to create processed objects for process &apos;&amp;1&apos;</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Process class &amp;1 cannot be instantiated</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Transition from &amp;1 to &amp;2 is not defined in process class &amp;3</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Process class &amp;1 has no transition handler for state &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Process class &amp;1 needs a proposed end state after state &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Processed object is locked by another user or process</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>Lock object &amp;1 is not available</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>Abort text of the step session: &amp;1&amp;2&amp;3&amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>See the short dumps (ST22) of user &amp;1 from &amp;2 UTC</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>Short dump &amp;1 in program &amp;2 (ST22)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>014</MSGNR>
+     <TEXT>Error analysis: &amp;1&amp;2&amp;3&amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>015</MSGNR>
+     <TEXT>Save simulation failed; the business object reported no error</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>016</MSGNR>
+     <TEXT>Save failed; the business object reported no error</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>017</MSGNR>
+     <TEXT>Transition from state &amp;1 completed successfully</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>018</MSGNR>
+     <TEXT>Processing step aborted by a program error</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>019</MSGNR>
+     <TEXT>Processing step aborted: &amp;1&amp;2&amp;3&amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>020</MSGNR>
+     <TEXT>&amp;1 of &amp;2 objects not resumed (no authorization or locked)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>021</MSGNR>
+     <TEXT>Process class &amp;1 cannot be loaded: &amp;2&amp;3&amp;4</TEXT>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

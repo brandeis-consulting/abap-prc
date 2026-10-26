@@ -1,0 +1,14 @@
+projection;
+strict ( 2 );
+
+// Resume only; the transactional projection is ZC_PRC_MessageTP
+define behavior for ZC_PRC_Message alias Message
+{
+  use action resumeProcessing;
+  use association _ObjectsForMessage;
+}
+
+define behavior for ZC_PRC_ObjectForMessage alias Objects
+{
+  use association _Message;
+}

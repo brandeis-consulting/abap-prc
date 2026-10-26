@@ -1,0 +1,20 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: DTEL/ZPRC_MAIL_ADDRESS/REPTEXT, maxlen=55
+#: DTEL/ZPRC_MAIL_ADDRESS/SCRTEXT_L, maxlen=40
+#: DTEL/ZPRC_MAIL_ADDRESS/SCRTEXT_M, maxlen=20
+msgid "Mail Address"
+msgstr "Mail-Adresse"
+
+#: DTEL/ZPRC_MAIL_ADDRESS/SCRTEXT_S, maxlen=10
+msgid "Mail Adr."
+msgstr "Mail-Adr."
+
+#: DTEL/ZPRC_MAIL_ADDRESS/DDTEXT, maxlen=60
+msgid "Mail address"
+msgstr "Mail-Adresse"

@@ -1,0 +1,117 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000270005TEXT, maxlen=255
+msgid "Additional Messages"
+msgstr "Weitere Nachrichten"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000010005TEXT, maxlen=255
+msgid "Created At"
+msgstr "Angelegt am"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000020005TEXT, maxlen=255
+msgid "Created By"
+msgstr "Angelegt von"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000210005TEXT, maxlen=255
+msgid "Current Status"
+msgstr "Aktueller Status"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000170005TEXT, maxlen=255
+msgid "Description"
+msgstr "Beschreibung"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000030005TEXT, maxlen=255
+msgid "Do Not Process Before"
+msgstr "Nicht verarbeiten vor"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000250005TEXT, maxlen=255
+msgid "Error Handling"
+msgstr "Fehlerbehandlung"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000230005TEXT, maxlen=255
+msgid "Execution Information"
+msgstr "Ausführungsinformationen"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000060005TEXT, maxlen=255
+msgid "Factory Class Name"
+msgstr "Name der Factory-Klasse"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000070005TEXT, maxlen=255
+msgid "Mail Address for error reporting"
+msgstr "Mail-Adresse für Fehlermeldungen"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000100005TEXT, maxlen=255
+msgid "Message"
+msgstr "Nachricht"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000080005TEXT, maxlen=255
+msgid "Message Severity"
+msgstr "Schweregrad"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000090005TEXT, maxlen=255
+msgid "Message Severity Code"
+msgstr "Schweregrad-Code"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000140005TEXT, maxlen=255
+msgid "Next Retry"
+msgstr "Nächste Wiederholung"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000040005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000200005TEXT, maxlen=255
+msgid "Processed Object"
+msgstr "Verarbeitetes Objekt"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000240005TEXT, maxlen=255
+msgid "Processed Object IDs"
+msgstr "IDs des verarbeiteten Objekts"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000050005TEXT, maxlen=255
+msgid "Processed Object UUID"
+msgstr "UUID des verarbeiteten Objekts"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000160005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000260005TEXT, maxlen=255
+msgid "Processed Steps"
+msgstr "Verarbeitete Schritte"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000110005TEXT, maxlen=255
+msgid "Queue ID"
+msgstr "Queue-ID"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000120005TEXT, maxlen=255
+msgid "Queue Position"
+msgstr "Queue-Position"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000220005TEXT, maxlen=255
+msgid "Queue and Delay"
+msgstr "Queue und Verzögerung"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000280005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000290005TEXT, maxlen=255
+msgid "Resume Processing"
+msgstr "Verarbeitung fortsetzen"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000130005TEXT, maxlen=255
+msgid "Retry Count"
+msgstr "Anzahl Wiederholungen"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000150005TEXT, maxlen=255
+msgid "State"
+msgstr "Zustand"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000190005TEXT, maxlen=255
+msgid "Step Total"
+msgstr "Schritte gesamt"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000180005TEXT, maxlen=255
+msgid "Title"
+msgstr "Titel"
+
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 02/0000010004DESCRIPTION, maxlen=60
+msgid "UI annotations Processed Object"
+msgstr "UI-Annotationen Verarbeitetes Objekt"

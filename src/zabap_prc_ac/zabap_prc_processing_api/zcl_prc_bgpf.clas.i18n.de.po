@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: CLAS/ZCL_PRC_BGPF/CLASS 00001, maxlen=60
+msgid "BGPF Implementation for the PRC"
+msgstr "bgPF-Implementierung für das PRC"

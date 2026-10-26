@@ -1,0 +1,9 @@
+extension implementation in class zbp_r_prc_messageext unique;
+
+extend behavior for ZR_PRC_MessageTP
+{
+
+  event zz_messageChanged for side effects;
+  side effects { event zz_messageChanged affects $self, entity _ObjectsForMessage; }
+
+}

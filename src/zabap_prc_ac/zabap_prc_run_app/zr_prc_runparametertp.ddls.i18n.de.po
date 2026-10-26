@@ -1,0 +1,11 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: DDLS/ZR_PRC_RUNPARAMETERTP/00001 DDDDLSRC02BT, maxlen=60
+#: DDLT/ZR_PRC_RUNPARAMETERTP/00001 DDDDLSRCT, maxlen=60
+msgid "Run Parameter - BO"
+msgstr "Laufparameter - BO"

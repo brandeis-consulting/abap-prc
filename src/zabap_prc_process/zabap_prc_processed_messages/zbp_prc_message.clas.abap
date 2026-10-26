@@ -1,9 +1,0 @@
-CLASS zbp_prc_message DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF zr_prc_message.
-protected section.
-private section.
-ENDCLASS.
-
-
-
-CLASS ZBP_PRC_MESSAGE IMPLEMENTATION.
-ENDCLASS.

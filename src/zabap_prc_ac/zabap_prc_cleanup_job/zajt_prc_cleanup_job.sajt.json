@@ -1,0 +1,29 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "ABAP Processing Center: Cleanup job for old Runs, Proc. Obj.",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "catalogName": "ZAJC_PRC_CLEANUP_JOB"
+  },
+  "parameters": {
+    "singleValueParameters": [
+      {
+        "name": "P_DAYS",
+        "value": "28"
+      },
+      {
+        "name": "P_TEST",
+        "value": ""
+      }
+    ],
+    "valueRangesParameters": [
+      {
+        "name": "S_PROC",
+        "valueRanges": []
+      }
+    ]
+  }
+}

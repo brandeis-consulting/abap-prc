@@ -1,0 +1,20 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: DTEL/ZPRC_RUN_EXECUTION_STATUS/SCRTEXT_S, maxlen=10
+msgid "Exec. Stat"
+msgstr "Ausf.stat."
+
+#: DTEL/ZPRC_RUN_EXECUTION_STATUS/REPTEXT, maxlen=55
+#: DTEL/ZPRC_RUN_EXECUTION_STATUS/SCRTEXT_L, maxlen=40
+#: DTEL/ZPRC_RUN_EXECUTION_STATUS/SCRTEXT_M, maxlen=20
+msgid "Execution Status"
+msgstr "Ausführungsstatus"
+
+#: DTEL/ZPRC_RUN_EXECUTION_STATUS/DDTEXT, maxlen=60
+msgid "Execution Status of the Run"
+msgstr "Ausführungsstatus des Laufs"

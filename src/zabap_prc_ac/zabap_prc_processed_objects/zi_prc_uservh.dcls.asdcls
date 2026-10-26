@@ -1,0 +1,7 @@
+@EndUserText.label: 'DCL for ZI_PRC_UserVH'
+@MappingRole: true
+define role ZI_PRC_USERVH {
+    // a user is visible if he worked on at least one process the viewer may display
+    grant select on ZI_PRC_UserVH
+      where ( _ObjectUser.ProcessName ) = aspect pfcg_auth( ZPRC_PROC, ZPRCNAME, ACTVT = '03' );
+}

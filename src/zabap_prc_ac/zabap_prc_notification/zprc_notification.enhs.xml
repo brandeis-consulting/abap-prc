@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_ENHS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
+   <TOOL>BADI_DEF</TOOL>
+   <SHORTTEXT>ABAP Processing Center Benachrichtigungen</SHORTTEXT>
+   <BADI_DATA>
+    <ENH_BADI_DATA>
+     <BADI_NAME>ZPRC_NOTIFICATION_CHANNEL</BADI_NAME>
+     <INTERFACE_NAME>ZIF_PRC_NOTIFICATION_CHANNEL</INTERFACE_NAME>
+     <CONTEXT_MODE>N</CONTEXT_MODE>
+     <DEFAULT_CLASS>ZCL_PRC_NOTIF_CHANNEL_MAIL</DEFAULT_CLASS>
+     <BADI_SHORTTEXT>Benachrichtigungen für Fehler bei der Verarbeitung senden</BADI_SHORTTEXT>
+     <BADI_SHORTTEXT_ID>ETR-3DB3DCEFD97E5BB3</BADI_SHORTTEXT_ID>
+     <FILTERS>
+      <ENH_BADI_FILTER>
+       <FILTER_NAME>CHANNEL</FILTER_NAME>
+       <FILTER_TYPE>S</FILTER_TYPE>
+       <CONSTANT>X</CONSTANT>
+       <FILTERTEXT>Mail, Fiori-Benachrichtigung, ...?</FILTERTEXT>
+       <FILTERTEXT_ID>ETR-4D65158831AC6A07</FILTERTEXT_ID>
+      </ENH_BADI_FILTER>
+     </FILTERS>
+     <USE_FALLBACK_CLASS>X</USE_FALLBACK_CLASS>
+    </ENH_BADI_DATA>
+   </BADI_DATA>
+  </asx:values>
+ </asx:abap>
+</abapGit>

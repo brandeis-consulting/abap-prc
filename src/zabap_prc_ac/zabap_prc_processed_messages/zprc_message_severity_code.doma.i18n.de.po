@@ -1,0 +1,26 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: VALU/ZPRC_MESSAGE_SEVERITY_CODE/DDTEXT 00003, maxlen=60
+msgid "Error"
+msgstr "Fehler"
+
+#: VALU/ZPRC_MESSAGE_SEVERITY_CODE/DDTEXT 00002, maxlen=60
+msgid "Information"
+msgstr "Information"
+
+#: DOMA/ZPRC_MESSAGE_SEVERITY_CODE/DDTEXT A, maxlen=60
+msgid "Message Severity"
+msgstr "Schweregrad"
+
+#: VALU/ZPRC_MESSAGE_SEVERITY_CODE/DDTEXT 00001, maxlen=60
+msgid "Success"
+msgstr "Erfolg"
+
+#: VALU/ZPRC_MESSAGE_SEVERITY_CODE/DDTEXT 00004, maxlen=60
+msgid "Warning"
+msgstr "Warnung"

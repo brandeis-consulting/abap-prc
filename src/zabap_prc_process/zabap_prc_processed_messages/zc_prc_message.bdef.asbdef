@@ -1,7 +1,0 @@
-projection;
-strict ( 2 );
-
-define behavior for ZC_PRC_Message alias Message
-{
-  use action resumeProcessing;
-}

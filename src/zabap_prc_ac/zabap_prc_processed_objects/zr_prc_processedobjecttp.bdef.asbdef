@@ -1,0 +1,131 @@
+managed implementation in class ZBP_PRC_PROCESSED_OBJECT unique;
+strict ( 2 );
+extensible;
+with privileged mode disabling NoCheckWhenPrivileged;
+
+define authorization context NoCheckWhenPrivileged
+{
+  'ZPRC_PROC';
+}
+
+define behavior for ZR_PRC_ProcessedObjectTP alias ProcessedObject
+extensible
+with unmanaged save with full data
+etag master LocalLastChangedAt
+// Own lock object, shared with the processing engine: SET LOCKS would make RAP
+// the transaction owner of every step and forbid classic update function modules
+lock master unmanaged
+authorization master ( instance )
+
+{
+  field ( readonly, numbering : managed ) UUID;
+  field ( mandatory : create, readonly : update ) ProcessName, FactoryClassName;
+  field ( readonly : update ) RunUUID;
+  field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChangedAt;
+  // Derived from the latest step, not persisted with the object
+  field ( readonly ) MessageText, MessageSeverity, MessageSeverityCode, StepCounter;
+
+  internal create;
+  update;
+  delete;
+
+  // Everybody may call it, the precheck checks the process name (ZPRC_PROC, activity 01)
+  static factory action ( precheck, authorization : none ) createProcessedObject parameter ZA_PRC_CreateProcessedObject [1];
+  action ( features : instance ) resumeProcessing;
+  // Raises the changed event without changing the object, for writers outside the BO
+  action triggerChangedEvent;
+  side effects { action resumeProcessing affects $self; }
+
+  association _ProcessedStep { create; }
+
+  mapping for zprc_proc_object corresponding extensible
+    {
+      UUID                        = uuid;
+      LatestStepUUID              = latest_step_uuid;
+      RunUUID                     = run_uuid;
+      ProcessName                 = process_name;
+      MailAddress                 = mail_address;
+      FactoryClassName            = factory_class_name;
+      PayloadJson                 = payload_json;
+      State                       = state;
+      StepTotal                   = step_total;
+      DoNotProcessBefore          = do_not_process_before;
+      QueueID                     = queue_id;
+      QueuePosition               = queue_pos;
+      ExternalProcessedObjectID   = ext_processed_object_id;
+      ExternalProcessedObjectUUID = ext_processed_object_uuid;
+      RetryCount                  = retry_count;
+      RetryDateTime               = retry_datetime;
+      CreatedBy                   = created_by;
+      CreatedAt                   = created_at;
+      LastChangedAt               = last_changed_at;
+      LastChangedBy               = last_changed_by;
+      LocalLastChangedAt          = local_last_changed_at;
+    }
+}
+
+define behavior for ZR_PRC_ProcessedStepTP alias ProcessedStep
+extensible
+with unmanaged save with full data
+lock dependent by _ProcessedObject
+authorization dependent by _ProcessedObject
+{
+
+  field ( readonly, numbering : managed ) StepUUID;
+  field ( readonly ) ProcessedObjectUUID;
+  // Header of the step = its message with IsHeader = 'X', not persisted with the step
+  field ( readonly ) MessageText, MessageClass, MessageNumber, MessageSeverity, MessageVariable1,
+                     MessageVariable2, MessageVariable3, MessageVariable4, MessageSeverityCode;
+  update;
+  delete;
+  association _ProcessedObject;
+  association _ProcessedMessage { create; }
+
+  mapping for zprc_proc_step corresponding extensible
+    {
+      StepUUID            = step_uuid;
+      ProcessedObjectUUID = processed_object_uuid;
+      StartState          = start_state;
+      EndState            = end_state;
+      CreatedBy           = created_by;
+      CreatedAt           = created_at;
+    }
+
+}
+
+define behavior for ZR_PRC_ProcessedMessageTP alias ProcessedMessage
+extensible
+with unmanaged save with full data
+lock dependent by _ProcessedObject
+authorization dependent by _ProcessedObject
+{
+
+  field ( readonly, numbering : managed ) UUID;
+  field ( readonly ) ProcessedStepUUID, ProcessedObjectUUID;
+  // States of the step, not persisted with the message
+  field ( readonly ) StartState, EndState;
+  update;
+  delete;
+  association _ProcessedStep;
+  association _ProcessedObject;
+
+  mapping for zprc_proc_msg corresponding extensible
+    {
+      UUID                = uuid;
+      ProcessedStepUUID   = processed_step_uuid;
+      ProcessedObjectUUID = processed_object_uuid;
+      CreatedAt           = created_at;
+      CreatedBy           = created_by;
+      MessageSeverityCode = message_severity_code;
+      MessageText         = message_text;
+      MessageClass        = msgid;
+      MessageNumber       = msgno;
+      MessageSeverity     = msgty;
+      MessageVariable1    = msgv1;
+      MessageVariable2    = msgv2;
+      MessageVariable3    = msgv3;
+      MessageVariable4    = msgv4;
+      IsHeader            = is_header;
+    }
+
+}

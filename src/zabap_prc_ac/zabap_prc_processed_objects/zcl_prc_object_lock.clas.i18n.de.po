@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: CLAS/ZCL_PRC_OBJECT_LOCK/CLASS 00001, maxlen=60
+msgid "ABAP-PRC: Lock on a processed object"
+msgstr "ABAP-PRC: Sperre auf ein verarbeitetes Objekt"

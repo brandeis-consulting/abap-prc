@@ -1,0 +1,6 @@
+@EndUserText.label: 'DCL for ZC_PRC_RunTP'
+@MappingRole: true
+define role ZC_PRC_RunTP {
+  grant select on ZC_PRC_RunTP
+    where inheriting conditions from entity ZR_PRC_RunTP;
+}

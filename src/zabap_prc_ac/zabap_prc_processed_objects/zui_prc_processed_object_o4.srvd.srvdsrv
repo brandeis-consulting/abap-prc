@@ -1,0 +1,10 @@
+@EndUserText.label: 'Processed Objects app'
+define service ZUI_PRC_PROCESSED_OBJECT_O4 {
+  expose ZC_PRC_ProcessedObjectTP    as ProcessedObject;
+  expose ZC_PRC_ProcessedStepTP      as ProcessedStep;
+  expose ZC_PRC_ProcessedMessageTP   as AllProcessedMessages;
+  expose ZI_PRC_MessageSeverityVH;
+  expose ZI_PRC_ProcessedObjectAggr;
+  expose ZI_PRC_ProcessNameVH;
+  expose ZI_PRC_UserVH;
+}

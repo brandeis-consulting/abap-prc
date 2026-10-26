@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: SDCT/7CED8D04DB501FE1A8FBEB6E75E61A73/TEXT 00001, maxlen=64
+msgid "ZUIPRCPROCMSG"
+msgstr "ZUIPRCPROCMSG"

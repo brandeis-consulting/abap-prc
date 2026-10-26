@@ -1,0 +1,16 @@
+projection;
+strict ( 2 );
+extensible;
+use side effects;
+
+define behavior for ZC_PRC_MessageTP alias Message
+extensible
+{
+  use action resumeProcessing;
+  use association _ObjectsForMessage;
+}
+
+define behavior for ZC_PRC_ObjectForMessageTP alias Objects
+{
+  use association _Message;
+}

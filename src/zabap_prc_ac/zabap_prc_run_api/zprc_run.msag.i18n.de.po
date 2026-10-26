@@ -1,0 +1,54 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: MSAG/ZPRC_RUN/STEXT, maxlen=60
+msgid "ABAP-PRC: Run"
+msgstr "ABAP-PRC: Lauf"
+
+#: MESS/ZPRC_RUN 009/TEXT, maxlen=73
+msgid "Job template &1 could not be scheduled: &2&3&4"
+msgstr "Jobvorlage &1 konnte nicht eingeplant werden: &2&3&4"
+
+#: MESS/ZPRC_RUN 010/TEXT, maxlen=73
+msgid "Job template &1 does not exist or you are not authorized to schedule it"
+msgstr "Jobvorlage &1 existiert nicht oder Sie dürfen sie nicht einplanen"
+
+#: MESS/ZPRC_RUN 001/TEXT, maxlen=73
+msgid "Parameter &1 is not defined in job &2"
+msgstr "Parameter &1 ist in Job &2 nicht definiert"
+
+#: MESS/ZPRC_RUN 008/TEXT, maxlen=73
+msgid "Run &1 aborted, see the application log for details"
+msgstr "Lauf &1 abgebrochen, Details siehe Anwendungsprotokoll"
+
+#: MESS/ZPRC_RUN 011/TEXT, maxlen=73
+msgid "The run could not be created for application &1"
+msgstr "Der Lauf für Anwendung &1 konnte nicht angelegt werden"
+
+#: MESS/ZPRC_RUN 004/TEXT, maxlen=73
+msgid "Unexpected error while creating the run of job &1"
+msgstr "Unerwarteter Fehler beim Anlegen des Laufs zu Job &1"
+
+#: MESS/ZPRC_RUN 007/TEXT, maxlen=73
+msgid "Unexpected error while finishing run &1"
+msgstr "Unerwarteter Fehler beim Abschließen von Lauf &1"
+
+#: MESS/ZPRC_RUN 005/TEXT, maxlen=73
+msgid "Unexpected error while saving run &1"
+msgstr "Unerwarteter Fehler beim Sichern von Lauf &1"
+
+#: MESS/ZPRC_RUN 006/TEXT, maxlen=73
+msgid "Unexpected error while saving the total number of run &1"
+msgstr "Unerwarteter Fehler beim Sichern der Gesamtanzahl von Lauf &1"
+
+#: MESS/ZPRC_RUN 003/TEXT, maxlen=73
+msgid "Unexpected error while updating run &1"
+msgstr "Unerwarteter Fehler beim Aktualisieren von Lauf &1"
+
+#: MESS/ZPRC_RUN 002/TEXT, maxlen=73
+msgid "Unexpected parameter kind &1 for parameter &2 in job &3"
+msgstr "Unerwartete Parameterart &1 für Parameter &2 in Job &3"

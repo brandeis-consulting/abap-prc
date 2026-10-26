@@ -1,0 +1,25 @@
+projection;
+strict ( 2 );
+extensible;
+use side effects;
+
+define behavior for ZC_PRC_ProcessedObjectTP alias ProcessedObject
+extensible
+{
+  use delete;
+  use action resumeProcessing;
+  use association _ProcessedStep;
+}
+
+define behavior for ZC_PRC_ProcessedStepTP alias ProcessedStep
+{
+  // no delete: deleting single steps would destroy the process history
+  use association _ProcessedObject;
+  use association _ProcessedMessage;
+}
+
+define behavior for ZC_PRC_ProcessedMessageTP alias ProcessedMessage
+{
+  use association _ProcessedStep;
+  use association _ProcessedObject;
+}

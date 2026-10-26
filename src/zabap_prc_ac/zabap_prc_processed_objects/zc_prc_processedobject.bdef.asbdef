@@ -1,0 +1,24 @@
+projection;
+strict ( 2 );
+extensible;
+use side effects;
+
+// Resume and side effects only; the transactional projection is ZC_PRC_ProcessedObjectTP
+define behavior for ZC_PRC_ProcessedObject alias ProcessedObject
+extensible
+{
+  use action resumeProcessing;
+  use association _ProcessedStep;
+}
+
+define behavior for ZC_PRC_ProcessedStep alias ProcessedStep
+{
+  use association _ProcessedObject;
+  use association _ProcessedMessage;
+}
+
+define behavior for ZC_PRC_ProcessedMessage alias ProcessedMessage
+{
+  use association _ProcessedStep;
+  use association _ProcessedObject;
+}

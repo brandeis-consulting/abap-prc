@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_SUSH" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <HEAD>
+    <NAME>EC4BE8911EE66C86013ABA982A894E</NAME>
+    <TYPE>HT</TYPE>
+    <DISPLAY_NAME>R3TR SAJC ZAJC_PRC_CLEANUP_JOB</DISPLAY_NAME>
+    <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
+   </HEAD>
+   <USOBX>
+    <USOBX>
+     <NAME>EC4BE8911EE66C86013ABA982A894E</NAME>
+     <TYPE>HT</TYPE>
+     <OBJECT>S_START</OBJECT>
+     <OKFLAG>X</OKFLAG>
+    </USOBX>
+   </USOBX>
+   <USOBHASH>
+    <PGMID>R3TR</PGMID>
+    <OBJECT>SAJC</OBJECT>
+    <OBJ_NAME>ZAJC_PRC_CLEANUP_JOB</OBJ_NAME>
+   </USOBHASH>
+  </asx:values>
+ </asx:abap>
+</abapGit>

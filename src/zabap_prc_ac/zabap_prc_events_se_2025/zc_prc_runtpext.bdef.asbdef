@@ -1,0 +1,6 @@
+extension for projection;
+
+extend behavior for ZC_PRC_RunTP
+{
+  use event zz_runChanged;
+}

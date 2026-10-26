@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: TLGS/DCLSZI_PRC_HEADERMESSAGEGROUP 02/0000010004DDTEXT, maxlen=60
+msgid "DCL for ZI_PRC_HeaderMessageGroup"
+msgstr "DCL für ZI_PRC_HeaderMessageGroup"

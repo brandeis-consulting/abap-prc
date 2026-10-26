@@ -1,0 +1,8 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "ZI_PRC_PROCESSEDMESSAGE",
+      "ZI_PRC_PROCESSEDOBJECT"
+    ]
+  }
+}

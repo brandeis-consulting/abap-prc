@@ -1,6 +1,0 @@
-@Metadata.layer: #CUSTOMER
-@UI.headerInfo: { typeName: 'Affected object', typeNamePlural: 'Affected objects' }
-
-annotate entity ZC_PRC_ObjectForMessage with
-{
-}

@@ -1,0 +1,11 @@
+{
+  "BASEINFO": {
+    "FROM": [
+      "I_BUSINESSUSERVH",
+      "ZI_PRC_PROCESSEDOBJECTUSER"
+    ],
+    "ASSOCIATED": [
+      "ZI_PRC_PROCESSEDOBJECTUSER"
+    ]
+  }
+}

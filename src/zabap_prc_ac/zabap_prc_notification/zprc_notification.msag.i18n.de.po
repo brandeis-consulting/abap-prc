@@ -1,0 +1,54 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: MSAG/ZPRC_NOTIFICATION/STEXT, maxlen=60
+msgid "ABAP-PRC: Notifications"
+msgstr "ABAP-PRC: Benachrichtigungen"
+
+#: MESS/ZPRC_NOTIFICATION 008/TEXT, maxlen=73
+msgid "Launchpad URL unknown - mail without links"
+msgstr "Launchpad-URL unbekannt - Mail ohne Links"
+
+#: MESS/ZPRC_NOTIFICATION 003/TEXT, maxlen=73
+msgid "Mail sent to &1&2&3&4"
+msgstr "Mail gesendet an &1&2&3&4"
+
+#: MESS/ZPRC_NOTIFICATION 010/TEXT, maxlen=73
+msgid "Mail service: &1&2&3&4"
+msgstr "Mail-Service: &1&2&3&4"
+
+#: MESS/ZPRC_NOTIFICATION 004/TEXT, maxlen=73
+msgid "No mail address maintained for user &1"
+msgstr "Keine Mail-Adresse für Benutzer &1 gepflegt"
+
+#: MESS/ZPRC_NOTIFICATION 002/TEXT, maxlen=73
+msgid "No objects of process &1 with errors left - nothing to send"
+msgstr "Keine fehlerhaften Objekte von Prozess &1 mehr - nichts zu senden"
+
+#: MESS/ZPRC_NOTIFICATION 006/TEXT, maxlen=73
+msgid "Notification could not be sent"
+msgstr "Benachrichtigung konnte nicht gesendet werden"
+
+#: MESS/ZPRC_NOTIFICATION 005/TEXT, maxlen=73
+msgid "Notification prepared for run &1: &2 of &3 objects successful"
+msgstr "Benachrichtigung für Lauf &1 vorbereitet: &2 von &3 Objekten erfolgreich"
+
+#: MESS/ZPRC_NOTIFICATION 001/TEXT, maxlen=73
+msgid "Notification prepared: &1 objects of process &2 with errors"
+msgstr "Benachrichtigung vorbereitet: &1 Objekte von Prozess &2 mit Fehlern"
+
+#: MESS/ZPRC_NOTIFICATION 011/TEXT, maxlen=73
+msgid "Notification to &1&2&3&4 could not be sent"
+msgstr "Benachrichtigung an &1&2&3&4 konnte nicht gesendet werden"
+
+#: MESS/ZPRC_NOTIFICATION 007/TEXT, maxlen=73
+msgid "Payload of the notification is invalid"
+msgstr "Payload der Benachrichtigung ist ungültig"
+
+#: MESS/ZPRC_NOTIFICATION 009/TEXT, maxlen=73
+msgid "Run &1 not found"
+msgstr "Lauf &1 nicht gefunden"

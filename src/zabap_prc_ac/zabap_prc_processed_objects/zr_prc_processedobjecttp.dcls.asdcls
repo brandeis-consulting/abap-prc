@@ -1,0 +1,6 @@
+@EndUserText.label: 'DCL for ZR_PRC_ProcessedObjectTP'
+@MappingRole: true
+define role ZR_PRC_ProcessedObjectTP {
+  grant select on ZR_PRC_ProcessedObjectTP
+    where inheriting conditions from entity ZI_PRC_ProcessedObject;
+}
