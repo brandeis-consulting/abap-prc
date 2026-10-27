@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_NOTIF_CHANNEL_MAIL</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>ABAP-PRC: Benachrichtigungskanal Mail</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>ABAP-PRC: Notification channel mail</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

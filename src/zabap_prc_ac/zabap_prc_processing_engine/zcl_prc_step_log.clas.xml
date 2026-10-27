@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_STEP_LOG</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>ABAP-PRC: Schrittschicht - Anwendungsprotokoll</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>ABAP-PRC: Step layer - application log</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

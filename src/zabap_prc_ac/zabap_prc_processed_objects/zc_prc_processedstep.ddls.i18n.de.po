@@ -9,12 +9,9 @@ msgstr ""
 msgid "Message Text"
 msgstr "Nachrichtentext"
 
-#: DDLT/ZC_PRC_PROCESSEDSTEP/00001 DDDDLSRCT, maxlen=60
-msgid "Processed Object"
-msgstr "Verarbeitetes Objekt"
-
 #: DDLS/ZC_PRC_PROCESSEDSTEP/00001 DDDDLSRC02BT, maxlen=60
 #: DDLS/ZC_PRC_PROCESSEDSTEP/00003 DDHEADANNOT, maxlen=255
+#: DDLT/ZC_PRC_PROCESSEDSTEP/00001 DDDDLSRCT, maxlen=60
 msgid "Processed Step"
 msgstr "Verarbeiteter Schritt"
 

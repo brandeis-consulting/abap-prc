@@ -2,7 +2,9 @@
   "BASEINFO": {
     "FROM": [
       "ZR_PRC_PROCESSEDOBJECT",
-      "ZR_PRC_PROCESSEDSTEP"
+      "ZR_PRC_PROCESSEDSTEP",
+      "ZPRC_PROC_STEP",
+      "ZPRC_RUN"
     ]
   }
 }

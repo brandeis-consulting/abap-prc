@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_UPDATE_TASK_LOCAL</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>ABAP-PRC: Lokale Verbuchung (Standard ABAP, C1)</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>ABAP-PRC: Local update task (Standard ABAP, C1)</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

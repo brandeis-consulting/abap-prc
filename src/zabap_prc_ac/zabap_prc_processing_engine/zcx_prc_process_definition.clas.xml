@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCX_PRC_PROCESS_DEFINITION</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>ABAP-PRC: Prozessdefinition durch Prozessklasse verletzt</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>ABAP-PRC: Process definition violated by the process class</DESCRIPT>
     <CATEGORY>40</CATEGORY>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>

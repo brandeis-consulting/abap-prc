@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_MESSAGE_HANDLER</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Standardimplementierung von ZIF_PRC_MESSAGE_HANDLER</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Standard implementation of ZIF_PRC_MESSAGE_HANDLER</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

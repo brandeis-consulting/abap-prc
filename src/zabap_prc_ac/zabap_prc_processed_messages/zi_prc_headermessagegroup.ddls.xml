@@ -4,8 +4,8 @@
   <asx:values>
    <DDLS>
     <DDLNAME>ZI_PRC_HEADERMESSAGEGROUP</DDLNAME>
-    <DDLANGUAGE>D</DDLANGUAGE>
-    <DDTEXT>Kopfnachrichten gruppiert - Basis</DDTEXT>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DDTEXT>Header messages grouped - Basic</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DDLS>

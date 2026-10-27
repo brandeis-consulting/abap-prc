@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_STEP_8_ISOLATION</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>ABAP-PRC: Schrittschicht 8 - Isolation</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>ABAP-PRC: Step layer 8 - isolation</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

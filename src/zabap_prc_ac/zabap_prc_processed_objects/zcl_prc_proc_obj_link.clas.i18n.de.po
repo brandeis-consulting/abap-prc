@@ -6,5 +6,5 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: CLAS/ZCL_PRC_PROC_OBJ_LINK/CLASS 00001, maxlen=60
-msgid "Calculation of the processed steps"
+msgid "Calculation of the links"
 msgstr "Berechnung der verarbeiteten Schritte"

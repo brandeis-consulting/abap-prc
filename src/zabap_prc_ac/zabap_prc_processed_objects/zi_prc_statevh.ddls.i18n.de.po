@@ -10,5 +10,5 @@ msgid "Available States"
 msgstr "Verfügbare Zustände"
 
 #: DDLT/ZI_PRC_STATEVH/00001 DDDDLSRCT, maxlen=60
-msgid "Value Help for available application Names"
-msgstr "Wertehilfe für verfügbare Anwendungsnamen"
+msgid "Value Help for available States"
+msgstr "Wertehilfe für verfügbare Zustände"

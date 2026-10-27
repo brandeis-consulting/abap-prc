@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_PROCESSING_API</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Verarbeitungs-API</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Processing API</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

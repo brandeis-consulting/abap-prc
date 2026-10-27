@@ -1,4 +1,4 @@
-@Metadata.layer: #CORE
+@Metadata.layer: #PARTNER
 
 annotate entity ZI_PRC_ProcessedObject with
 
@@ -89,8 +89,6 @@ annotate entity ZI_PRC_ProcessedObject with
   @EndUserText.label: 'Processed Steps'
   @UI.dataPoint: { qualifier: 'StepCounter',
                    visualization: #PROGRESS,
-                   title: 'Title',
-                   description: 'Description',
                    targetValueElement: 'StepTotal' }
   @UI.lineItem: [ { position: 15, type: #AS_DATAPOINT, importance: #HIGH } ]
   StepCounter;

@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOINTERF>
     <CLSNAME>ZIF_PRC_DB_WRITER</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>ABAP-PRC: Schreibt die PRC-Persistenz</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>ABAP-PRC: Writes the PRC persistence</DESCRIPT>
     <EXPOSURE>2</EXPOSURE>
     <STATE>1</STATE>
     <UNICODE>5</UNICODE>

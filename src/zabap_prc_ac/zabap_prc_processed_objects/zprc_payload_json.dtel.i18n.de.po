@@ -5,13 +5,13 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: DTEL/ZPRC_PAYLOAD_JSON/DDTEXT, maxlen=60
-msgid "Mail Address"
-msgstr "Mail-Adresse"
-
 #: DTEL/ZPRC_PAYLOAD_JSON/REPTEXT, maxlen=55
 #: DTEL/ZPRC_PAYLOAD_JSON/SCRTEXT_L, maxlen=40
 #: DTEL/ZPRC_PAYLOAD_JSON/SCRTEXT_M, maxlen=20
 #: DTEL/ZPRC_PAYLOAD_JSON/SCRTEXT_S, maxlen=10
 msgid "Payload"
 msgstr "Payload"
+
+#: DTEL/ZPRC_PAYLOAD_JSON/DDTEXT, maxlen=60
+msgid "Payload (e.g. JSON)"
+msgstr "Payload (z. B. JSON)"

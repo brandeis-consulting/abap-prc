@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_TRANSITION_HANDLR_BASE</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Basisklasse für Transition-Handler</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Base class for transition handlers</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

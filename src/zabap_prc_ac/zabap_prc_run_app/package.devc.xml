@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DEVC>
-    <CTEXT>ABAP-PRC: Lauf-BO und App</CTEXT>
+    <CTEXT>ABAP-PRC: Run BO and app</CTEXT>
     <PACKKIND>5</PACKKIND>
    </DEVC>
   </asx:values>

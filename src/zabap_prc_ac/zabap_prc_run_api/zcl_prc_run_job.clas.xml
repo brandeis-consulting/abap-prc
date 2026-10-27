@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_RUN_JOB</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Abstrakte Jobklasse für das RUN-Muster</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Job abstract class for Run pattern</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

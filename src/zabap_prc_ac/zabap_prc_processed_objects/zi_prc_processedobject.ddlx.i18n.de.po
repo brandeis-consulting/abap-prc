@@ -5,7 +5,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000270005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000250005TEXT, maxlen=255
 msgid "Additional Messages"
 msgstr "Weitere Nachrichten"
 
@@ -17,23 +17,19 @@ msgstr "Angelegt am"
 msgid "Created By"
 msgstr "Angelegt von"
 
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000210005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000190005TEXT, maxlen=255
 msgid "Current Status"
 msgstr "Aktueller Status"
-
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000170005TEXT, maxlen=255
-msgid "Description"
-msgstr "Beschreibung"
 
 #: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000030005TEXT, maxlen=255
 msgid "Do Not Process Before"
 msgstr "Nicht verarbeiten vor"
 
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000250005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000230005TEXT, maxlen=255
 msgid "Error Handling"
 msgstr "Fehlerbehandlung"
 
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000230005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000210005TEXT, maxlen=255
 msgid "Execution Information"
 msgstr "Ausführungsinformationen"
 
@@ -62,11 +58,11 @@ msgid "Next Retry"
 msgstr "Nächste Wiederholung"
 
 #: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000040005TEXT, maxlen=255
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000200005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000180005TEXT, maxlen=255
 msgid "Processed Object"
 msgstr "Verarbeitetes Objekt"
 
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000240005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000220005TEXT, maxlen=255
 msgid "Processed Object IDs"
 msgstr "IDs des verarbeiteten Objekts"
 
@@ -75,7 +71,7 @@ msgid "Processed Object UUID"
 msgstr "UUID des verarbeiteten Objekts"
 
 #: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000160005TEXT, maxlen=255
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000260005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000240005TEXT, maxlen=255
 msgid "Processed Steps"
 msgstr "Verarbeitete Schritte"
 
@@ -87,12 +83,12 @@ msgstr "Queue-ID"
 msgid "Queue Position"
 msgstr "Queue-Position"
 
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000220005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000200005TEXT, maxlen=255
 msgid "Queue and Delay"
 msgstr "Queue und Verzögerung"
 
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000280005TEXT, maxlen=255
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000290005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000260005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000270005TEXT, maxlen=255
 msgid "Resume Processing"
 msgstr "Verarbeitung fortsetzen"
 
@@ -104,13 +100,9 @@ msgstr "Anzahl Wiederholungen"
 msgid "State"
 msgstr "Zustand"
 
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000190005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000170005TEXT, maxlen=255
 msgid "Step Total"
 msgstr "Schritte gesamt"
-
-#: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 06/0000180005TEXT, maxlen=255
-msgid "Title"
-msgstr "Titel"
 
 #: TLGS/DDLXZI_PRC_PROCESSEDOBJECT 02/0000010004DESCRIPTION, maxlen=60
 msgid "UI annotations Processed Object"

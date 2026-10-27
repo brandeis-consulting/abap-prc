@@ -1,4 +1,5 @@
-@Metadata.layer: #CORE
+@Metadata.layer: #PARTNER
+@Search.searchable: true
 
 annotate entity ZI_PRC_RunParameter with
 

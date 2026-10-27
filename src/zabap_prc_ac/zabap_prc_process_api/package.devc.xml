@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DEVC>
-    <CTEXT>ABAP-PRC: Prozess-API (Prozess, Transition-Handler)</CTEXT>
+    <CTEXT>ABAP-PRC: Process API (process, transition handler)</CTEXT>
     <PACKKIND>5</PACKKIND>
    </DEVC>
   </asx:values>

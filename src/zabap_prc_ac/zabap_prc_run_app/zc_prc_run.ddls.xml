@@ -4,8 +4,8 @@
   <asx:values>
    <DDLS>
     <DDLNAME>ZC_PRC_RUN</DDLNAME>
-    <DDLANGUAGE>D</DDLANGUAGE>
-    <DDTEXT>Lauf - Interface- und BO-View</DDTEXT>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DDTEXT>Run interface and BO view</DDTEXT>
     <SOURCE_TYPE>P</SOURCE_TYPE>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DDLS>

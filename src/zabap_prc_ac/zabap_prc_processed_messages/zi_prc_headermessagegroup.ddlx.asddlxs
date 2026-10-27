@@ -1,4 +1,4 @@
-@Metadata.layer: #CORE
+@Metadata.layer: #PARTNER
 
 annotate entity ZI_PRC_HeaderMessageGroup with
 {

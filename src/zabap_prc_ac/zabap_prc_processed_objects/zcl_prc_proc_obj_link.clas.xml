@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_PROC_OBJ_LINK</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Berechnung der verarbeiteten Schritte</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Calculation of the links</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

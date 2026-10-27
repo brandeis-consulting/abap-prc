@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_PROCESS_LOADER</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Lädt Prozessklassen ohne Kurzdumps</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Loads process classes without short dumps</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

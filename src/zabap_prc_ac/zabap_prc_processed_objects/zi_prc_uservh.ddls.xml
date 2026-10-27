@@ -4,8 +4,8 @@
   <asx:values>
    <DDLS>
     <DDLNAME>ZI_PRC_USERVH</DDLNAME>
-    <DDLANGUAGE>D</DDLANGUAGE>
-    <DDTEXT>Wertehilfe für Benutzer verarbeiteter Objekte</DDTEXT>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DDTEXT>Value help for users of processed objects</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DDLS>

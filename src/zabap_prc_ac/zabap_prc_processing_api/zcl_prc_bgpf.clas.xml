@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_BGPF</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>bgPF-Implementierung für das PRC</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>BGPF Implementation for the PRC</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

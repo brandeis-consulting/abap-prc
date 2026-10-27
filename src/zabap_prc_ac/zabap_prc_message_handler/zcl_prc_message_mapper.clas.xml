@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_MESSAGE_MAPPER</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Konvertiert RAP- und BAPI-Antworten in SYMSG</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Converts RAP and BAPI responses into SYMSG</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

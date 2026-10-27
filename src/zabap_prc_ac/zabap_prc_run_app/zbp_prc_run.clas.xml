@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZBP_PRC_RUN</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Geschäftslogik für das Business-Objekt Lauf</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Business Logic for Run Business Object</DESCRIPT>
     <CATEGORY>06</CATEGORY>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>

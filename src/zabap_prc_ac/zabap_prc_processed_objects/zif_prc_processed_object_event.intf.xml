@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOINTERF>
     <CLSNAME>ZIF_PRC_PROCESSED_OBJECT_EVENT</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Entity-Event auslösen</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Raise entity event</DESCRIPT>
     <EXPOSURE>2</EXPOSURE>
     <STATE>1</STATE>
     <UNICODE>5</UNICODE>

@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOINTERF>
     <CLSNAME>ZIF_PRC_RUN</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Lauf-Interface</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Run interface</DESCRIPT>
     <EXPOSURE>2</EXPOSURE>
     <STATE>1</STATE>
     <UNICODE>5</UNICODE>

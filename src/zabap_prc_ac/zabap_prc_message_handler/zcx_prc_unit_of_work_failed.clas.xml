@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCX_PRC_UNIT_OF_WORK_FAILED</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Unit of Work fehlgeschlagen - nur Signal, ohne Daten</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Unit of work failed - signal only, carries no data</DESCRIPT>
     <CATEGORY>40</CATEGORY>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>

@@ -4,8 +4,8 @@
   <asx:values>
    <DDLS>
     <DDLNAME>ZA_PRC_RUNACTIONRESPONSE</DDLNAME>
-    <DDLANGUAGE>D</DDLANGUAGE>
-    <DDTEXT>Antwort der Aktion zum Auslösen eines Laufs</DDTEXT>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DDTEXT>Response of action to trigger run</DDTEXT>
     <SOURCE_TYPE>A</SOURCE_TYPE>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DDLS>

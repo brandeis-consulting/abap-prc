@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <DEVC>
-    <CTEXT>ABAP-PRC: Verarbeitungs-Engine (Schritte, Isolation, Log)</CTEXT>
+    <CTEXT>ABAP-PRC: Processing engine (steps, isolation, log)</CTEXT>
     <PACKKIND>5</PACKKIND>
     <SRV_CHECK>X</SRV_CHECK>
    </DEVC>

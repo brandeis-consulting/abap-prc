@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOINTERF>
     <CLSNAME>ZIF_PRC_MESSAGE_HANDLER</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Sammelt Nachrichten und entscheidet über Fehlschlag</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Collects messages and decides on failure</DESCRIPT>
     <EXPOSURE>2</EXPOSURE>
     <STATE>1</STATE>
     <UNICODE>5</UNICODE>

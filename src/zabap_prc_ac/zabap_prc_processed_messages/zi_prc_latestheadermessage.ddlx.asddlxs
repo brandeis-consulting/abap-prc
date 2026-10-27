@@ -1,4 +1,4 @@
-@Metadata.layer: #CORE
+@Metadata.layer: #PARTNER
 
 // Only the technical keys are hidden: ZI_PRC_HeaderMessageGroup reads from this
 // view and would inherit @UI.hidden of every other element. The columns of the
@@ -8,7 +8,7 @@ annotate entity ZI_PRC_LatestHeaderMessage with
   @EndUserText.label: 'Processed Object'
   @UI.lineItem: [ { position: 10,
                     type: #WITH_INTENT_BASED_NAVIGATION,
-                    semanticObject: 'ZPRC_ProcessedObject',
+                    semanticObject: 'ABAP_PRC_ProcessedObject',
                     semanticObjectAction: 'show',
                     semanticObjectBinding: [ { element: 'UUID', localElement: 'ProcessedObjectUUID' } ] } ]
   ExternalProcessedObjectID;

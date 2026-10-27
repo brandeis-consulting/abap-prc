@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOINTERF>
     <CLSNAME>ZIF_PRC_PROCESS</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Ein Prozess: sein Zustandsgraph und seine Übergänge</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>A process: its state graph and its transitions</DESCRIPT>
     <EXPOSURE>2</EXPOSURE>
     <STATE>1</STATE>
     <UNICODE>5</UNICODE>

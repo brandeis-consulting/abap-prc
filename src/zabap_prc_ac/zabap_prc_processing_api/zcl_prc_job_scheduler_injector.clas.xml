@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_JOB_SCHEDULER_INJECTOR</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Testinjektion des Job-Schedulers</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Test injection of the job scheduler</DESCRIPT>
     <CATEGORY>05</CATEGORY>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>

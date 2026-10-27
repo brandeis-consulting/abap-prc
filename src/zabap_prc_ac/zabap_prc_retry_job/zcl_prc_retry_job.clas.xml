@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_RETRY_JOB</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Implementierungsklasse für Anwendungsjob</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Application job implementation class</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>

@@ -4,8 +4,8 @@
   <asx:values>
    <DDLS>
     <DDLNAME>ZI_PRC_PROCESSEDOBJECTUSER</DDLNAME>
-    <DDLANGUAGE>D</DDLANGUAGE>
-    <DDTEXT>Benutzer verarbeiteter Objekte pro Prozess</DDTEXT>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DDTEXT>Users of processed objects per process</DDTEXT>
     <SOURCE_TYPE>W</SOURCE_TYPE>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DDLS>

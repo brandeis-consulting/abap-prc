@@ -4,8 +4,8 @@
   <asx:values>
    <VSEOINTERF>
     <CLSNAME>ZIF_PRC_JOB_SCHEDULER</CLSNAME>
-    <LANGU>D</LANGU>
-    <DESCRIPT>Plant Anwendungsjobs ein</DESCRIPT>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Schedules application jobs</DESCRIPT>
     <EXPOSURE>2</EXPOSURE>
     <STATE>1</STATE>
     <UNICODE>5</UNICODE>
