@@ -40,10 +40,14 @@ CLASS zcl_prc_auth_process DEFINITION
 
     "! Same check as IS_AUTHORIZED, result in the format of a RAP
     "! authorization result (if_abap_behv=>auth-allowed / -unauthorized)
+    "! Same check as IS_AUTHORIZED, result in the format of a RAP
+    "! authorization result (if_abap_behv=>auth-allowed / -unauthorized).
+    "! Typed with the released IF_ABAP_BEHV=>T_XFLAG (technically the same as
+    "! ABP_BEHV_AUTH, which is not released for ABAP Cloud in 2023).
     CLASS-METHODS get_behv_authorization
       IMPORTING i_process_name  TYPE zprc_process_name
                 i_activity      TYPE ty_activity
-      RETURNING VALUE(r_result) TYPE abp_behv_auth.
+      RETURNING VALUE(r_result) TYPE if_abap_behv=>t_xflag.
 
 ENDCLASS.
 

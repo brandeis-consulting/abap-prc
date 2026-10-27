@@ -45,7 +45,7 @@ CLASS zcl_prc_auth_run DEFINITION
     CLASS-METHODS get_behv_authorization
       IMPORTING i_application_name TYPE zprc_run_app_name
                 i_activity         TYPE ty_activity
-      RETURNING VALUE(r_result)    TYPE abp_behv_auth.
+      RETURNING VALUE(r_result)    TYPE if_abap_behv=>t_xflag.
 
 ENDCLASS.
 
