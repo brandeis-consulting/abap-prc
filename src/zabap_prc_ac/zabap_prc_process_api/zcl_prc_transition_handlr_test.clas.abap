@@ -14,16 +14,19 @@
 "!     instantiated by its name like in the engine, the transition handler of
 "!     the start state is called (TRANSITION), the end state is taken from the
 "!     state graph and the save is simulated (can be switched off in INITIALIZE),</li>
-"! <li>the payload is taken over only on success (PAYLOAD_JSON),</li>
+"! <li>the payload is taken over only if the step does not fail (PAYLOAD_JSON),</li>
 "! <li>a violation of the process definition (no handler, end state outside the
 "!     graph, fork without end state) fails the test with the engine message,</li>
 "! <li>the step header as the engine writes it (HEADER): on success the success
 "!     message of the transition with its type S, I or W, by default
 "!     ZPRC_PROCESS_MESSAGE/017; another type fails the step with
-"!     ZPRC_PROCESS_MESSAGE/023. On failure the failure message of the
-"!     transition, else the last error.</li>
+"!     ZPRC_PROCESS_MESSAGE/023. With findings (errors added with
+"!     I_FAIL_STEP = ABAP_FALSE, transition X -> X) the last error - no
+"!     exception, the end state is the start state; findings with another end
+"!     state fail the step with ZPRC_PROCESS_MESSAGE/024. On failure the
+"!     failure message of the transition, else the last error.</li>
 "! <li>on success the header is one of the messages of the step afterwards, as
-"!     in the persistence after the commit.</li>
+"!     in the persistence after the commit; with findings it is one already.</li>
 "! </ul>
 "! On failure ZCX_PRC_UNIT_OF_WORK_FAILED is raised again once HEADER is set,
 "! so a test catches it and then checks HEADER and MESSAGE_HANDLER.
@@ -35,9 +38,10 @@
 "! <h2>Engine code used</h2>
 "! The step runs through the real layers 1-Core and 2-Simulation of the
 "! engine: the same process instantiation, transition call, end state rule and
-"! save simulation. The header is chosen by ZCL_PRC_STEP_HEADER, the same
-"! class the engine uses - no copies. Everything else is left out on purpose -
-"! persistence, commit, rollback, retry, lock, session isolation, log, events.
+"! save simulation. Findings are recognized by ZCL_PRC_STEP_3_RESULT=>HAS_FINDINGS
+"! and the header is chosen by ZCL_PRC_STEP_HEADER, the same code the engine
+"! uses - no copies. Everything else is left out on purpose - persistence,
+"! commit, rollback, retry, lock, session isolation, log, events.
 "!
 "! <h2>Test properties</h2>
 "! Declare RISK LEVEL and DURATION on every test class of the hierarchy,
@@ -53,7 +57,7 @@ CLASS zcl_prc_transition_handlr_test DEFINITION PUBLIC ABSTRACT CREATE PUBLIC
     DATA message_handler TYPE REF TO zif_prc_message_handler.
     "! Step header of the last PERFORM_TRANSITION, as the engine writes it.
     DATA header          TYPE zif_prc_message_handler=>ty_message_details.
-    "! Payload of the processed object; changed by successful transitions only.
+    "! Payload of the processed object; changed by steps that do not fail only.
     DATA payload_json    TYPE zprc_payload_json.
 
     "! Sets the process and the processed object for all following calls of
@@ -143,13 +147,20 @@ CLASS zcl_prc_transition_handlr_test IMPLEMENTATION.
                                                              ExternalProcessedObjectID   = m_processed_object_ext_id
                                                              ExternalProcessedObjectUUID = m_processed_object_ext_uuid
                                                              PayloadJson                 = payload_json ).
+    DATA(findings) = abap_false.
     TRY.
         DATA(state_after) = create_step( )->execute( EXPORTING i_state           = state
                                                                i_message_handler = message_handler
                                                      IMPORTING e_transition      = transition ).
-        " Like the result layer: may fail on a program error in the success message
-        header = zcl_prc_step_header=>for_success( i_transition      = transition
-                                                   i_message_handler = message_handler ).
+        " Like the result layer: findings (X -> X) or success; the success message
+        " may fail the step on a program error
+        findings = zcl_prc_step_3_result=>has_findings( i_start_state     = i_start_state
+                                                        i_end_state       = state_after-State
+                                                        i_message_handler = message_handler ).
+        header = COND #( WHEN findings = abap_true
+                         THEN zcl_prc_step_header=>for_findings( message_handler )
+                         ELSE zcl_prc_step_header=>for_success( i_transition      = transition
+                                                                i_message_handler = message_handler ) ).
 
       CATCH zcx_prc_unit_of_work_failed INTO DATA(failure).
         " Like the layer for expected errors: discard the buffer, failure message or last error
@@ -167,7 +178,10 @@ CLASS zcl_prc_transition_handlr_test IMPLEMENTATION.
 
     r_new_state  = state_after-State.
     payload_json = state_after-PayloadJson.
-    add_header_to_messages( ).
+    " The findings header is one of the messages already; the success header joins with the commit
+    IF findings = abap_false.
+      add_header_to_messages( ).
+    ENDIF.
   ENDMETHOD.
 
 
@@ -198,13 +212,18 @@ CLASS zcl_prc_transition_handlr_test IMPLEMENTATION.
     cl_abap_unit_assert=>assert_not_initial( act = m_process_class
                                              msg = `INITIALIZE has not been called` ).
 
-    " Instantiated like in the engine (and in its log layer)
-    DATA process TYPE REF TO zif_prc_process.
-    TRY.
-        CREATE OBJECT process TYPE (m_process_class).
-      CATCH cx_sy_create_object_error INTO DATA(error).
-        cl_abap_unit_assert=>fail( msg = |Process class { m_process_class }: { error->get_text( ) }| ).
-    ENDTRY.
+    " Loaded like in the log layer of the engine, the only user of this method
+    " (GET_MESSAGE_PREFIX_FOR_LOG): a class that cannot be loaded is reported with
+    " ZPRC_PROCESS_MESSAGE/021. PERFORM_TRANSITION runs the real core layer instead.
+    DATA load_error TYPE symsg.
+    DATA(process) = zcl_prc_process_loader=>get_process( EXPORTING i_class_name = m_process_class
+                                                         IMPORTING e_error      = load_error ).
+    IF process IS NOT BOUND.
+      MESSAGE ID load_error-msgid TYPE 'I' NUMBER load_error-msgno
+              WITH load_error-msgv1 load_error-msgv2 load_error-msgv3 load_error-msgv4
+              INTO DATA(load_error_text).
+      cl_abap_unit_assert=>fail( msg = load_error_text ).
+    ENDIF.
 
     r_transition = process->get_transition_handler( i_start_state      = i_start_state
                                                     i_processed_object = m_processed_object_ext_id ).

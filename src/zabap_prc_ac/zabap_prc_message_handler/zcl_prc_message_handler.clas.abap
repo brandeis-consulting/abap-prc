@@ -1,7 +1,7 @@
 "! <p class="shorttext synchronized">Standard implementation of ZIF_PRC_MESSAGE_HANDLER</p>
 "!
 "! One instance per step, created by the processing engine and handed to the
-"! transition. The rules (failure, severities) are documented at
+"! transition. The rules (failure, findings, severities) are documented at
 "! ZIF_PRC_MESSAGE_HANDLER. The step header is not a concept of the handler:
 "! the engine chooses it (ZCL_PRC_STEP_HEADER).
 "!
@@ -9,11 +9,12 @@
 "! works with the handler it is given; tests use ZCL_PRC_MSG_HANDLER_FOR_TEST.
 "!
 "! <h2>Engine only: adding without failing</h2>
-"! Through the public interface every error fails the step. The engine itself
-"! has to record errors without failing - the failure message after the
-"! failure, the abort of a step session, an unexpected exception, messages
-"! that arrive after the commit. The ADD_..._WITHOUT_FAILING methods are
-"! private and reserved to the friends of the engine.
+"! Through the public interface every error fails the step unless the caller
+"! declares it a finding (I_FAIL_STEP = ABAP_FALSE). The engine itself has to
+"! record errors without failing - the failure message after the failure, the
+"! abort of a step session, an unexpected exception, messages that arrive
+"! after the commit. The ADD_..._WITHOUT_FAILING methods are private and
+"! reserved to the friends of the engine.
 "!
 "! Every message entering the handler passes TO_STORED_MESSAGE: severity
 "! normalized, text resolved. Messages are kept in order of arrival.
@@ -56,12 +57,22 @@ CLASS zcl_prc_message_handler DEFINITION PUBLIC FINAL CREATE PRIVATE
     "! @parameter i_reported | REPORTED response.
     METHODS add_reported_without_failing IMPORTING i_reported TYPE any.
 
+    "! An operation reported an error: fails the step, or records a finding.
+    "!
+    "! @parameter i_fail_step                 | ABAP_TRUE: fail the step; ABAP_FALSE: a finding.
+    "! @raising   zcx_prc_unit_of_work_failed | I_FAIL_STEP is set.
+    METHODS on_error IMPORTING i_fail_step TYPE abap_bool
+                     RAISING   zcx_prc_unit_of_work_failed.
+
     "! Marks the step as failed and raises.
     "! Without any error message, ZPRC_PROCESS_MESSAGE/002 is added first, so a
     "! failed step always has an error.
     "!
     "! @raising zcx_prc_unit_of_work_failed | Always.
     METHODS fail RAISING zcx_prc_unit_of_work_failed.
+
+    "! Adds ZPRC_PROCESS_MESSAGE/002 if no error has been collected yet.
+    METHODS ensure_error.
 
     "! Stores one message.
     "!
@@ -111,6 +122,11 @@ CLASS zcl_prc_message_handler DEFINITION PUBLIC FINAL CREATE PRIVATE
     "! @parameter r_msgty | W, I, S or E.
     METHODS normalize_severity IMPORTING i_msgty        TYPE symsgty
                                RETURNING VALUE(r_msgty) TYPE symsgty.
+    "! The message in SY-MSGTY, SY-MSGID, SY-MSGNO and SY-MSGV1 to SY-MSGV4, read field
+    "! by field (CORRESPONDING #( sy ) would access the whole SY structure).
+    "!
+    "! @parameter r_message | Message in SY.
+    METHODS message_from_sy RETURNING VALUE(r_message) TYPE symsg.
 ENDCLASS.
 
 
@@ -223,15 +239,27 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
     append_messages( zcl_prc_message_mapper=>from_reported( i_reported ) ).
   ENDMETHOD.
 
+  METHOD on_error.
+    IF i_fail_step = abap_true.
+      fail( ).
+    ENDIF.
+    " A finding: recorded only, the step does not fail. It always has an error
+    " (e.g. FAILED without message), so the result layer recognizes it.
+    ensure_error( ).
+  ENDMETHOD.
+
   METHOD fail.
     " A failed unit of work always has an error
-    IF NOT line_exists( mt_messages[ msgty = 'E' ] ).
-      MESSAGE e002(zprc_process_message) INTO DATA(lv_dummy) ##NEEDED.
-      append_message( CORRESPONDING #( sy ) ).
-    ENDIF.
-
+    ensure_error( ).
     mv_failed = abap_true.
     RAISE EXCEPTION NEW zcx_prc_unit_of_work_failed( ).
+  ENDMETHOD.
+
+  METHOD ensure_error.
+    IF NOT line_exists( mt_messages[ msgty = 'E' ] ).
+      MESSAGE e002(zprc_process_message) INTO DATA(dummy) ##NEEDED.
+      append_message( message_from_sy( ) ).
+    ENDIF.
   ENDMETHOD.
 
   METHOD normalize_severity.
@@ -246,7 +274,7 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
     DATA(lt_msg) = zcl_prc_message_mapper=>from_bapiret( i_bapiret ).
     append_messages( lt_msg ).
     IF contains_error( lt_msg ).
-      fail( ).
+      on_error( i_fail_step ).
     ENDIF.
   ENDMETHOD.
 
@@ -257,12 +285,12 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
       DATA(lt_msg) = zcl_prc_message_mapper=>from_reported( i_reported ).
       append_messages( lt_msg ).
       IF contains_error( lt_msg ).
-        fail( ).
+        on_error( i_fail_step ).
       ENDIF.
     ENDIF.
 
     IF i_failed IS SUPPLIED AND zcl_prc_message_mapper=>is_failed( i_failed ) = abap_true.
-      fail( ).
+      on_error( i_fail_step ).
     ENDIF.
   ENDMETHOD.
 
@@ -272,17 +300,17 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
     DATA(lt_msg) = exception_chain_to_messages( i_exception ).
     append_messages( lt_msg ).
     IF contains_error( lt_msg ).
-      fail( ).
+      on_error( i_fail_step ).
     ENDIF.
   ENDMETHOD.
 
   METHOD zif_prc_message_handler~add_message_from_sy.
     r_message_handler = me.
 
-    DATA(ls_msg) = CORRESPONDING symsg( sy ).
-    append_message( ls_msg ).
-    IF normalize_severity( ls_msg-msgty ) = 'E'.
-      fail( ).
+    DATA(message) = message_from_sy( ).
+    append_message( message ).
+    IF normalize_severity( message-msgty ) = 'E'.
+      on_error( i_fail_step ).
     ENDIF.
   ENDMETHOD.
 
@@ -293,7 +321,7 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
                                                       msgty = i_message_severity ).
     append_message( ls_msg ).
     IF normalize_severity( ls_msg-msgty ) = 'E'.
-      fail( ).
+      on_error( i_fail_step ).
     ENDIF.
   ENDMETHOD.
 
@@ -302,6 +330,21 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_prc_message_handler~has_errors.
-    r_has_errors = mv_failed.
+    " A failure or a finding - every error is stored as E
+    r_has_errors = xsdbool( line_exists( mt_messages[ msgty = 'E' ] ) ).
+  ENDMETHOD.
+
+
+  METHOD zif_prc_message_handler~has_failed.
+    r_has_failed = mv_failed.
+  ENDMETHOD.
+  METHOD message_from_sy.
+    r_message = VALUE #( msgty = sy-msgty
+                         msgid = sy-msgid
+                         msgno = sy-msgno
+                         msgv1 = sy-msgv1
+                         msgv2 = sy-msgv2
+                         msgv3 = sy-msgv3
+                         msgv4 = sy-msgv4 ).
   ENDMETHOD.
 ENDCLASS.

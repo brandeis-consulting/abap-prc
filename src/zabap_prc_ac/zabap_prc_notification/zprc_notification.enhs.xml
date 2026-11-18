@@ -18,7 +18,7 @@
        <FILTER_NAME>CHANNEL</FILTER_NAME>
        <FILTER_TYPE>S</FILTER_TYPE>
        <CONSTANT>X</CONSTANT>
-       <FILTERTEXT>Notification channel, e.g: Mail, Fiori Notification</FILTERTEXT>
+       <FILTERTEXT>Notification channel, e.g: Mail, Fiori notification</FILTERTEXT>
        <FILTERTEXT_ID>ETR-4D65158831AC6A07</FILTERTEXT_ID>
       </ENH_BADI_FILTER>
      </FILTERS>

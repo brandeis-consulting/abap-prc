@@ -1,7 +1,35 @@
-CLASS lhc_Run DEFINITION INHERITING FROM cl_abap_behavior_handler.
-
+"! Work for the save, collected by the actions. Named like the action that fills it.
+"! Cleared by the saver's CLEANUP - after every save and after ROLLBACK ENTITIES,
+"! so nothing of a rolled-back LUW reaches a later save in the same session.
+CLASS lcl_buffer DEFINITION FINAL.
   PUBLIC SECTION.
-    CLASS-DATA: gt_trigger_se_events_for TYPE STANDARD TABLE OF sysuuid_x16 WITH DEFAULT KEY.
+    TYPES: BEGIN OF ty_initiate_run,
+             " Only scheduled if this run is created in the same save
+             run_uuid          TYPE sysuuid_x16,
+             job_name          TYPE c LENGTH 120,
+             job_template_name TYPE zif_prc_run=>ty_job_template_name,
+             parameter         TYPE cl_apj_rt_api=>tt_job_parameter_value,
+           END OF ty_initiate_run,
+           tt_initiate_run TYPE STANDARD TABLE OF ty_initiate_run WITH EMPTY KEY,
+           tt_uuids        TYPE STANDARD TABLE OF sysuuid_x16 WITH DEFAULT KEY.
+
+    "! Jobs to schedule in the save, one per run created by initiateRun
+    CLASS-DATA initiate_run          TYPE tt_initiate_run.
+    "! Runs whose changed event is raised in the save, without a change of their own
+    CLASS-DATA trigger_changed_event TYPE tt_uuids.
+
+    CLASS-METHODS clear.
+ENDCLASS.
+
+
+CLASS lcl_buffer IMPLEMENTATION.
+  METHOD clear.
+    CLEAR: initiate_run, trigger_changed_event.
+  ENDMETHOD.
+ENDCLASS.
+
+
+CLASS lhc_Run DEFINITION INHERITING FROM cl_abap_behavior_handler.
 
   PRIVATE SECTION.
     METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
@@ -13,8 +41,6 @@ CLASS lhc_Run DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS initiaterun FOR MODIFY IMPORTING keys FOR ACTION run~initiaterun.
     METHODS triggerChangedEvent FOR MODIFY keys FOR ACTION Run~triggerChangedEvent.
 ENDCLASS.
-
-CLASS zbp_prc_run DEFINITION LOCAL FRIENDS lhc_run.
 
 CLASS lhc_Run IMPLEMENTATION.
 
@@ -189,13 +215,13 @@ CLASS lhc_Run IMPLEMENTATION.
       APPEND VALUE #( run_uuid          = lv_run_uuid
                       job_template_name = key-%param-jobTemplateName
                       job_name          = key-%param-jobName
-                      parameter         = lt_parameter ) TO zbp_prc_run=>gt_apj_parameters.
+                      parameter         = lt_parameter ) TO lcl_buffer=>initiate_run.
     ENDLOOP.
   ENDMETHOD.
 
   METHOD triggerChangedEvent.
     LOOP AT keys INTO DATA(key).
-      APPEND key-uuid TO gt_trigger_se_events_for.
+      APPEND key-uuid TO lcl_buffer=>trigger_changed_event.
     ENDLOOP.
   ENDMETHOD.
 
@@ -203,76 +229,73 @@ ENDCLASS.
 
 CLASS lsc_saver DEFINITION INHERITING FROM cl_abap_behavior_saver.
   PROTECTED SECTION.
-    METHODS save_modified    REDEFINITION.
-    METHODS cleanup_finalize REDEFINITION.
+    METHODS save_modified REDEFINITION.
+    METHODS cleanup       REDEFINITION.
 ENDCLASS.
-
-CLASS zbp_prc_run DEFINITION LOCAL FRIENDS lsc_saver.
 
 CLASS lsc_saver IMPLEMENTATION.
   METHOD save_modified.
-    LOOP AT zbp_prc_run=>gt_apj_parameters INTO DATA(ls_job_params).
-      " Only for runs created in this save: entries of a rolled-back initiateRun are dropped
-      " (no cleanup method in managed with additional save)
-      IF NOT line_exists( create-run[ KEY id uuid = ls_job_params-run_uuid ] ).
+    LOOP AT lcl_buffer=>initiate_run INTO DATA(job).
+      " Only for runs created in this save - a second safeguard besides CLEANUP
+      " against entries of a rolled-back initiateRun
+      IF NOT line_exists( create-run[ KEY id uuid = job-run_uuid ] ).
         CONTINUE.
       ENDIF.
       TRY.
           " No commit inside: the job becomes visible to the scheduler with the commit
           " of this LUW, together with the run (no race with _initialize_run)
-          zcl_prc_job_scheduler=>get( )->schedule_immediately( i_template_name = CONV #( ls_job_params-job_template_name )
-                                                               i_job_text      = CONV #( ls_job_params-job_name )
-                                                               i_parameters    = ls_job_params-parameter ).
-        CATCH cx_apj_rt INTO DATA(lo_exception).
+          zcl_prc_job_scheduler=>get( )->schedule_immediately( i_template_name = CONV #( job-job_template_name )
+                                                               i_job_text      = job-job_name
+                                                               i_parameters    = job-parameter ).
+        CATCH cx_apj_rt INTO DATA(scheduling_error).
           " Template, authorization and parameters are checked in initiateRun; what is left are
           " technical errors. The run cannot be changed here anymore (the managed save writes it
           " after this method), so it stays "planned" - the caller is told why
-          DATA(lv_text) = lo_exception->get_text( ).
-          DATA(lo_previous) = lo_exception->previous.
-          WHILE lo_previous IS BOUND.
-            lv_text = |{ lv_text } - { lo_previous->get_text( ) }|.
-            lo_previous = lo_previous->previous.
+          DATA(text) = scheduling_error->get_text( ).
+          DATA(previous) = scheduling_error->previous.
+          WHILE previous IS BOUND.
+            text = |{ text } - { previous->get_text( ) }|.
+            previous = previous->previous.
           ENDWHILE.
-          DATA lv_reason TYPE c LENGTH 150.
-          lv_reason = lv_text.
+          DATA reason TYPE c LENGTH 150.
+          reason = text.
           " Job template &1 could not be scheduled: &2&3&4
           APPEND new_message( id       = 'ZPRC_RUN'
                               number   = '009'
                               severity = if_abap_behv_message=>severity-error
-                              v1       = ls_job_params-job_template_name
-                              v2       = lv_reason(50)
-                              v3       = lv_reason+50(50)
-                              v4       = lv_reason+100(50) )
+                              v1       = job-job_template_name
+                              v2       = reason(50)
+                              v3       = reason+50(50)
+                              v4       = reason+100(50) )
                  TO reported-%other.
       ENDTRY.
     ENDLOOP.
-    CLEAR zbp_prc_run=>gt_apj_parameters.
 
-    IF update-run IS NOT INITIAL OR lhc_run=>gt_trigger_se_events_for IS NOT INITIAL.
+    IF update-run IS NOT INITIAL OR lcl_buffer=>trigger_changed_event IS NOT INITIAL.
       TRY.
-          DATA lt_run_uuid  TYPE STANDARD TABLE OF zr_prc_runtp-uuid.
-          DATA lt_run_uuid2 TYPE STANDARD TABLE OF zr_prc_runtp-uuid.
+          " Changed runs plus runs whose event was triggered explicitly.
+          " Same type as ZBP_R_PRC_RUNEXT=>TT_UUIDS - the dynamic call needs a compatible table
+          DATA event_uuids TYPE STANDARD TABLE OF sysuuid_x16 WITH EMPTY KEY.
+          event_uuids = VALUE #( BASE VALUE #( FOR k IN update-run ( k-uuid ) )
+                                 FOR uuid IN lcl_buffer=>trigger_changed_event ( uuid ) ).
 
-          lt_run_uuid = VALUE #( FOR k IN update-run
-                                 ( k-uuid ) ).
-          lt_run_uuid2 = VALUE #( FOR uuid IN lhc_run=>gt_trigger_se_events_for
-                                  ( uuid ) ).
-          APPEND LINES OF lt_run_uuid2 TO lt_run_uuid.
-
+          " Dynamic: the event raiser exists only from 2025 (package ZABAP_PRC_EVENTS_SE_2025).
+          " The parameter name is not checked by the compiler - keep it in sync with the class.
           CALL METHOD ('ZBP_R_PRC_RUNEXT')=>('RAISE_RUN')
-            EXPORTING it_run_uuid = lt_run_uuid.
+            EXPORTING i_uuids = event_uuids.
 
         CATCH cx_sy_dyn_call_illegal_class
               cx_sy_dyn_call_illegal_method ##NO_HANDLER.
           " nothing to do, the event raiser class is not available in this installation
       ENDTRY.
     ENDIF.
-    " Raised once per save: without this, every later save in the session raised them again
-    CLEAR lhc_run=>gt_trigger_se_events_for.
   ENDMETHOD.
 
-  METHOD cleanup_finalize.
-    CLEAR zbp_prc_run=>gt_apj_parameters.
+  METHOD cleanup.
+    " After every save and after ROLLBACK ENTITIES (BDEF: and cleanup). Not in
+    " CLEANUP_FINALIZE: that runs after a failed check, although the LUW goes on and a
+    " corrected save still needs the jobs of initiateRun.
+    lcl_buffer=>clear( ).
   ENDMETHOD.
 
 ENDCLASS.

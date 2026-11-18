@@ -10,7 +10,8 @@ define authorization context NoCheckWhenPrivileged
 
 define behavior for ZR_PRC_ProcessedObjectTP alias ProcessedObject
 extensible
-with unmanaged save with full data
+// and cleanup: the saver clears its own buffers also after ROLLBACK ENTITIES
+with unmanaged save and cleanup with full data
 etag master LocalLastChangedAt
 // Own lock object, shared with the processing engine: SET LOCKS would make RAP
 // the transaction owner of every step and forbid classic update function modules

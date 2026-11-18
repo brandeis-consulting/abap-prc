@@ -9,11 +9,13 @@
 "! Only data crosses the session boundary. The messages of the aborted session
 "! are lost. The header of the failed step is written for the end user:
 "! <ul>
-"! <li>with a short dump: ZPRC_PROCESS_MESSAGE/018 (program error), followed by
-"! the technical abort text (011) and the short dump (013, 014) as information</li>
+"! <li>with a short dump: ZPRC_PROCESS_MESSAGE/025 with the runtime error and its
+"! cause (for MESSAGE X / A the text of the message), followed by the short dump
+"! (013) and its error analysis (014) as information</li>
 "! <li>without a short dump (MESSAGE A/E): 019 with the text of the original
 "! message; without a dump finder (BTP) also where to look (012)</li>
 "! </ul>
+"! IS_ABORT_HEADER tells other layers whether a step was aborted this way.
 "! The only error is the header (ZCL_PRC_STEP_HEADER=>FOR_FAILURE). The short
 "! dump is found exactly through the EPP transaction ID the step session
 "! registered under the marker of the step. The transition is not handed out,
@@ -25,6 +27,17 @@ CLASS zcl_prc_step_8_isolation DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
     "! @parameter i_step_writer | Writes the failed step after an abort.
     METHODS constructor IMPORTING i_step_writer TYPE REF TO zcl_prc_step_writer.
+
+    "! Is the message the header of a step whose session was aborted (019, 025)?
+    "! The one place that knows these headers - layers that must not load the process
+    "! of such a step (e.g. the log layer) ask here.
+    "!
+    "! @parameter i_message_class  | Message class of the header.
+    "! @parameter i_message_number | Message number of the header.
+    "! @parameter r_result         | abap_true for the header of an aborted step.
+    CLASS-METHODS is_abort_header IMPORTING i_message_class  TYPE csequence
+                                            i_message_number TYPE csequence
+                                  RETURNING VALUE(r_result)  TYPE abap_bool.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -80,6 +93,13 @@ CLASS zcl_prc_step_8_isolation IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD is_abort_header.
+    " The headers written by ADD_ABORT_MESSAGES
+    r_result = xsdbool( i_message_class = 'ZPRC_PROCESS_MESSAGE'
+                        AND ( i_message_number = '019' OR i_message_number = '025' ) ).
+  ENDMETHOD.
+
+
   METHOD zif_prc_processing_step~execute.
     CLEAR e_transition.
     DATA started_at TYPE timestampl.
@@ -128,31 +148,33 @@ CLASS zcl_prc_step_8_isolation IMPLEMENTATION.
 
 
   METHOD add_abort_messages.
-    " The abort text, up to 200 characters, spread over the four variables
-    DATA text TYPE c LENGTH 200.
-    text = COND string( WHEN i_abort_message IS NOT INITIAL THEN i_abort_message ELSE `no message` ).
+    DATA(abort_text) = COND string( WHEN i_abort_message IS NOT INITIAL THEN i_abort_message ELSE `no message` ).
 
     " Searched first: the header depends on whether there is a short dump
     DATA(dump) = COND zif_prc_dump_finder=>ty_dump( WHEN mo_dump_finder IS BOUND
                                                     THEN mo_dump_finder->find_dump( i_marker = i_marker
                                                                                     i_from   = i_started_at ) ).
 
-    " The only error message becomes the header of the step
+    " The only error message becomes the header of the step (IS_ABORT_HEADER knows it)
     IF dump IS NOT INITIAL.
-      " Program error: the header speaks to the end user, the details to the administrator
-      MESSAGE e018(zprc_process_message) INTO DATA(message) ##NEEDED.
+      " Runtime error: the header names the error and its cause - for MESSAGE X / A the
+      " message itself, e.g. "Runtime error MESSAGE_TYPE_X: <text of the message>".
+      " The abort text of the session is generic in this case and is left out.
+      DATA(cause) = zcl_prc_abort_text=>to_variables( COND string( WHEN dump-cause IS NOT INITIAL
+                                                                   THEN dump-cause
+                                                                   ELSE abort_text ) ).
+      MESSAGE e025(zprc_process_message) WITH dump-runtime_error cause-v1 cause-v2 cause-v3
+              INTO DATA(message) ##NEEDED.
       add_from_sy( i_message_handler ).
-      MESSAGE i011(zprc_process_message) WITH text+0(50) text+50(50) text+100(50) text+150(50)
-              INTO message.
-      add_from_sy( i_message_handler ).
+      " Details for the administrator: where the dump is, and its error analysis
       add_dump_messages( i_dump            = dump
                          i_message_handler = i_message_handler ).
       RETURN.
     ENDIF.
 
     " MESSAGE A/E abort the session without a short dump: the abort text is the original message
-    MESSAGE e019(zprc_process_message) WITH text+0(50) text+50(50) text+100(50) text+150(50)
-            INTO message.
+    DATA(text) = zcl_prc_abort_text=>to_variables( abort_text ).
+    MESSAGE e019(zprc_process_message) WITH text-v1 text-v2 text-v3 text-v4 INTO message.
     add_from_sy( i_message_handler ).
 
     IF mo_dump_finder IS NOT BOUND.
@@ -169,9 +191,9 @@ CLASS zcl_prc_step_8_isolation IMPLEMENTATION.
     MESSAGE i013(zprc_process_message) WITH i_dump-runtime_error i_dump-program INTO DATA(message) ##NEEDED.
     add_from_sy( i_message_handler ).
 
-    DATA short_text TYPE c LENGTH 200.
-    short_text = i_dump-short_text.
-    MESSAGE i014(zprc_process_message) WITH short_text+0(50) short_text+50(50) short_text+100(50) short_text+150(50)
+    " Split at blanks: a hard split at 50 characters would lose the blanks at the borders
+    DATA(analysis) = zcl_prc_abort_text=>to_variables( i_dump-short_text ).
+    MESSAGE i014(zprc_process_message) WITH analysis-v1 analysis-v2 analysis-v3 analysis-v4
             INTO message.
     add_from_sy( i_message_handler ).
   ENDMETHOD.

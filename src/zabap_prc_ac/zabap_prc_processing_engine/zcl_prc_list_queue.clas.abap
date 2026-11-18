@@ -8,7 +8,9 @@
 "! got no lock or were not selected at all block alike. A blocked successor and
 "! all after it stay untouched: nothing happens.
 "!
-"! First version processes serially, also objects without a queue.
+"! Processes its list serially. The list is one package: the parallel list layer
+"! around it (ZCL_PRC_LIST_PARALLEL) runs the packages - one per queue, one per
+"! object without queue - side by side.
 CLASS zcl_prc_list_queue DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
@@ -67,4 +69,3 @@ CLASS zcl_prc_list_queue IMPLEMENTATION.
   ENDMETHOD.
 
 ENDCLASS.
-

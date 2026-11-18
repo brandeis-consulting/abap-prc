@@ -14,7 +14,8 @@ persistent table zprc_run
 // Not supported in S/4HANA 2023, active again once 2023 is no longer supported:
 // ##UNMAPPED_FIELD[SEVERITYCODESUCCESS] ##UNMAPPED_FIELD[SEVERITYCODEERROR] ##UNMAPPED_FIELD[MESSAGESEVERITY]
 // ##UNMAPPED_FIELD[NUMBEROFERRORS] ##UNMAPPED_FIELD[NUMBEROFSUCCESS] ##UNMAPPED_FIELD[CURRENTLYPROCESSEDNUMBER]
-with additional save
+// and cleanup: the saver clears its own buffers also after ROLLBACK ENTITIES
+with additional save and cleanup
 lock master
 authorization master ( instance )
 {

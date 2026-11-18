@@ -19,8 +19,8 @@ CLASS zcl_prc_list_selection DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
-    DATA mt_parameters TYPE if_apj_rt_exec_object=>tt_templ_val.
-    DATA mo_inner      TYPE REF TO zif_prc_processing_list.
+    DATA parameters TYPE if_apj_rt_exec_object=>tt_templ_val.
+    DATA inner      TYPE REF TO zif_prc_processing_list.
 
     METHODS select IMPORTING i_ignore_retry_scheduling TYPE abap_bool
                    RETURNING VALUE(r_states)           TYPE zif_prc_processing_engine=>tt_state.
@@ -31,14 +31,14 @@ ENDCLASS.
 CLASS zcl_prc_list_selection IMPLEMENTATION.
 
   METHOD constructor.
-    mt_parameters = i_parameters.
-    mo_inner      = i_inner.
+    parameters = i_parameters.
+    inner      = i_inner.
   ENDMETHOD.
 
 
   METHOD zif_prc_processing_list~process.
-    DATA(ignore_retry_scheduling) = xsdbool( line_exists( mt_parameters[ selname = zcl_prc_retry_job=>p_ignore_restart
-                                                                         low     = abap_true ] ) ).
+    DATA(ignore_retry_scheduling) = xsdbool( line_exists( parameters[ selname = zcl_prc_retry_job=>co_parameter-ignore_restart
+                                                                      low     = abap_true ] ) ).
     DATA(selected) = select( ignore_retry_scheduling ).
 
     DATA(states) = COND zif_prc_processing_engine=>tt_state(
@@ -47,7 +47,7 @@ CLASS zcl_prc_list_selection IMPLEMENTATION.
                      ELSE VALUE #( FOR s IN selected
                                    ( VALUE #( BASE s RetryCount = 0 RetryDateTime = 0 ) ) ) ).
 
-    r_states = mo_inner->process( states ).
+    r_states = inner->process( states ).
   ENDMETHOD.
 
 
@@ -62,11 +62,11 @@ CLASS zcl_prc_list_selection IMPLEMENTATION.
     ENDIF.
 
     DATA selected_uuids TYPE RANGE OF ZR_PRC_ProcessedObject-uuid.
-    selected_uuids = VALUE #( FOR p IN mt_parameters WHERE ( selname = zcl_prc_retry_job=>s_uuid )
+    selected_uuids = VALUE #( FOR p IN parameters WHERE ( selname = zcl_prc_retry_job=>co_parameter-uuid )
                               ( CORRESPONDING #( p ) ) ).
 
     DATA selected_process_names TYPE RANGE OF zprc_process_name.
-    selected_process_names = VALUE #( FOR p IN mt_parameters WHERE ( selname = zcl_prc_retry_job=>c_process_name )
+    selected_process_names = VALUE #( FOR p IN parameters WHERE ( selname = zcl_prc_retry_job=>co_parameter-process_name )
                                       ( CORRESPONDING #( p ) ) ).
 
     " Privileged: this selection serves every way of processing (direct execution after
@@ -75,7 +75,7 @@ CLASS zcl_prc_list_selection IMPLEMENTATION.
     " the wrong check: processing needs activity 16, and adding 16 to that DCL would let
     " every user with 16 read in the apps. Where a user decides what is processed, the
     " entry point restricts the process names beforehand: the retry job
-    " (ZCL_PRC_RETRY_JOB->_RESTRICT_TO_AUTHORIZED, ZPRC_PROC activity 16).
+    " (ZCL_PRC_RETRY_JOB->RESTRICT_TO_AUTHORIZED, ZPRC_PROC activity 16).
     SELECT FROM ZR_PRC_ProcessedObject AS ProcessedObject
       FIELDS *
       WHERE State <> @state_finished
@@ -89,4 +89,3 @@ CLASS zcl_prc_list_selection IMPLEMENTATION.
   ENDMETHOD.
 
 ENDCLASS.
-

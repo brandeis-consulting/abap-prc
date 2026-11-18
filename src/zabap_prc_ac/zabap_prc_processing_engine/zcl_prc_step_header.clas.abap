@@ -11,10 +11,12 @@
 "! <li>Failure: the failure message of the transition, added as the last
 "!     error; else the last error of the step; without any error
 "!     ZPRC_PROCESS_MESSAGE/002.</li>
+"! <li>Findings: the last error of the step. Findings are no failure, so the
+"!     failure message of the transition is not used.</li>
 "! </ul>
 "! The success header is not added to the message handler: the step writer
-"! persists it with the commit of the step only. The failure header is one of
-"! the messages of the handler.
+"! persists it with the commit of the step only. The failure and the
+"! findings header are messages of the handler.
 CLASS zcl_prc_step_header DEFINITION PUBLIC FINAL CREATE PRIVATE.
 
   PUBLIC SECTION.
@@ -38,6 +40,19 @@ CLASS zcl_prc_step_header DEFINITION PUBLIC FINAL CREATE PRIVATE.
     CLASS-METHODS for_failure IMPORTING i_message_handler TYPE REF TO zif_prc_message_handler
                                         i_failure_message TYPE symsg OPTIONAL
                               RETURNING VALUE(r_header)   TYPE zif_prc_message_handler=>ty_message_details.
+
+    "! Header of a step with findings (errors added with I_FAIL_STEP = ABAP_FALSE):
+    "! the last error. Adds nothing to the handler.
+    "!
+    "! @parameter i_message_handler | Handler of the step; contains at least one error.
+    "! @parameter r_header          | Step header, one of the messages of the handler.
+    CLASS-METHODS for_findings IMPORTING i_message_handler TYPE REF TO zif_prc_message_handler
+                               RETURNING VALUE(r_header)   TYPE zif_prc_message_handler=>ty_message_details.
+
+  PRIVATE SECTION.
+    "! The last error among the messages; initial if there is none.
+    CLASS-METHODS last_error IMPORTING i_messages      TYPE zif_prc_message_handler=>tt_messages
+                             RETURNING VALUE(r_header) TYPE zif_prc_message_handler=>ty_message_details.
 ENDCLASS.
 
 
@@ -90,8 +105,17 @@ CLASS zcl_prc_step_header IMPLEMENTATION.
       messages = i_message_handler->get_messages( ).
     ENDIF.
 
-    " The last error of the step
-    LOOP AT messages INTO DATA(message) WHERE msgty = 'E'.
+    r_header = last_error( messages ).
+  ENDMETHOD.
+
+
+  METHOD for_findings.
+    r_header = last_error( i_message_handler->get_messages( ) ).
+  ENDMETHOD.
+
+
+  METHOD last_error.
+    LOOP AT i_messages INTO DATA(message) WHERE msgty = 'E'.
       r_header = message.
     ENDLOOP.
   ENDMETHOD.

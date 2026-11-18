@@ -46,7 +46,7 @@ ENDCLASS.
 
 CLASS zcl_prc_auth_run IMPLEMENTATION.
   METHOD is_authorized.
-    AUTHORITY-CHECK OBJECT 'ZPRC_RUN'
+    AUTHORITY-CHECK OBJECT co_auth_object
                     ID 'ZPRCRUNAPP' FIELD i_application_name
                     ID 'ACTVT'      FIELD i_activity.
     r_authorized = xsdbool( sy-subrc = 0 ).

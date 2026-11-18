@@ -4,13 +4,14 @@
 "! the mail service are reported into the message handler and fail the step,
 "! so the send step is retried and can be resumed.
 CLASS zcl_prc_notif_channel_mail DEFINITION
-  PUBLIC FINAL
+  PUBLIC
+  FINAL
   CREATE PUBLIC.
 
   PUBLIC SECTION.
     INTERFACES zif_prc_notification_channel.
 
-    "! Sender until a process configuration provides one
+    "! Sender of every mail of the Processing Center
     CONSTANTS co_sender TYPE string VALUE `no_reply@abap-processing-center.de`.
 
   PRIVATE SECTION.

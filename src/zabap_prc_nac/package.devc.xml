@@ -4,7 +4,6 @@
   <asx:values>
    <DEVC>
     <CTEXT>ABAP-PRC: Core - Standard ABAP (on-premise only)</CTEXT>
-    <PACKKIND>5</PACKKIND>
    </DEVC>
   </asx:values>
  </asx:abap>

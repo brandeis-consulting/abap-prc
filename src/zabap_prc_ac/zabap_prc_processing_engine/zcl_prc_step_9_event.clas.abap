@@ -74,7 +74,6 @@ CLASS zcl_prc_step_9_event IMPLEMENTATION.
     " the events are delivered
     COMMIT ENTITIES.
     COMMIT WORK.
-    " TODO: an event that cannot be raised goes to the application log (only a refresh signal is lost)
   ENDMETHOD.
 
 ENDCLASS.

@@ -7,4 +7,4 @@ msgstr ""
 
 #: TLGS/SAJTZAJT_PRC_CLEANUP_JOB 02/0000010004TEXT, maxlen=120
 msgid "ABAP Processing Center: Cleanup job for old Runs, Proc. Obj."
-msgstr ""
+msgstr "ABAP Processing Center: Bereinigungsjob für alte Läufe, verarb. Obj."

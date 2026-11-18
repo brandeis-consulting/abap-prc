@@ -19,7 +19,10 @@ INTERFACE zif_prc_process
   CONSTANTS co_start     TYPE ty_state VALUE 'START'.
   "! Final state; a processed object in this state is not processed any more
   CONSTANTS co_finished  TYPE ty_state VALUE 'FINISHED'.
-  "! Maximum number of automatic retries of a failed step
+  "! Retry count of an object whose automatic retries are used up. A failed step
+  "! is retried after 5 min, 55 min, 23 h and 6 days; after that the object keeps
+  "! this value and is processed again only when it is resumed or when the
+  "! retry scheduling is ignored.
   CONSTANTS co_max_retry TYPE int4     VALUE 99999.
 
   "! Relative URL (FLP intent) to the business object behind a processed

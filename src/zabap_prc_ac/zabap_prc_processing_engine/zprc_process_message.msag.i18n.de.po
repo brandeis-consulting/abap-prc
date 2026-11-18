@@ -9,10 +9,6 @@ msgstr ""
 msgid "&1 of &2 objects not resumed (no authorization or locked)"
 msgstr "&1 von &2 Objekten nicht fortgesetzt (keine Berechtigung oder gesperrt)"
 
-#: MESS/ZPRC_PROCESS_MESSAGE011/TEXT, maxlen=73
-msgid "Abort text of the step session: &1&2&3&4"
-msgstr "Abbruchtext der Schritt-Session: &1&2&3&4"
-
 #: MESS/ZPRC_PROCESS_MESSAGE014/TEXT, maxlen=73
 msgid "Error analysis: &1&2&3&4"
 msgstr "Fehleranalyse: &1&2&3&4"
@@ -57,10 +53,6 @@ msgstr "Verarbeitetes Objekt ist durch anderen Benutzer oder Prozess gesperrt"
 msgid "Processing object &1 failed. Stopped working on queue &2."
 msgstr "Verarbeitung von Objekt &1 fehlgeschlagen. Queue &2 wurde gestoppt."
 
-#: MESS/ZPRC_PROCESS_MESSAGE018/TEXT, maxlen=73
-msgid "Processing step aborted by a program error"
-msgstr "Verarbeitungsschritt durch Programmfehler abgebrochen"
-
 #: MESS/ZPRC_PROCESS_MESSAGE019/TEXT, maxlen=73
 msgid "Processing step aborted: &1&2&3&4"
 msgstr "Verarbeitungsschritt abgebrochen: &1&2&3&4"
@@ -68,6 +60,10 @@ msgstr "Verarbeitungsschritt abgebrochen: &1&2&3&4"
 #: MESS/ZPRC_PROCESS_MESSAGE023/TEXT, maxlen=73
 msgid "Program error: success message &1 &2 has type &3 (allowed: S, I, W)"
 msgstr "Programmfehler: Erfolgsmeldung &1 &2 hat Typ &3 (erlaubt: S, I, W)"
+
+#: MESS/ZPRC_PROCESS_MESSAGE025/TEXT, maxlen=73
+msgid "Runtime error &1: &2&3&4"
+msgstr "Laufzeitfehler &1: &2&3&4"
 
 #: MESS/ZPRC_PROCESS_MESSAGE016/TEXT, maxlen=73
 msgid "Save failed; the business object reported no error"
@@ -92,6 +88,10 @@ msgstr "Schritt ohne Fehlermeldung fehlgeschlagen"
 #: MESS/ZPRC_PROCESS_MESSAGE017/TEXT, maxlen=73
 msgid "Step processed successfully"
 msgstr "Schritt erfolgreich verarbeitet"
+
+#: MESS/ZPRC_PROCESS_MESSAGE024/TEXT, maxlen=73
+msgid "Transition &1 -> &2 ends with findings; only &1 -> &1 is allowed"
+msgstr "Übergang &1 -> &2 endet mit Befunden; nur &1 -> &1 ist erlaubt"
 
 #: MESS/ZPRC_PROCESS_MESSAGE006/TEXT, maxlen=73
 msgid "Transition from &1 to &2 is not defined in process class &3"

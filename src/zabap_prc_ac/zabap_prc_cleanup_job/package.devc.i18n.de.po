@@ -6,5 +6,5 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: DEVC/PACKAGE/CTEXT, maxlen=60
-msgid "Clean up job to delete old Runs and Processed Objects"
-msgstr ""
+msgid "ABAP-PRC: Clean-up job (old runs and processed objects)"
+msgstr "ABAP-PRC: Bereinigungsjob (alte Läufe, verarb. Objekte)"

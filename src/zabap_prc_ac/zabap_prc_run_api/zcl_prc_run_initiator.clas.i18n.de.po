@@ -7,4 +7,4 @@ msgstr ""
 
 #: CLAS/ZCL_PRC_RUN_INITIATOR/CLASS 00001, maxlen=60
 msgid "Starts a run from a host application"
-msgstr "Lauf-Initiator"
+msgstr "Startet einen Lauf aus einer Host-Anwendung"

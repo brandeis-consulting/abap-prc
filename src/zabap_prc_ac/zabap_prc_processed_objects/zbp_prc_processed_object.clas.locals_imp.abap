@@ -1,15 +1,34 @@
-CLASS lhc_ProcessedObject DEFINITION INHERITING FROM cl_abap_behavior_handler.
+"! Work for the save, collected by the actions. Named like the action that fills it.
+"! Cleared by the saver's CLEANUP - after every save and after ROLLBACK ENTITIES,
+"! so nothing of a rolled-back LUW reaches a later save in the same session.
+CLASS lcl_buffer DEFINITION FINAL.
   PUBLIC SECTION.
-    CLASS-DATA gt_processed_objects  TYPE STANDARD TABLE OF ZR_PRC_ProcessedObjectTP-uuid WITH DEFAULT KEY.
-    "! Objects whose changed event is raised in the next save, without a change of their own
-    CLASS-DATA gt_trigger_events_for TYPE STANDARD TABLE OF ZR_PRC_ProcessedObjectTP-uuid WITH DEFAULT KEY.
+    TYPES tt_uuids TYPE STANDARD TABLE OF zr_prc_processedobjecttp-uuid WITH EMPTY KEY.
 
+    "! Objects to schedule via bgPF in the save
+    CLASS-DATA resume_processing     TYPE tt_uuids.
+    "! Objects whose changed event is raised in the save, without a change of their own
+    CLASS-DATA trigger_changed_event TYPE tt_uuids.
+
+    CLASS-METHODS clear.
+ENDCLASS.
+
+
+CLASS lcl_buffer IMPLEMENTATION.
+  METHOD clear.
+    CLEAR: resume_processing, trigger_changed_event.
+  ENDMETHOD.
+ENDCLASS.
+
+
+CLASS lhc_ProcessedObject DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
-    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION IMPORTING keys REQUEST requested_authorizations FOR ProcessedObject RESULT result.
+    METHODS get_instance_authorizations FOR INSTANCE AUTHORIZATION
+      IMPORTING keys REQUEST requested_authorizations FOR ProcessedObject RESULT result.
     METHODS lock FOR LOCK IMPORTING keys FOR LOCK ProcessedObject.
     METHODS precheck_createprocessedobject FOR PRECHECK IMPORTING keys FOR ACTION ProcessedObject~createProcessedObject.
     METHODS createProcessedObject FOR MODIFY IMPORTING keys FOR ACTION ProcessedObject~createProcessedObject.
-    METHODS resumeProcessing FOR MODIFY IMPORTING keys FOR ACTION ProcessedObject~resumeProcessing." RESULT result.
+    METHODS resumeProcessing FOR MODIFY IMPORTING keys FOR ACTION ProcessedObject~resumeProcessing.
     METHODS triggerChangedEvent FOR MODIFY IMPORTING keys FOR ACTION ProcessedObject~triggerChangedEvent.
     METHODS get_instance_features FOR INSTANCE FEATURES IMPORTING keys REQUEST requested_features FOR ProcessedObject RESULT result.
 ENDCLASS.
@@ -144,7 +163,8 @@ CLASS lhc_ProcessedObject IMPLEMENTATION.
     MODIFY ENTITIES OF zr_prc_ProcessedObjectTP
            IN LOCAL MODE
            ENTITY ProcessedObject
-           CREATE FIELDS ( RunUUID ProcessName PayloadJson MailAddress DoNotProcessBefore QueueID QueuePosition FactoryClassName State ExternalProcessedObjectID ExternalProcessedObjectUUID )
+           CREATE FIELDS ( RunUUID ProcessName PayloadJson MailAddress DoNotProcessBefore QueueID QueuePosition
+                           FactoryClassName State ExternalProcessedObjectID ExternalProcessedObjectUUID )
            WITH lt_create
            MAPPED   DATA(ls_mapped)
            FAILED   DATA(ls_failed)
@@ -157,8 +177,8 @@ CLASS lhc_ProcessedObject IMPLEMENTATION.
 
   METHOD resumeProcessing.
     " Collected until the save: several calls before one save must all be resumed
-    gt_processed_objects = VALUE #( BASE gt_processed_objects FOR k IN keys
-                                    ( k-uuid ) ).
+    lcl_buffer=>resume_processing = VALUE #( BASE lcl_buffer=>resume_processing FOR k IN keys
+                                             ( k-uuid ) ).
 
     MODIFY ENTITIES OF ZR_PRC_ProcessedObjectTP IN LOCAL MODE
            ENTITY ProcessedObject UPDATE FIELDS ( RetryCount RetryDateTime )
@@ -167,7 +187,7 @@ CLASS lhc_ProcessedObject IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD triggerChangedEvent.
-    gt_trigger_events_for = VALUE #( BASE gt_trigger_events_for FOR k IN keys ( k-uuid ) ).
+    lcl_buffer=>trigger_changed_event = VALUE #( BASE lcl_buffer=>trigger_changed_event FOR k IN keys ( k-uuid ) ).
   ENDMETHOD.
 
   METHOD get_instance_features.
@@ -183,7 +203,8 @@ CLASS lhc_ProcessedObject IMPLEMENTATION.
     result = VALUE #(
         FOR ls_po IN lt_processed_objects
         ( %tky                     = ls_po-%tky
-          %action-resumeProcessing = COND #( WHEN ls_po-State = zif_prc_process=>co_finished OR ls_po-DoNotProcessBefore > lv_current_timestamp
+          %action-resumeProcessing = COND #( WHEN    ls_po-State              = zif_prc_process=>co_finished
+                                                  OR ls_po-DoNotProcessBefore > lv_current_timestamp
                                              THEN if_abap_behv=>fc-o-disabled
                                              ELSE if_abap_behv=>fc-o-enabled ) ) ).
   ENDMETHOD.
@@ -194,52 +215,64 @@ ENDCLASS.
 CLASS lsc_ProcessedObject DEFINITION INHERITING FROM cl_abap_behavior_saver_failed.
   PROTECTED SECTION.
     METHODS save_modified REDEFINITION.
+    METHODS cleanup       REDEFINITION.
 ENDCLASS.
 
 
 CLASS lsc_ProcessedObject IMPLEMENTATION.
   METHOD save_modified.
     " Same write path as the processing engine. The process class was checked in the
-    " precheck of createProcessedObject, so a create object error here is a real dump.
+    " precheck of createProcessedObject; the writer loads it via the loader anyway.
     zcl_prc_db_writer=>create( )->save( i_create = create
                                         i_update = update
                                         i_delete = delete ).
 
-    IF lhc_processedobject=>gt_processed_objects IS NOT INITIAL.
+    " Only objects that are part of this save (resumeProcessing updates them) - a second
+    " safeguard besides CLEANUP against entries of a rolled-back LUW
+    DATA resume TYPE lcl_buffer=>tt_uuids.
+    LOOP AT lcl_buffer=>resume_processing INTO DATA(candidate).
+      IF line_exists( update-processedobject[ KEY id uuid = candidate ] ).
+        APPEND candidate TO resume.
+      ENDIF.
+    ENDLOOP.
+
+    IF resume IS NOT INITIAL.
       TRY.
           zcl_prc_processing_api=>get_instance( )->process_asynchronously_bgpf(
-              VALUE #( FOR k IN lhc_processedobject=>gt_processed_objects
-                       ( selname = zcl_prc_retry_job=>s_uuid sign = 'I' option = 'EQ' low = k ) ) ).
-        CATCH cx_bgmc INTO FINAL(lx_bgmc).
+              VALUE #( FOR k IN resume
+                       ( selname = zcl_prc_retry_job=>co_parameter-uuid sign = 'I' option = 'EQ' low = k ) ) ).
+        CATCH cx_bgmc INTO FINAL(bgmc_error).
           " Resume asked for processing now - if it cannot be scheduled, the save fails
           " and the caller sees why, instead of an object silently waiting for the retry job
-          LOOP AT lhc_processedobject=>gt_processed_objects INTO FINAL(lv_uuid).
-            APPEND VALUE #( UUID        = lv_uuid
+          LOOP AT resume INTO FINAL(uuid).
+            APPEND VALUE #( UUID        = uuid
                             %fail-cause = if_abap_behv=>cause-unspecific ) TO failed-processedobject.
-            APPEND VALUE #( UUID = lv_uuid
+            APPEND VALUE #( UUID = uuid
                             %msg = new_message_with_text( severity = if_abap_behv_message=>severity-error
-                                                          text     = lx_bgmc->get_text( ) ) )
+                                                          text     = bgmc_error->get_text( ) ) )
                    TO reported-processedobject.
           ENDLOOP.
       ENDTRY.
     ENDIF.
-    " Triggered once per save
-    CLEAR lhc_processedobject=>gt_processed_objects.
 
     TRY.
         " Changed objects plus objects whose event was triggered explicitly
-        DATA lt_processed_object_uuid TYPE STANDARD TABLE OF zr_prc_processedobjecttp-uuid WITH DEFAULT KEY.
-        lt_processed_object_uuid = VALUE #( BASE VALUE #( FOR l IN update-processedobject ( l-uuid ) )
-                                            FOR u IN lhc_processedobject=>gt_trigger_events_for ( u ) ).
-        IF lt_processed_object_uuid IS NOT INITIAL.
+        DATA(event_uuids) = VALUE lcl_buffer=>tt_uuids( BASE VALUE #( FOR l IN update-processedobject ( l-uuid ) )
+                                                        FOR u IN lcl_buffer=>trigger_changed_event ( u ) ).
+        IF event_uuids IS NOT INITIAL.
+          " Dynamic: the event raiser exists only from 2025 (package ZABAP_PRC_EVENTS_SE_2025).
+          " The parameter name is not checked by the compiler - keep it in sync with the class.
           CALL METHOD ('ZBP_R_PRC_PROCESSEDOBJECTEXT')=>raise_processed_object
-            EXPORTING it_processed_object_uuid = lt_processed_object_uuid.
+            EXPORTING i_uuids = event_uuids.
         ENDIF.
       CATCH cx_sy_dyn_call_illegal_class
             cx_sy_dyn_call_illegal_method.
         " nothing to do, the event raiser class is not available in this installation
     ENDTRY.
-    " Raised once per save
-    CLEAR lhc_processedobject=>gt_trigger_events_for.
+  ENDMETHOD.
+
+  METHOD cleanup.
+    " After every save and after ROLLBACK ENTITIES (BDEF: and cleanup)
+    lcl_buffer=>clear( ).
   ENDMETHOD.
 ENDCLASS.

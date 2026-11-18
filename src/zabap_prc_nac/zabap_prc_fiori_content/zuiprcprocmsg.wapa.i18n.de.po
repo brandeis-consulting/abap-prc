@@ -7,4 +7,4 @@ msgstr ""
 
 #: BSP/ZUIPRCPROCMSG/O2APPLT 00001, maxlen=60
 msgid "Processed Message"
-msgstr "Deployed mit SAP Fiori Tools"
+msgstr "Verarbeitete Nachricht"

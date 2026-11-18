@@ -8,6 +8,10 @@
 
 @UI.lineItem: [ { criticality: 'MessageSeverityCode' } ]
 
+// Tables on the object pages (additional messages, messages of a step): the newest first
+@UI.presentationVariant: [ { sortOrder: [ { by: 'CreatedAt', direction: #DESC } ],
+                             visualizations: [ { type: #AS_LINEITEM } ] } ]
+
 define view entity ZC_PRC_ProcessedMessageTP
   as projection on ZR_PRC_ProcessedMessageTP
 {

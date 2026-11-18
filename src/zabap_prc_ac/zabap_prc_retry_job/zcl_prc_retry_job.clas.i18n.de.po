@@ -6,5 +6,5 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: CLAS/ZCL_PRC_RETRY_JOB/CLASS 00001, maxlen=60
-msgid "Application job implementation class"
-msgstr "Implementierungsklasse für Anwendungsjob"
+msgid "ABAP-PRC: Retry job"
+msgstr "ABAP-PRC: Wiederholungsjob"

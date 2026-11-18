@@ -1,11 +1,27 @@
-CLASS lhc_Message DEFINITION INHERITING FROM cl_abap_behavior_handler.
+"! Work for the save, collected by the actions. Named like the action that fills it.
+"! Cleared by the saver's CLEANUP - after every save and after ROLLBACK ENTITIES,
+"! so nothing of a rolled-back LUW reaches a later save in the same session.
+CLASS lcl_buffer DEFINITION FINAL.
   PUBLIC SECTION.
     TYPES tt_group_keys TYPE TABLE FOR KEY OF zr_prc_messagetp.
 
-    "! Groups whose changed event is raised in the save phase
-    CLASS-DATA gt_trigger_events_for TYPE tt_group_keys.
+    "! Groups whose changed event is raised in the save
+    CLASS-DATA trigger_changed_event TYPE tt_group_keys.
 
+    CLASS-METHODS clear.
+ENDCLASS.
+
+
+CLASS lcl_buffer IMPLEMENTATION.
+  METHOD clear.
+    CLEAR trigger_changed_event.
+  ENDMETHOD.
+ENDCLASS.
+
+
+CLASS lhc_Message DEFINITION INHERITING FROM cl_abap_behavior_handler.
   PRIVATE SECTION.
+    TYPES tt_group_keys TYPE TABLE FOR KEY OF zr_prc_messagetp.
     TYPES ty_group_key  TYPE STRUCTURE FOR KEY OF zr_prc_messagetp.
     TYPES: BEGIN OF ty_object_of_group,
              group TYPE ty_group_key,
@@ -111,7 +127,8 @@ CLASS lhc_Message IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD triggerChangedEvent.
-    gt_trigger_events_for = VALUE #( BASE gt_trigger_events_for FOR k IN keys ( CORRESPONDING #( k ) ) ).
+    lcl_buffer=>trigger_changed_event = VALUE #( BASE lcl_buffer=>trigger_changed_event
+                                                 FOR k IN keys ( CORRESPONDING #( k ) ) ).
   ENDMETHOD.
 
   METHOD objects_of_groups.
@@ -133,8 +150,8 @@ ENDCLASS.
 
 CLASS lsc_ZR_PRC_MESSAGE DEFINITION INHERITING FROM cl_abap_behavior_saver.
   PROTECTED SECTION.
-    METHODS save_modified    REDEFINITION.
-    METHODS cleanup_finalize REDEFINITION.
+    METHODS save_modified REDEFINITION.
+    METHODS cleanup       REDEFINITION.
 ENDCLASS.
 
 CLASS lsc_ZR_PRC_MESSAGE IMPLEMENTATION.
@@ -143,21 +160,22 @@ CLASS lsc_ZR_PRC_MESSAGE IMPLEMENTATION.
     " Nothing to save: the group is read-only, the objects save themselves.
     " Only the changed event for side effects - raised by the extension class, which
     " exists from 2025 and on BTP (package ZABAP_PRC_EVENTS_SE_2025).
-    IF lhc_message=>gt_trigger_events_for IS NOT INITIAL.
+    IF lcl_buffer=>trigger_changed_event IS NOT INITIAL.
       TRY.
+          " Dynamic: the parameter name is not checked by the compiler - keep it in sync with the class
           CALL METHOD ('ZBP_R_PRC_MESSAGEEXT')=>raise_message
-            EXPORTING it_group_keys = lhc_message=>gt_trigger_events_for.
+            EXPORTING i_group_keys = lcl_buffer=>trigger_changed_event.
         CATCH cx_sy_dyn_call_illegal_class
               cx_sy_dyn_call_illegal_method.
           " nothing to do, the event raiser class is not available in this installation
       ENDTRY.
     ENDIF.
-    " Raised once per save
-    CLEAR lhc_message=>gt_trigger_events_for.
   ENDMETHOD.
 
-  METHOD cleanup_finalize.
-    CLEAR lhc_message=>gt_trigger_events_for.
+  METHOD cleanup.
+    " After every save and after ROLLBACK ENTITIES (BDEF: and cleanup). Not in
+    " CLEANUP_FINALIZE: that does not run on a rollback.
+    lcl_buffer=>clear( ).
   ENDMETHOD.
 
 ENDCLASS.

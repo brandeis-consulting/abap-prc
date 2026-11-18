@@ -14,6 +14,8 @@ CLASS ltc_db_writer DEFINITION FINAL FOR TESTING RISK LEVEL HARMLESS DURATION SH
     CONSTANTS branching TYPE zprc_process_impl_class VALUE 'LTD_BRANCHING'.
     " START -> A -> START (loop) | FINISHED: longest path without loop 2
     CONSTANTS looping   TYPE zprc_process_impl_class VALUE 'LTD_LOOPING'.
+    " START -> START (findings) | FINISHED: a consistency check, longest path 1
+    CONSTANTS checking  TYPE zprc_process_impl_class VALUE 'LTD_CHECKING'.
 
     TYPES: BEGIN OF ty_code,
              msgty                 TYPE zprc_message_severity,
@@ -28,16 +30,21 @@ CLASS ltc_db_writer DEFINITION FINAL FOR TESTING RISK LEVEL HARMLESS DURATION SH
     CLASS-METHODS class_teardown.
     METHODS setup.
 
-    METHODS create_fills_admin_fields   FOR TESTING RAISING cx_static_check.
-    METHODS severity_codes              FOR TESTING RAISING cx_static_check.
-    METHODS step_total_after_first_step FOR TESTING RAISING cx_static_check.
-    METHODS step_total_when_finished    FOR TESTING RAISING cx_static_check.
-    METHODS step_total_with_loop        FOR TESTING RAISING cx_static_check.
-    METHODS update_writes_full_row      FOR TESTING RAISING cx_static_check.
-    METHODS delete_takes_children_along FOR TESTING RAISING cx_static_check.
+    METHODS create_fills_admin_fields      FOR TESTING RAISING cx_static_check.
+    METHODS severity_codes                 FOR TESTING RAISING cx_static_check.
+    METHODS step_total_after_first_step    FOR TESTING RAISING cx_static_check.
+    METHODS step_total_when_finished       FOR TESTING RAISING cx_static_check.
+    METHODS step_total_with_loop           FOR TESTING RAISING cx_static_check.
+    METHODS step_total_after_findings      FOR TESTING RAISING cx_static_check.
+    METHODS step_total_finished_after_find FOR TESTING RAISING cx_static_check.
+    METHODS update_writes_full_row         FOR TESTING RAISING cx_static_check.
+    METHODS delete_takes_children_along    FOR TESTING RAISING cx_static_check.
 
     METHODS given_object IMPORTING i_state   TYPE zprc_state        DEFAULT 'START'
-                                   i_payload TYPE zprc_payload_json OPTIONAL.
+                                   i_payload TYPE zprc_payload_json OPTIONAL
+                                   i_class   TYPE zprc_process_impl_class DEFAULT branching.
+    "! Two steps with findings START -> START already on the database
+    METHODS given_two_findings_steps.
     METHODS read_object  RETURNING VALUE(r_object) TYPE zprc_proc_object.
 ENDCLASS.
 
@@ -66,14 +73,24 @@ CLASS ltc_db_writer IMPLEMENTATION.
         ( class_name  = looping
           transitions = VALUE #( ( start_state = 'START' end_state = 'A' )
                                  ( start_state = 'A'     end_state = 'START' )
-                                 ( start_state = 'A'     end_state = 'FINISHED' ) ) ) ).
+                                 ( start_state = 'A'     end_state = 'FINISHED' ) ) )
+        ( class_name  = checking
+          transitions = VALUE #( ( start_state = 'START' end_state = 'START' )
+                                 ( start_state = 'START' end_state = 'FINISHED' ) ) ) ).
     cut = writer.
   ENDMETHOD.
 
   METHOD given_object.
     DATA objects TYPE STANDARD TABLE OF zprc_proc_object WITH EMPTY KEY.
-    objects = VALUE #( ( uuid = o1 state = i_state factory_class_name = branching payload_json = i_payload ) ).
+    objects = VALUE #( ( uuid = o1 state = i_state factory_class_name = i_class payload_json = i_payload ) ).
     environment->insert_test_data( objects ).
+  ENDMETHOD.
+
+  METHOD given_two_findings_steps.
+    DATA steps TYPE STANDARD TABLE OF zprc_proc_step WITH EMPTY KEY.
+    steps = VALUE #( ( step_uuid = s1 processed_object_uuid = o1 start_state = 'START' end_state = 'START' )
+                     ( step_uuid = s2 processed_object_uuid = o1 start_state = 'START' end_state = 'START' ) ).
+    environment->insert_test_data( steps ).
   ENDMETHOD.
 
   METHOD read_object.
@@ -147,6 +164,33 @@ CLASS ltc_db_writer IMPLEMENTATION.
                                                                 State            = 'START' ) ) ) ).
 
     cl_abap_unit_assert=>assert_equals( exp = 2 act = read_object( )-step_total ).
+  ENDMETHOD.
+
+  METHOD step_total_after_findings.
+    " Consistency check: two steps with findings START -> START, a third one is written.
+    " Steps back to their start state are not counted, the self loop is no remaining step: 0 + 1
+    given_object( i_class = checking ).
+    given_two_findings_steps( ).
+
+    cut->save(
+        i_create = VALUE #( processedstep   = VALUE #( ( StepUUID = s3 ProcessedObjectUUID = o1
+                                                         StartState = 'START' EndState = 'START' ) ) )
+        i_update = VALUE #( processedobject = VALUE #( ( UUID = o1 FactoryClassName = checking State = 'START' ) ) ) ).
+
+    cl_abap_unit_assert=>assert_equals( exp = 1 act = read_object( )-step_total ).
+  ENDMETHOD.
+
+  METHOD step_total_finished_after_find.
+    " After two steps with findings the check succeeds: START -> FINISHED is the one step counted: 1 + 0
+    given_object( i_class = checking ).
+    given_two_findings_steps( ).
+
+    cut->save(
+        i_create = VALUE #( processedstep   = VALUE #( ( StepUUID = s3 ProcessedObjectUUID = o1
+                                                         StartState = 'START' EndState = 'FINISHED' ) ) )
+        i_update = VALUE #( processedobject = VALUE #( ( UUID = o1 FactoryClassName = checking State = 'FINISHED' ) ) ) ).
+
+    cl_abap_unit_assert=>assert_equals( exp = 1 act = read_object( )-step_total ).
   ENDMETHOD.
 
   METHOD update_writes_full_row.

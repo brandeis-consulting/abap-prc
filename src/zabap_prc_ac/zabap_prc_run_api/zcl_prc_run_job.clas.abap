@@ -12,8 +12,9 @@
 "! A run is finished when all its objects have been processed - successfully or
 "! not. The result per object shows in the numbers of errors and successes.
 "! If the run job itself cannot continue, ABORT_RUN stops it: the reason goes to
-"! the application log (external ID = run UUID) and to the run (status aborted),
-"! and the job ends with CX_APJ_RT_CONTENT.
+"! the application log (external ID = run UUID; if no run exists yet, the
+"! application name) and to the run (status aborted), and the job ends with
+"! CX_APJ_RT_CONTENT.
 "!
 "! <h2>Selection</h2>
 "! SELECT gets the select options and parameter values of the job. Read a
@@ -74,7 +75,9 @@ CLASS zcl_prc_run_job DEFINITION
     "! @parameter r_process | Process name and process class.
     METHODS get_process ABSTRACT RETURNING VALUE(r_process) TYPE ty_process.
 
-    METHODS get_application_name ABSTRACT RETURNING VALUE(rv_application_name) TYPE zprc_run_app_name.
+    "! Application of the run: shown in the Runs app, checked against ZPRC_RUN-ZPRCRUNAPP.
+    "! @parameter r_application_name | Name of the application applying the run pattern.
+    METHODS get_application_name ABSTRACT RETURNING VALUE(r_application_name) TYPE zprc_run_app_name.
 
     "! Fills a typed range from a select option; empty (= all) if not supplied.
     "! Values are taken over by assignment, without conversion exit.
@@ -87,7 +90,7 @@ CLASS zcl_prc_run_job DEFINITION
                             EXPORTING e_range          TYPE ANY TABLE.
 
     "! Send a notification when the run has ended (process PRC_RUN_COMPLETED).
-    "! Default: always. Redefine to switch it off; later from a process configuration.
+    "! Default: always. Redefine to switch it off.
     "!
     "! @parameter r_notify | ABAP_TRUE to notify the user who started the run.
     METHODS notify_on_completion RETURNING VALUE(r_notify) TYPE abap_bool.

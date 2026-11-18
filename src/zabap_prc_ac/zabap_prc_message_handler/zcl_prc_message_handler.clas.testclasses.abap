@@ -53,6 +53,7 @@ CLASS ltc_handler IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD initial_state.
+    cl_abap_unit_assert=>assert_false( cut->has_failed( ) ).
     cl_abap_unit_assert=>assert_false( cut->has_errors( ) ).
     cl_abap_unit_assert=>assert_initial( cut->get_messages( ) ).
   ENDMETHOD.
@@ -60,6 +61,7 @@ CLASS ltc_handler IMPLEMENTATION.
   METHOD empty_bapi_result.
     cut->add_bapi_result( VALUE #( ) ).
 
+    cl_abap_unit_assert=>assert_false( cut->has_failed( ) ).
     cl_abap_unit_assert=>assert_false( cut->has_errors( ) ).
     cl_abap_unit_assert=>assert_initial( cut->get_messages( ) ).
   ENDMETHOD.
@@ -112,7 +114,7 @@ CLASS ltc_handler IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD error_always_fails.
-    " An error is a failure - there is no way to add it through the interface without failing
+    " An error is a failure by default (I_FAIL_STEP = ABAP_TRUE); a failed step has errors
     MESSAGE e001(zprc_msg_handlr_test) WITH 'E' INTO DATA(lv_dummy) ##NEEDED.
     TRY.
         cut->add_message_from_sy( ).
@@ -121,6 +123,7 @@ CLASS ltc_handler IMPLEMENTATION.
         " expected
     ENDTRY.
 
+    cl_abap_unit_assert=>assert_true( cut->has_failed( ) ).
     cl_abap_unit_assert=>assert_true( cut->has_errors( ) ).
     cl_abap_unit_assert=>assert_equals( act = lines( cut->get_messages( ) ) exp = 1 ).
   ENDMETHOD.
@@ -149,7 +152,8 @@ CLASS ltc_handler IMPLEMENTATION.
     handler->add_message_without_failing( VALUE #( msgty = 'E' msgid = 'ZPRC_MSG_HANDLR_TEST' msgno = '001' msgv1 = 'e' ) ).
     handler->add_exception_without_failing( NEW cx_sy_zerodivide( ) ).
 
-    cl_abap_unit_assert=>assert_false( cut->has_errors( ) ).
+    cl_abap_unit_assert=>assert_false( cut->has_failed( ) ).
+    cl_abap_unit_assert=>assert_true( cut->has_errors( ) ).
     cl_abap_unit_assert=>assert_equals( act = lines( cut->get_messages( ) ) exp = 2 ).
   ENDMETHOD.
 ENDCLASS.

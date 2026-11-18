@@ -91,7 +91,9 @@ CLASS zcl_prc_dump_finder IMPLEMENTATION.
                           short_text    = condense( replace( val  = analysis
                                                              sub  = cl_abap_char_utilities=>newline
                                                              with = ` `
-                                                             occ  = 0 ) ) ).
+                                                             occ  = 0 ) )
+                          " For the header of the step: the message of MESSAGE X / A
+                          cause         = zcl_prc_abort_text=>cause_from_analysis( analysis ) ).
       CATCH cx_root ##CATCH_ALL ##NO_HANDLER.
         " No authorization for the dump analysis or no readable dump: the step
         " carries the hint message only

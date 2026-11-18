@@ -1,6 +1,6 @@
 "! <p class="shorttext synchronized">Schedules processing via bgPF</p>
 "! Production implementation of ZIF_PRC_BGPF_SCHEDULER (background processing
-"! framework). Tests replace it via ZCL_PRC_BGPF_SCHEDULER_INJECTOR.
+"! framework). Tests replace it via ZCL_PRC_BGPF_SCHED_INJECTOR.
 CLASS zcl_prc_bgpf_scheduler DEFINITION
   PUBLIC
   FINAL
@@ -39,4 +39,3 @@ CLASS zcl_prc_bgpf_scheduler IMPLEMENTATION.
   ENDMETHOD.
 
 ENDCLASS.
-

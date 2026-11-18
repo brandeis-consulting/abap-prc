@@ -8,6 +8,10 @@
 
 @UI.lineItem: [ { criticality: 'MessageSeverityCode' } ]
 
+// Table on the object page of the processed object: the newest step first
+@UI.presentationVariant: [ { sortOrder: [ { by: 'CreatedAt', direction: #DESC } ],
+                             visualizations: [ { type: #AS_LINEITEM } ] } ]
+
 define view entity ZC_PRC_ProcessedStepTP
   as projection on ZR_PRC_ProcessedStepTP
 {

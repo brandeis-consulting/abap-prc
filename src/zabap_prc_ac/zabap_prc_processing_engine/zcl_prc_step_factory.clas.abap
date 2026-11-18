@@ -4,12 +4,6 @@
 "! one package on top of it. The isolation layer splits the step level in two:
 "! the outer part runs in the session of the run or package, the inner part is
 "! built again in the new session of every step.
-"! <p class="shorttext synchronized">ABAP-PRC: Builds the layers of the step level</p>
-"!
-"! The one place where the step level is put together, and the list level of
-"! one package on top of it. The isolation layer splits the step level in two:
-"! the outer part runs in the session of the run or package, the inner part is
-"! built again in the new session of every step.
 CLASS zcl_prc_step_factory DEFINITION PUBLIC FINAL CREATE PRIVATE.
 
   PUBLIC SECTION.
@@ -87,4 +81,3 @@ CLASS zcl_prc_step_factory IMPLEMENTATION.
   ENDMETHOD.
 
 ENDCLASS.
-

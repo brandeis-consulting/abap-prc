@@ -71,12 +71,6 @@
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
-     <MSGNR>011</MSGNR>
-     <TEXT>Abort text of the step session: &amp;1&amp;2&amp;3&amp;4</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
      <MSGNR>012</MSGNR>
      <TEXT>See the short dumps (ST22) of user &amp;1 from &amp;2 UTC</TEXT>
     </T100>
@@ -113,12 +107,6 @@
     <T100>
      <SPRSL>E</SPRSL>
      <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
-     <MSGNR>018</MSGNR>
-     <TEXT>Processing step aborted by a program error</TEXT>
-    </T100>
-    <T100>
-     <SPRSL>E</SPRSL>
-     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
      <MSGNR>019</MSGNR>
      <TEXT>Processing step aborted: &amp;1&amp;2&amp;3&amp;4</TEXT>
     </T100>
@@ -139,6 +127,18 @@
      <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
      <MSGNR>023</MSGNR>
      <TEXT>Program error: success message &amp;1 &amp;2 has type &amp;3 (allowed: S, I, W)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>024</MSGNR>
+     <TEXT>Transition &amp;1 -&gt; &amp;2 ends with findings; only &amp;1 -&gt; &amp;1 is allowed</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>025</MSGNR>
+     <TEXT>Runtime error &amp;1: &amp;2&amp;3&amp;4</TEXT>
     </T100>
    </T100>
   </asx:values>

@@ -11,4 +11,4 @@ msgstr "Verarbeitete Objekte"
 
 #: TLGS/SRVDZUI_PRC_PROCESSED_OBJECT_O4 07/0000010004TEXT, maxlen=255
 msgid "Processed Objects app"
-msgstr ""
+msgstr "App Verarbeitete Objekte"

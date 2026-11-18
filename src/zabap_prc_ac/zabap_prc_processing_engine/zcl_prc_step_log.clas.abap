@@ -122,18 +122,19 @@ CLASS zcl_prc_step_log IMPLEMENTATION.
   METHOD get_prefix.
     " This layer runs in the main session: loading the process or its handler must not
     " abort it with SYNTAX_ERROR (uncatchable).
-    " 1. A step aborted by the step session (header 018/019) may have died on loading the
-    "    handler - a handler in a global class of its own is not covered by the loader.
+    " 1. A step aborted by the step session may have died on loading the handler - a
+    "    handler in a global class of its own is not covered by the loader. Which headers
+    "    mark such a step, 8-Isolation knows.
     "    Steps that ran have loaded process and handler already, so loading here is safe.
     SELECT SINGLE MessageClass, MessageNumber
       FROM zr_prc_processedmessage WITH PRIVILEGED ACCESS
       WHERE ProcessedStepUUID = @i_after-LatestStepUUID
         AND IsHeader          = @abap_true
-      INTO @DATA(ls_header).
-    DATA(lv_aborted) = xsdbool( ls_header-MessageClass = 'ZPRC_PROCESS_MESSAGE'
-                                AND ( ls_header-MessageNumber = '018' OR ls_header-MessageNumber = '019' ) ).
+      INTO @DATA(header).
+    DATA(aborted) = zcl_prc_step_8_isolation=>is_abort_header( i_message_class  = header-MessageClass
+                                                               i_message_number = header-MessageNumber ).
 
-    IF lv_aborted = abap_false.
+    IF aborted = abap_false.
       TRY.
           " 2. Via the loader: syntax error in the process class (or a local handler)
           DATA(process) = zcl_prc_process_loader=>get_process( i_before-FactoryClassName ).

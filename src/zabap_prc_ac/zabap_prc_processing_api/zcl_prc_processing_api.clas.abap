@@ -25,27 +25,27 @@ CLASS zcl_prc_processing_api DEFINITION
         appl_job_execution VALUE 3,
       END OF ENUM ty_execution_mode STRUCTURE execution_mode.
 
-    TYPES tt_create_processed_objects TYPE STANDARD TABLE OF ZA_PRC_CreateProcessedObject WITH DEFAULT KEY.
+    TYPES tt_create_processed_objects TYPE STANDARD TABLE OF ZA_PRC_CreateProcessedObject WITH EMPTY KEY.
 
     "! Processes the due objects selected by the parameters in this session.
     "!
-    "! @parameter it_parameters | UUIDs, process names, ignore retry scheduling.
-    METHODS process_synchronously       IMPORTING it_parameters TYPE zif_prc_processing_engine=>tt_parameters OPTIONAL.
+    "! @parameter i_parameters | UUIDs, process names, ignore retry scheduling.
+    METHODS process_synchronously       IMPORTING i_parameters TYPE zif_prc_processing_engine=>tt_parameters OPTIONAL.
 
     "! Schedules the processing via bgPF. No COMMIT: the commit of the caller's LUW
     "! starts it.
     "!
-    "! @parameter it_parameters | UUIDs, process names, ignore retry scheduling.
-    "! @raising   cx_bgmc       | bgPF could not be scheduled.
-    METHODS process_asynchronously_bgpf IMPORTING it_parameters TYPE zif_prc_processing_engine=>tt_parameters OPTIONAL
+    "! @parameter i_parameters | UUIDs, process names, ignore retry scheduling.
+    "! @raising   cx_bgmc      | bgPF could not be scheduled.
+    METHODS process_asynchronously_bgpf IMPORTING i_parameters TYPE zif_prc_processing_engine=>tt_parameters OPTIONAL
                                         RAISING   cx_bgmc.
 
     "! Schedules the processing as application job. No COMMIT: the job becomes
     "! visible with the commit of the caller's LUW.
     "!
-    "! @parameter it_parameters | UUIDs, process names, ignore retry scheduling.
-    "! @raising   cx_apj_rt     | The job could not be scheduled.
-    METHODS process_asynchronously_job  IMPORTING it_parameters TYPE zif_prc_processing_engine=>tt_parameters OPTIONAL
+    "! @parameter i_parameters | UUIDs, process names, ignore retry scheduling.
+    "! @raising   cx_apj_rt    | The job could not be scheduled.
+    METHODS process_asynchronously_job  IMPORTING i_parameters TYPE zif_prc_processing_engine=>tt_parameters OPTIONAL
                                         RAISING   cx_apj_rt.
 
     "! Creates processed objects in their start state, without processing them.
@@ -101,30 +101,31 @@ ENDCLASS.
 CLASS zcl_prc_processing_api IMPLEMENTATION.
 
   METHOD process_asynchronously_bgpf.
-    zcl_prc_bgpf_scheduler=>get( )->schedule( it_parameters ).
+    zcl_prc_bgpf_scheduler=>get( )->schedule( i_parameters ).
   ENDMETHOD.
 
   METHOD process_asynchronously_job.
-    DATA lt_job_parameter TYPE cl_apj_rt_api=>tt_job_parameter_value.
+    " The engine parameters are a flat list; the job API wants one entry per parameter name
+    DATA job_parameters TYPE cl_apj_rt_api=>tt_job_parameter_value.
 
-    LOOP AT it_parameters INTO FINAL(ls_parameter).
-      READ TABLE lt_job_parameter WITH KEY name COMPONENTS name = ls_parameter-selname ASSIGNING FIELD-SYMBOL(<fs_job_parameter>).
+    LOOP AT i_parameters INTO FINAL(parameter).
+      READ TABLE job_parameters WITH KEY name COMPONENTS name = parameter-selname ASSIGNING FIELD-SYMBOL(<job_parameter>).
       IF sy-subrc <> 0.
-        APPEND VALUE #( name = ls_parameter-selname ) TO lt_job_parameter ASSIGNING <fs_job_parameter>.
+        APPEND VALUE #( name = parameter-selname ) TO job_parameters ASSIGNING <job_parameter>.
       ENDIF.
-      APPEND VALUE #( sign   = ls_parameter-sign
-                      option = ls_parameter-option
-                      low    = ls_parameter-low
-                      high   = ls_parameter-high ) TO <fs_job_parameter>-t_value.
+      APPEND VALUE #( sign   = parameter-sign
+                      option = parameter-option
+                      low    = parameter-low
+                      high   = parameter-high ) TO <job_parameter>-t_value.
     ENDLOOP.
 
-    zcl_prc_job_scheduler=>get( )->schedule_immediately( i_template_name = zcl_prc_retry_job=>c_apj_template_name
+    zcl_prc_job_scheduler=>get( )->schedule_immediately( i_template_name = zcl_prc_retry_job=>co_apj_template_name
                                                          i_job_text      = |ABAP-PRC: Trigger processing asynch via APJ|
-                                                         i_parameters    = lt_job_parameter ).
+                                                         i_parameters    = job_parameters ).
   ENDMETHOD.
 
   METHOD process_synchronously.
-    zcl_prc_processing_engine=>get_instance( )->execute_synchronously( it_parameters ).
+    zcl_prc_processing_engine=>get_instance( )->execute_synchronously( i_parameters ).
   ENDMETHOD.
 
   METHOD get_instance.
@@ -141,27 +142,27 @@ CLASS zcl_prc_processing_api IMPLEMENTATION.
 
 
   METHOD create_and_process.
-    DATA(lt_parameters) = write( i_objects ).
-    IF lt_parameters IS INITIAL.
+    DATA(parameters) = write( i_objects ).
+    IF parameters IS INITIAL.
       RETURN.
     ENDIF.
     COMMIT WORK.
-    process_synchronously( lt_parameters ).
+    process_synchronously( parameters ).
   ENDMETHOD.
 
 
   METHOD create_and_schedule_bgpf.
-    DATA(lt_parameters) = write( i_objects ).
-    IF lt_parameters IS NOT INITIAL.
-      process_asynchronously_bgpf( lt_parameters ).
+    DATA(parameters) = write( i_objects ).
+    IF parameters IS NOT INITIAL.
+      process_asynchronously_bgpf( parameters ).
     ENDIF.
   ENDMETHOD.
 
 
   METHOD create_and_schedule_job.
-    DATA(lt_parameters) = write( i_objects ).
-    IF lt_parameters IS NOT INITIAL.
-      process_asynchronously_job( lt_parameters ).
+    DATA(parameters) = write( i_objects ).
+    IF parameters IS NOT INITIAL.
+      process_asynchronously_job( parameters ).
     ENDIF.
   ENDMETHOD.
 
@@ -192,14 +193,14 @@ CLASS zcl_prc_processing_api IMPLEMENTATION.
     zcl_prc_db_writer=>create( )->save( i_create = VALUE #( processedobject = objects ) ).
 
     r_parameters = VALUE #( FOR o IN objects
-                            ( selname = zcl_prc_retry_job=>s_uuid sign = 'I' option = 'EQ' low = o-UUID ) ).
+                            ( selname = zcl_prc_retry_job=>co_parameter-uuid sign = 'I' option = 'EQ' low = o-UUID ) ).
   ENDMETHOD.
 
 
   METHOD create_processed_objects.
     CHECK i_create_processed_objects IS NOT INITIAL.
 
-    DATA(lt_processing_parameters) = write( i_create_processed_objects ).
+    DATA(parameters) = write( i_create_processed_objects ).
 
     IF i_perform_commit = abap_true.
       COMMIT WORK.
@@ -209,20 +210,19 @@ CLASS zcl_prc_processing_api IMPLEMENTATION.
       WHEN execution_mode-no_execution.
         " do nothing
       WHEN execution_mode-direct_execution.
-        process_synchronously( lt_processing_parameters ).
+        process_synchronously( parameters ).
       WHEN execution_mode-bgpf_execution.
         TRY.
-            process_asynchronously_bgpf( lt_processing_parameters ).
+            process_asynchronously_bgpf( parameters ).
           CATCH cx_bgmc ##NO_HANDLER.
             " Behaviour of this deprecated method: the objects stay due, the retry job processes them
         ENDTRY.
       WHEN execution_mode-appl_job_execution.
         TRY.
-            process_asynchronously_job( lt_processing_parameters ).
+            process_asynchronously_job( parameters ).
           CATCH cx_apj_rt ##NO_HANDLER.
             " Behaviour of this deprecated method: the objects stay due, the retry job processes them
         ENDTRY.
     ENDCASE.
   ENDMETHOD.
 ENDCLASS.
-

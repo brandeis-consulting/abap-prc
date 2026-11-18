@@ -13,8 +13,8 @@ CLASS zcl_prc_processing_engine DEFINITION
 
     "! Processes the due objects selected by the parameters.
     "!
-    "! @parameter it_parameters | UUIDs, process names, ignore retry scheduling.
-    METHODS execute_synchronously IMPORTING it_parameters TYPE zif_prc_processing_engine=>tt_parameters OPTIONAL.
+    "! @parameter i_parameters | UUIDs, process names, ignore retry scheduling.
+    METHODS execute_synchronously IMPORTING i_parameters TYPE zif_prc_processing_engine=>tt_parameters OPTIONAL.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -42,7 +42,7 @@ CLASS zcl_prc_processing_engine IMPLEMENTATION.
     " package: queue rule, object level (run event, step loop), step level
     DATA(list) = CAST zif_prc_processing_list(
                    NEW zcl_prc_list_selection(
-                     i_parameters = it_parameters
+                     i_parameters = i_parameters
                      i_inner      = NEW zcl_prc_list_parallel(
                                       i_inner     = zcl_prc_step_factory=>create_package_list( )
                                       i_max_tasks = co_max_parallel_packages ) ) ).
@@ -52,4 +52,3 @@ CLASS zcl_prc_processing_engine IMPLEMENTATION.
   ENDMETHOD.
 
 ENDCLASS.
-

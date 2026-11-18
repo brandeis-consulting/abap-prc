@@ -8,7 +8,8 @@ define behavior for ZR_PRC_MessageTP alias Message
 extensible
 lock master
 authorization master ( instance )
-with unmanaged save
+// and cleanup: the saver clears its own buffer also after ROLLBACK ENTITIES
+with unmanaged save and cleanup
 {
   field ( readonly ) ProcessName, MessageClass, MessageNumber, MessageSeverity, MessageVariable1, MessageVariable2, MessageVariable3, MessageVariable4, MessageText;
   action ( features : instance ) resumeProcessing result [1] $self;

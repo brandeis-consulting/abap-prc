@@ -33,17 +33,14 @@ CLASS zcl_prc_db_writer DEFINITION PUBLIC FINAL CREATE PRIVATE.
     METHODS save_processed_object  IMPORTING i_create    TYPE zif_prc_db_writer=>ty_create-processedobject
                                              i_update    TYPE zif_prc_db_writer=>ty_update-processedobject
                                              i_delete    TYPE zif_prc_db_writer=>ty_delete-processedobject
-                                             i_new_steps TYPE zif_prc_db_writer=>ty_create-processedstep
-                                   RAISING   cx_sy_create_object_error.
+                                             i_new_steps TYPE zif_prc_db_writer=>ty_create-processedstep.
 
     METHODS derive_processed_object IMPORTING i_processed_object        TYPE zprc_proc_object
                                               i_new_steps               TYPE zif_prc_db_writer=>ty_create-processedstep
-                                    RETURNING VALUE(r_processed_object) TYPE zprc_proc_object
-                                    RAISING   cx_sy_create_object_error.
+                                    RETURNING VALUE(r_processed_object) TYPE zprc_proc_object.
 
     METHODS get_transitions IMPORTING i_class_name         TYPE zprc_process_impl_class
-                            RETURNING VALUE(r_transitions) TYPE zif_prc_process=>tt_transition
-                            RAISING   cx_sy_create_object_error.
+                            RETURNING VALUE(r_transitions) TYPE zif_prc_process=>tt_transition.
 
     "! Severity code as used for criticality: E 1, W 2, S 3, I 5. A and X count as error.
     METHODS get_severity_code IMPORTING i_severity    TYPE zprc_message_severity

@@ -17,7 +17,8 @@
 "! to keep the where-used list of the messages intact.
 "!
 "! <h2>Application log</h2>
-"! Every message of a step goes into the application log of the run. Redefine
+"! Every message of a step also goes into the application log (object ZBALI_PRC),
+"! external ID: the run UUID, for objects without run the process name. Redefine
 "! GET_MESSAGE_PREFIX_FOR_LOG to name the object in front of each entry.
 "!
 "! <h2>Context</h2>
@@ -36,13 +37,13 @@ CLASS zcl_prc_transition_handlr_base DEFINITION PUBLIC ABSTRACT CREATE PUBLIC.
     "! them, so the handler does not have to be passed around. Do not keep the
     "! reference beyond the running transition.
     "!
-    "! @parameter r_message | Handler of the running transition.
-    METHODS get_message_handler FINAL RETURNING VALUE(r_message) TYPE REF TO zif_prc_message_handler.
+    "! @parameter r_message_handler | Handler of the running transition.
+    METHODS get_message_handler FINAL RETURNING VALUE(r_message_handler) TYPE REF TO zif_prc_message_handler.
 
     "! Returns the message of the last MESSAGE ... INTO statement (fields SY-MSG*)
     "! as SYMSG - for GET_SUCCESS_MESSAGE, GET_FAILURE_MESSAGE and
     "! GET_MESSAGE_PREFIX_FOR_LOG. Use it right after the MESSAGE statement:
-    "! MESSAGE s006(zmy_messages) WITH ... INTO DATA(lv_dummy), then
+    "! MESSAGE s006(zmy_messages) WITH ... INTO DATA(dummy), then
     "! r_message = sy_message( ). Replaces CORRESPONDING #( sy ), which accesses
     "! the whole SY structure (syntax warning in ABAP for Cloud Development).
     "!
@@ -128,10 +129,9 @@ CLASS zcl_prc_transition_handlr_base DEFINITION PUBLIC ABSTRACT CREATE PUBLIC.
                                        RETURNING VALUE(r_message)            TYPE symsg.
 
   PRIVATE SECTION.
-    DATA mo_handler                  TYPE REF TO zif_prc_message_handler.
-    DATA m_processed_object_ext_id   TYPE ZR_PRC_ProcessedObject-ExternalProcessedObjectID.
-    DATA m_processed_object_ext_uuid TYPE ZR_PRC_ProcessedObject-ExternalProcessedObjectUUID.
-    DATA m_process_name              TYPE zprc_process_name.
+    DATA message_handler           TYPE REF TO zif_prc_message_handler.
+    DATA processed_object_ext_id   TYPE ZR_PRC_ProcessedObject-ExternalProcessedObjectID.
+    DATA processed_object_ext_uuid TYPE ZR_PRC_ProcessedObject-ExternalProcessedObjectUUID.
 ENDCLASS.
 
 
@@ -155,7 +155,7 @@ CLASS zcl_prc_transition_handlr_base IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_message_handler.
-    r_message = mo_handler.
+    r_message_handler = message_handler.
   ENDMETHOD.
 
   METHOD get_message_prefix_for_log.
@@ -163,27 +163,26 @@ CLASS zcl_prc_transition_handlr_base IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_processed_object.
-    e_processed_object_ext_id = m_processed_object_ext_id.
-    e_processed_object_ext_uuid = m_processed_object_ext_uuid.
+    e_processed_object_ext_id   = processed_object_ext_id.
+    e_processed_object_ext_uuid = processed_object_ext_uuid.
   ENDMETHOD.
 
   METHOD zif_prc_transition_handler~initialize.
-    mo_handler = i_message_handler.
-    m_processed_object_ext_id = i_processed_object_ext_id.
-    m_processed_object_ext_uuid = i_processed_object_ext_uuid.
-    m_process_name = i_process_name.
+    message_handler           = i_message_handler.
+    processed_object_ext_id   = i_processed_object_ext_id.
+    processed_object_ext_uuid = i_processed_object_ext_uuid.
   ENDMETHOD.
 
   METHOD zif_prc_transition_handler~perform_transition.
     r_new_state = perform_transition( EXPORTING i_start_state               = i_start_state
-                                                i_processed_object_ext_id   = m_processed_object_ext_id
-                                                i_processed_object_ext_uuid = m_processed_object_ext_uuid
+                                                i_processed_object_ext_id   = processed_object_ext_id
+                                                i_processed_object_ext_uuid = processed_object_ext_uuid
                                       CHANGING  c_payload_json              = c_payload_json ).
   ENDMETHOD.
 
   METHOD zif_prc_transition_handler~get_success_message.
-    r_message = get_success_message( i_processed_object_ext_id   = m_processed_object_ext_id
-                                     i_processed_object_ext_uuid = m_processed_object_ext_uuid ).
+    r_message = get_success_message( i_processed_object_ext_id   = processed_object_ext_id
+                                     i_processed_object_ext_uuid = processed_object_ext_uuid ).
   ENDMETHOD.
 
   METHOD zif_prc_transition_handler~get_failure_message.
@@ -191,7 +190,7 @@ CLASS zcl_prc_transition_handlr_base IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD zif_prc_transition_handler~get_message_prefix_for_log.
-    r_message = get_message_prefix_for_log( i_processed_object_ext_id   = m_processed_object_ext_id
-                                            i_processed_object_ext_uuid = m_processed_object_ext_uuid ).
+    r_message = get_message_prefix_for_log( i_processed_object_ext_id   = processed_object_ext_id
+                                            i_processed_object_ext_uuid = processed_object_ext_uuid ).
   ENDMETHOD.
 ENDCLASS.

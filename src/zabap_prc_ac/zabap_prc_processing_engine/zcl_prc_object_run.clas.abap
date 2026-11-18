@@ -46,7 +46,6 @@ CLASS zcl_prc_object_run IMPLEMENTATION.
     " the event is delivered
     COMMIT ENTITIES.
     COMMIT WORK.
-    " TODO: an event that cannot be raised goes to the application log (only a refresh signal is lost)
   ENDMETHOD.
 
 ENDCLASS.

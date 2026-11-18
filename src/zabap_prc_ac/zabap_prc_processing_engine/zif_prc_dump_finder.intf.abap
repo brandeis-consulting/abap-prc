@@ -13,9 +13,15 @@ INTERFACE zif_prc_dump_finder PUBLIC.
   CONSTANTS co_implementation TYPE string VALUE `ZCL_PRC_DUMP_FINDER`.
 
   TYPES: BEGIN OF ty_dump,
+           "! ID of the runtime error, e.g. MESSAGE_TYPE_X
            runtime_error TYPE string,
+           "! Main program of the short dump
            program       TYPE string,
+           "! Error analysis of the short dump, condensed - details for the administrator
            short_text    TYPE string,
+           "! What went wrong, for the header of the step: for MESSAGE_TYPE_X / MESSAGE_TYPE_A
+           "! the text of the message, otherwise the error analysis (ZCL_PRC_ABORT_TEXT)
+           cause         TYPE string,
          END OF ty_dump.
 
   "! Registers the current session under the marker. Call in the step session,
