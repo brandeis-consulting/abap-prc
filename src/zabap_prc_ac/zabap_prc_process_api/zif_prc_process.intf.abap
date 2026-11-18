@@ -60,4 +60,17 @@ INTERFACE zif_prc_process
                                            i_processed_object          TYPE ZR_PRC_ProcessedObject-ExternalProcessedObjectID
                                  RETURNING VALUE(r_transition_handler) TYPE REF TO zif_prc_transition_handler.
 
+  "! Whether the objects of this process may run in a simulation (run with
+  "! Simulation = X): the transition is performed, its changes are rolled back
+  "! and only the step is saved. Optional: without an implementation the
+  "! result is initial and a simulation is not allowed.
+  "!
+  "! Return ABAP_TRUE only if the transition has no effect outside its LUW (no
+  "! COMMIT WORK, no remote call, mail or bgPF of its own). Allowed only for a
+  "! process with the states START and FINISHED only (ZCL_PRC_SIMULATION).
+  "!
+  "! @parameter r_result | ABAP_TRUE if a simulation is allowed.
+  METHODS supports_simulation DEFAULT IGNORE
+                              RETURNING VALUE(r_result) TYPE abap_bool.
+
 ENDINTERFACE.

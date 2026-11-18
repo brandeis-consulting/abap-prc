@@ -140,6 +140,24 @@
      <MSGNR>025</MSGNR>
      <TEXT>Runtime error &amp;1: &amp;2&amp;3&amp;4</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>026</MSGNR>
+     <TEXT>Process class &amp;1 does not allow simulation; nothing was processed</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>027</MSGNR>
+     <TEXT>Simulation needs a process with the states START and FINISHED only (&amp;1)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_PROCESS_MESSAGE</ARBGB>
+     <MSGNR>028</MSGNR>
+     <TEXT>Running in simulation mode: nothing was saved</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

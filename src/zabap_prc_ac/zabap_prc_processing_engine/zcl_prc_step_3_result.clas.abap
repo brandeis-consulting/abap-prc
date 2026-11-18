@@ -21,6 +21,14 @@
 "! with all changes of the transition. The retry data stop the step loop -
 "! X -> X would run endlessly otherwise - and keep the object erroneous until
 "! it is resumed.
+"!
+"! <h2>Simulation</h2>
+"! In a simulation run (Simulation = X) the changes of the transition are
+"! rolled back (ROLLBACK ENTITIES, ROLLBACK WORK) before the step is written:
+"! the commit of the next layer saves the step only. The PRC persistence is
+"! written directly, not through the RAP buffer or the update task, so the
+"! step is not affected by the rollback. Findings end the object in FINISHED
+"! (ZCL_PRC_STEP_WRITER->WITH_NEXT_RETRY).
 CLASS zcl_prc_step_3_result DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
@@ -76,6 +84,12 @@ CLASS zcl_prc_step_3_result IMPLEMENTATION.
     r_state = mo_inner->execute( EXPORTING i_state           = i_state
                                            i_message_handler = i_message_handler
                                  IMPORTING e_transition      = e_transition ).
+
+    " Simulation: only the step is saved, never the changes of the transition
+    IF i_state-Simulation = abap_true.
+      ROLLBACK ENTITIES.
+      ROLLBACK WORK.
+    ENDIF.
 
     IF has_findings( i_start_state     = i_state-State
                      i_end_state       = r_state-State

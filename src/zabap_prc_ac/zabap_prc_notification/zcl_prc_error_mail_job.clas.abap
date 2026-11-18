@@ -83,12 +83,14 @@ CLASS zcl_prc_error_mail_job IMPLEMENTATION.
     process_names = VALUE #( FOR line IN i_parameters WHERE ( selname = co_parameter-process_name )
                              ( CORRESPONDING #( line ) ) ).
 
-    " MessageSeverity = header of the latest step; objects created today included
+    " MessageSeverity = header of the latest step; objects created today included.
+    " Objects of a simulation run are reported by the run notification only.
     SELECT FROM ZI_PRC_ProcessedObject
       FIELDS DISTINCT ProcessName, MailAddress
       WHERE ProcessName     IN @process_names
         AND MessageSeverity  = 'E'
         AND MailAddress     IS NOT INITIAL
+        AND ( Simulation IS NULL OR Simulation = @abap_false )
       INTO TABLE @r_groups.
   ENDMETHOD.
 ENDCLASS.

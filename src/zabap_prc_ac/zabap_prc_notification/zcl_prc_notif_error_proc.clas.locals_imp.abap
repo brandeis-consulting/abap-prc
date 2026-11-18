@@ -34,11 +34,13 @@ CLASS lcl_prepare IMPLEMENTATION.
     " (e.g. retry job, ZPRC_PROC activity 16 only); the recipient is the mail address
     " stored at the objects. Without it, the DCL (activity 03) would silently find
     " nothing and the notification would end as finished without a mail.
+    " Objects of a simulation run are reported by the run notification only.
     SELECT FROM ZI_PRC_ProcessedObject WITH PRIVILEGED ACCESS
       FIELDS UUID, ExternalProcessedObjectID, MessageText, LastChangedAt
       WHERE ProcessName     = @ls_payload-process_name
         AND MailAddress     = @lv_mail
         AND MessageSeverity = 'E'
+        AND ( Simulation IS NULL OR Simulation = @abap_false )
       ORDER BY LastChangedAt DESCENDING
       INTO TABLE @DATA(lt_objects).
 

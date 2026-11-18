@@ -2,7 +2,8 @@
 @EndUserText.label: 'Processed Object'
 
 // Read view for existing consumers (engine state ZIF_PRC_PROCESSING_ENGINE=>ty_state,
-// selections); persisted fields only. The BO is ZR_PRC_ProcessedObjectTP.
+// selections); persisted fields and the simulation flag of the run. The BO is
+// ZR_PRC_ProcessedObjectTP.
 define view entity ZR_PRC_ProcessedObject
   as select from ZI_PRC_ProcessedObject
 
@@ -26,6 +27,7 @@ define view entity ZR_PRC_ProcessedObject
       QueueID,
       QueuePosition,
       StepTotal,
+      Simulation,
       CreatedBy,
       CreatedAt,
       LastChangedAt,

@@ -26,7 +26,8 @@ CLASS lcl_prepare IMPLEMENTATION.
 
     " The notification is a technical part of the run: no authorization for the run needed
     SELECT SINGLE FROM ZI_PRC_Run WITH PRIVILEGED ACCESS
-      FIELDS ApplicationName, JobName, JobStart, JobEnd, TotalNumber, NumberOfSuccess, NumberOfErrors, CreatedBy
+      FIELDS ApplicationName, JobName, JobStart, JobEnd, TotalNumber, NumberOfSuccess, NumberOfErrors, CreatedBy,
+             ExecutionStatus, Simulation, MessageText
       WHERE UUID = @ls_payload-run_uuid
       INTO @DATA(ls_run).
     IF sy-subrc <> 0.
@@ -61,10 +62,24 @@ CLASS lcl_prepare IMPLEMENTATION.
       get_message_handler( )->add_message_from_sy( ).
     ENDIF.
 
-    DATA(lv_result) = COND string( WHEN ls_run-NumberOfErrors > 0 THEN `with errors` ELSE `successfully` ).
+    DATA(lv_outcome) = COND string( WHEN ls_run-ExecutionStatus = zif_prc_run=>co_execution_status-aborted
+                                    THEN `was aborted`
+                                    WHEN ls_run-NumberOfErrors > 0
+                                    THEN `completed with errors`
+                                    ELSE `completed successfully` ).
+    DATA(lv_prefix) = COND string( WHEN ls_run-Simulation = abap_true THEN `[SIMULATION] ` ).
+
+    DATA(lv_simulation) = COND string(
+        WHEN ls_run-Simulation = abap_true
+        THEN |<p><strong>Simulation: nothing was saved.</strong> The objects were processed and their | &&
+             |steps are shown in the Processing Center; all business changes were rolled back.</p>| ).
+    DATA(lv_abort_reason) = COND string(
+        WHEN ls_run-ExecutionStatus = zif_prc_run=>co_execution_status-aborted
+        THEN |<p>Reason: { zcl_prc_notification=>html( ls_run-MessageText ) }</p>| ).
+
     DATA(lv_content) =
         |<p>The run of application <strong>{ zcl_prc_notification=>html( ls_run-ApplicationName ) }</strong> | &&
-        |completed { lv_result }.</p>| &&
+        |{ lv_outcome }.</p>| && lv_abort_reason && lv_simulation &&
         zcl_prc_notification=>html_table(
             i_header = VALUE #( ( `Job` ) ( `Started` ) ( `Ended` ) ( `Total` ) ( `Successful` ) ( `With errors` ) )
             i_rows   = VALUE #( ( VALUE #( ( zcl_prc_notification=>html( ls_run-JobName ) )
@@ -81,8 +96,8 @@ CLASS lcl_prepare IMPLEMENTATION.
 
     ls_payload-notification = VALUE #(
         recipient = lv_mail_address
-        subject   = |ABAP Processing Center: run of { ls_run-ApplicationName } completed { lv_result }|
-        body_html = zcl_prc_notification=>html_document( i_headline = |Run of { ls_run-ApplicationName } completed { lv_result }|
+        subject   = |{ lv_prefix }ABAP Processing Center: run of { ls_run-ApplicationName } { lv_outcome }|
+        body_html = zcl_prc_notification=>html_document( i_headline = |{ lv_prefix }Run of { ls_run-ApplicationName } { lv_outcome }|
                                                          i_content  = lv_content ) ).
 
     c_payload_json = zcl_prc_notification=>payload_to_json( ls_payload ).

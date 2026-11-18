@@ -3,7 +3,8 @@
 @Metadata.allowExtensions: true
 @ObjectModel.usageType: { serviceQuality: #B, sizeCategory: #L, dataClass: #TRANSACTIONAL }
 
-// One row per processed object: the header message of its latest step
+// One row per processed object: the header message of its latest step.
+// Objects of a simulation run are shown with their run only: they cannot be resumed.
 define view entity ZI_PRC_LatestHeaderMessage
   as select from ZI_PRC_ProcessedObject  as ProcessedObject
     inner join   ZI_PRC_ProcessedMessage as Message on  Message.ProcessedStepUUID = ProcessedObject.LatestStepUUID
@@ -28,3 +29,6 @@ define view entity ZI_PRC_LatestHeaderMessage
       Message.CreatedBy,
       Message.CreatedAt
 }
+where
+     ProcessedObject.Simulation is null
+  or ProcessedObject.Simulation = ''

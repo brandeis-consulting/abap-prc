@@ -30,6 +30,9 @@ define view entity ZI_PRC_Run
       @ObjectModel.foreignKey.association: '_ExecutionStatusText'
       Run.execution_status                  as ExecutionStatus,
 
+      // Simulation: the objects are processed, but nothing is saved
+      Run.simulation                        as Simulation,
+
       _RunProgress.NumberOfSuccess          as NumberOfSuccess,
       3                                     as SeverityCodeSuccess,
 

@@ -89,15 +89,16 @@ CLASS zcl_prc_run_job DEFINITION
                                       i_name           TYPE zif_prc_run=>ty_run_parameter
                             EXPORTING e_range          TYPE ANY TABLE.
 
-    "! Send a notification when the run has ended (process PRC_RUN_COMPLETED).
-    "! Default: always. Redefine to switch it off.
+    "! Send a notification when the run has ended - finished or aborted (process
+    "! PRC_RUN_COMPLETED). Default: always. Redefine to switch it off.
     "!
     "! @parameter r_notify | ABAP_TRUE to notify the user who started the run.
     METHODS notify_on_completion RETURNING VALUE(r_notify) TYPE abap_bool.
 
     "! Stops the run job: discards open changes, writes the reason to the
     "! application log (external ID = run UUID, without run the application name)
-    "! and to the run (status aborted), and raises CX_APJ_RT_CONTENT with it.
+    "! and to the run (status aborted), notifies the user who started the run
+    "! (NOTIFY_ON_COMPLETION) and raises CX_APJ_RT_CONTENT with the reason.
     "!
     "! @parameter i_message         | Reason, e.g. a message of class ZPRC_RUN.
     "! @raising   cx_apj_rt_content | Always.
@@ -124,6 +125,10 @@ CLASS zcl_prc_run_job DEFINITION
                                          RAISING   cx_apj_rt_content.
     METHODS _notify_run_completed.
 
+    "! A simulation run (set by initiateRun) whose process may not run in a
+    "! simulation is aborted before any object exists (ZCL_PRC_SIMULATION).
+    METHODS _check_simulation            RAISING   cx_apj_rt_content.
+
     "! Message of class ZPRC_RUN with the run UUID or other values as variables.
     METHODS _message IMPORTING i_number         TYPE symsgno
                                i_v1             TYPE simple OPTIONAL
@@ -145,6 +150,7 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
   METHOD _execute.
     _initialize_parameter_values( it_parameters ).
     _initialize_run( it_parameters ).
+    _check_simulation( ).
     _create_and_process( select( i_select_options   = mt_select_options
                                  i_parameter_values = mt_parameter_values ) ).
     _finalize_run( ).
@@ -430,10 +436,39 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
              FAILED DATA(failed) ##NEEDED
              REPORTED DATA(reported) ##NEEDED.
       COMMIT ENTITIES.
+
+      " The user who started the run learns about the abort, not only the log
+      IF notify_on_completion( ) = abap_true.
+        _notify_run_completed( ).
+      ENDIF.
     ENDIF.
 
     RAISE EXCEPTION TYPE cx_apj_rt_content
           MESSAGE ID i_message-msgid TYPE 'E' NUMBER i_message-msgno
           WITH i_message-msgv1 i_message-msgv2 i_message-msgv3 i_message-msgv4.
+  ENDMETHOD.
+  METHOD _check_simulation.
+    DATA load_error TYPE symsg.
+
+    SELECT SINGLE FROM ZI_PRC_Run WITH PRIVILEGED ACCESS
+      FIELDS Simulation
+      WHERE UUID = @mv_current_run_uuid
+      INTO @DATA(simulation).
+    IF simulation = abap_false.
+      RETURN.
+    ENDIF.
+
+    DATA(process) = get_process( ).
+    DATA(process_instance) = zcl_prc_process_loader=>get_process( EXPORTING i_class_name = process-factory_class
+                                                                  IMPORTING e_error      = load_error ).
+    IF load_error IS NOT INITIAL.
+      abort_run( load_error ).
+    ENDIF.
+
+    DATA(not_allowed) = zcl_prc_simulation=>check( i_process    = process_instance
+                                                   i_class_name = process-factory_class ).
+    IF not_allowed IS NOT INITIAL.
+      abort_run( not_allowed ).
+    ENDIF.
   ENDMETHOD.
 ENDCLASS.

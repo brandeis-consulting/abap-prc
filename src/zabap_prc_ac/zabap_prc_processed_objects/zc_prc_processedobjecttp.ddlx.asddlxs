@@ -3,6 +3,51 @@
 annotate entity ZC_PRC_ProcessedObjectTP with
 
 {
+  // Facets as in ZI_PRC_ProcessedObject, but the tables reference the presentation
+  // variant pvNewestFirst of their target - the newest step and message first
+  @UI.facet: [ { id: 'idCollection', type: #COLLECTION, label: 'Processed Object' },
+               { id: 'idLatestInformation',
+                 parentId: 'idCollection',
+                 type: #FIELDGROUP_REFERENCE,
+                 label: 'Current Status',
+                 targetQualifier: 'qLatestInfos' },
+               { id: 'idDelayAndQueue',
+                 parentId: 'idCollection',
+                 type: #FIELDGROUP_REFERENCE,
+                 label: 'Queue and Delay',
+                 targetQualifier: 'qQueueAndDelay' },
+               { id: 'idExecInfo',
+                 parentId: 'idCollection',
+                 type: #FIELDGROUP_REFERENCE,
+                 label: 'Execution Information',
+                 targetQualifier: 'qExecInfos',
+                 isPartOfPreview: false },
+               { id: 'idProcObject',
+                 parentId: 'idCollection',
+                 type: #FIELDGROUP_REFERENCE,
+                 label: 'Processed Object IDs',
+                 targetQualifier: 'qProcObjects',
+                 isPartOfPreview: false },
+               { id: 'idErrorHandling',
+                 parentId: 'idCollection',
+                 type: #FIELDGROUP_REFERENCE,
+                 label: 'Error Handling',
+                 targetQualifier: 'qErrorHandling',
+                 isPartOfPreview: false },
+               { id: 'idProcessedSteps',
+                 type: #PRESENTATIONVARIANT_REFERENCE,
+                 label: 'Processed Steps',
+                 position: 40,
+                 targetElement: '_ProcessedStep',
+                 targetQualifier: 'pvNewestFirst' },
+               { id: 'idAdditionalMessages',
+                 type: #PRESENTATIONVARIANT_REFERENCE,
+                 label: 'Additional Messages',
+                 position: 50,
+                 targetElement: '_AdditionalMessages',
+                 targetQualifier: 'pvNewestFirst' } ]
+  UUID;
+
   // Link to the business object - the virtual element exists in the app projection only
   @EndUserText.label: 'Processed Object'
   @UI.selectionField: [ { position: 5 } ]

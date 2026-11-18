@@ -37,6 +37,10 @@ msgstr "Prozessklasse &1 kann nicht instanziiert werden"
 msgid "Process class &1 cannot be loaded: &2&3&4"
 msgstr "Prozessklasse &1 kann nicht geladen werden: &2&3&4"
 
+#: MESS/ZPRC_PROCESS_MESSAGE026/TEXT, maxlen=73
+msgid "Process class &1 does not allow simulation; nothing was processed"
+msgstr "Prozessklasse &1 erlaubt keine Simulation; nichts wurde verarbeitet"
+
 #: MESS/ZPRC_PROCESS_MESSAGE007/TEXT, maxlen=73
 msgid "Process class &1 has no transition handler for state &2"
 msgstr "Prozessklasse &1 hat keinen Transition-Handler für Zustand &2"
@@ -61,6 +65,10 @@ msgstr "Verarbeitungsschritt abgebrochen: &1&2&3&4"
 msgid "Program error: success message &1 &2 has type &3 (allowed: S, I, W)"
 msgstr "Programmfehler: Erfolgsmeldung &1 &2 hat Typ &3 (erlaubt: S, I, W)"
 
+#: MESS/ZPRC_PROCESS_MESSAGE028/TEXT, maxlen=73
+msgid "Running in simulation mode: nothing was saved"
+msgstr "Simulationsmodus: nichts wurde gespeichert"
+
 #: MESS/ZPRC_PROCESS_MESSAGE025/TEXT, maxlen=73
 msgid "Runtime error &1: &2&3&4"
 msgstr "Laufzeitfehler &1: &2&3&4"
@@ -80,6 +88,10 @@ msgstr "Siehe Kurzdumps (ST22) von Benutzer &1 ab &2 UTC"
 #: MESS/ZPRC_PROCESS_MESSAGE013/TEXT, maxlen=73
 msgid "Short dump &1 in program &2 (ST22)"
 msgstr "Kurzdump &1 in Programm &2 (ST22)"
+
+#: MESS/ZPRC_PROCESS_MESSAGE027/TEXT, maxlen=73
+msgid "Simulation needs a process with the states START and FINISHED only (&1)"
+msgstr "Simulation nur für Prozesse mit den Zuständen START und FINISHED (&1)"
 
 #: MESS/ZPRC_PROCESS_MESSAGE002/TEXT, maxlen=73
 msgid "Step failed without error message"

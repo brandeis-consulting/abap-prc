@@ -111,6 +111,12 @@ annotate entity ZI_PRC_ProcessedObject with
   @UI.selectionField: [ { position: 20 } ]
   State;
 
+  // Simulation is shown with the run only (Runs app); every step of a simulation
+  // carries ZPRC_PROCESS_MESSAGE/028
+  @EndUserText.label: 'Simulation'
+  @UI.hidden: true
+  Simulation;
+
   @EndUserText.label: 'Do Not Process Before'
   @UI.fieldGroup: [ { position: 30, qualifier: 'qQueueAndDelay' } ]
   @UI.lineItem: [ { position: 60, importance: #MEDIUM } ]

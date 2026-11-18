@@ -3,6 +3,7 @@
     "FROM": [
       "ZI_PRC_PROCESSEDOBJECTAGGR",
       "ZI_PRC_PROCESSEDSTEP",
+      "ZI_PRC_RUNSIMULATION",
       "ZPRC_PROC_OBJECT"
     ],
     "ASSOCIATED": [

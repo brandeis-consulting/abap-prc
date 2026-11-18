@@ -8,8 +8,10 @@
 
 @UI.lineItem: [ { criticality: 'MessageSeverityCode' } ]
 
-// Tables on the object pages (additional messages, messages of a step): the newest first
-@UI.presentationVariant: [ { sortOrder: [ { by: 'CreatedAt', direction: #DESC } ],
+// Tables on the object pages (additional messages, messages of a step): the newest first.
+// Referenced by the facets (PRESENTATIONVARIANT_REFERENCE) - a table does not pick it up by itself.
+@UI.presentationVariant: [ { qualifier: 'pvNewestFirst',
+                             sortOrder: [ { by: 'CreatedAt', direction: #DESC } ],
                              visualizations: [ { type: #AS_LINEITEM } ] } ]
 
 define view entity ZC_PRC_ProcessedMessageTP

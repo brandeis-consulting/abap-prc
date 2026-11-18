@@ -100,6 +100,7 @@ define root view entity ZC_PRC_ProcessedObjectTP
       MessageSeverityCode,
       StepCounter,
       StepTotal,
+      Simulation,
 
       @ObjectModel.virtualElementCalculatedBy: 'ABAP:ZCL_PRC_PROC_OBJ_LINK'
       virtual link : abap.char(1000),

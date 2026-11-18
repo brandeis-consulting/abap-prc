@@ -82,11 +82,16 @@ msgstr "Laufparameter"
 msgid "Run Start"
 msgstr "Start des Laufs"
 
+#: TLGS/DDLXZI_PRC_RUN 06/0000230005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_RUN 06/0000240005TEXT, maxlen=255
+msgid "Simulation"
+msgstr "Simulation"
+
 #: TLGS/DDLXZI_PRC_RUN 06/0000050005TEXT, maxlen=255
 msgid "Status"
 msgstr "Status"
 
-#: TLGS/DDLXZI_PRC_RUN 06/0000230005TEXT, maxlen=255
+#: TLGS/DDLXZI_PRC_RUN 06/0000250005TEXT, maxlen=255
 msgid "Total Number"
 msgstr "Gesamtanzahl"
 

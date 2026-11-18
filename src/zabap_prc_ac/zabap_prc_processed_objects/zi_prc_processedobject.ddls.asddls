@@ -14,6 +14,8 @@ define view entity ZI_PRC_ProcessedObject
                                                                             and _AdditionalMessages.IsHeader  = ''
   association [0..1] to ZI_PRC_ProcessedObjectAggr as _ProcessedObjectAggr  on  $projection.UUID = _ProcessedObjectAggr.ProcessedObjectUUID
   association [0..1] to ZI_PRC_Run                 as _Run                  on  $projection.RunUUID = _Run.UUID
+  // Not over _Run: ZI_PRC_Run reads the processed objects (cycle)
+  association [0..1] to ZI_PRC_RunSimulation       as _RunSimulation        on  $projection.RunUUID = _RunSimulation.RunUUID
 {
   key uuid                             as UUID,
 
@@ -34,6 +36,9 @@ define view entity ZI_PRC_ProcessedObject
       queue_pos                        as QueuePosition,
 
       step_total                       as StepTotal,
+
+      // Simulation of the run: the engine saves the steps, never the changes of a transition
+      _RunSimulation.Simulation        as Simulation,
 
       // Header of the latest step and progress, for every list of objects
       _LatestStep.MessageText          as MessageText,

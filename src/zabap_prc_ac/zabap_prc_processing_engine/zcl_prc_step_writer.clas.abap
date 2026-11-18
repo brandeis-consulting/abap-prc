@@ -9,6 +9,12 @@
 "! as header (IsHeader). Otherwise (success: the success message, which is not
 "! in the handler) it is added as a message of its own and marked. All other
 "! messages are additional messages.
+"!
+"! <h2>Simulation</h2>
+"! Every step of an object in a simulation run gets the information
+"! ZPRC_PROCESS_MESSAGE/028 as first message. A simulation is over after one
+"! step: WITH_NEXT_RETRY ends the object in FINISHED instead of planning a
+"! retry - there is nothing to retry or resume, nothing was saved.
 CLASS zcl_prc_step_writer DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
@@ -38,6 +44,7 @@ CLASS zcl_prc_step_writer DEFINITION PUBLIC FINAL CREATE PUBLIC.
                          RAISING   cx_sy_create_object_error.
 
     "! Retry data after a failure: +5 min, +55 min, +23 h, +6 d, then no further retry.
+    "! In a simulation: FINISHED, no retry.
     "!
     "! @parameter i_state | Object before the failed step.
     "! @parameter r_state | Object with the next retry data.
@@ -54,6 +61,11 @@ CLASS zcl_prc_step_writer DEFINITION PUBLIC FINAL CREATE PUBLIC.
                                             i_messages        TYPE zif_prc_message_handler=>tt_messages
                                             i_header          TYPE zif_prc_message_handler=>ty_message_details OPTIONAL
                                   RETURNING VALUE(r_messages) TYPE zif_prc_db_writer=>ty_create-processedmessage.
+
+    "! The messages of the step: in a simulation the information 028 first.
+    METHODS step_messages IMPORTING i_state           TYPE zif_prc_processing_engine=>ty_state
+                                    i_message_handler TYPE REF TO zif_prc_message_handler
+                          RETURNING VALUE(r_messages) TYPE zif_prc_message_handler=>tt_messages.
 ENDCLASS.
 
 
@@ -76,7 +88,8 @@ CLASS zcl_prc_step_writer IMPLEMENTATION.
                                       StartState          = i_start_state
                                       EndState            = r_state-State ) )
         processedmessage = to_processed_messages( i_state    = r_state
-                                                  i_messages = i_message_handler->get_messages( )
+                                                  i_messages = step_messages( i_state           = r_state
+                                                                              i_message_handler = i_message_handler )
                                                   i_header   = i_header ) ).
 
     DATA(update) = VALUE zif_prc_db_writer=>ty_update(
@@ -84,6 +97,21 @@ CLASS zcl_prc_step_writer IMPLEMENTATION.
 
     mo_db_writer->save( i_create = create
                         i_update = update ).
+  ENDMETHOD.
+
+
+  METHOD step_messages.
+    r_messages = i_message_handler->get_messages( ).
+    IF i_state-Simulation = abap_false.
+      RETURN.
+    ENDIF.
+
+    " Running in simulation mode: nothing was saved
+    MESSAGE i028(zprc_process_message) INTO DATA(text).
+    INSERT VALUE #( msgid        = sy-msgid
+                    msgty        = sy-msgty
+                    msgno        = sy-msgno
+                    message_text = text ) INTO r_messages INDEX 1.
   ENDMETHOD.
 
 
@@ -143,6 +171,14 @@ CLASS zcl_prc_step_writer IMPLEMENTATION.
 
   METHOD with_next_retry.
     r_state = i_state.
+
+    " A simulation is over after one step: nothing to retry, nothing to resume
+    IF i_state-Simulation = abap_true.
+      r_state-State = zif_prc_process=>co_finished.
+      CLEAR: r_state-RetryCount, r_state-RetryDateTime.
+      RETURN.
+    ENDIF.
+
     GET TIME STAMP FIELD DATA(now).
 
     CASE i_state-RetryCount.

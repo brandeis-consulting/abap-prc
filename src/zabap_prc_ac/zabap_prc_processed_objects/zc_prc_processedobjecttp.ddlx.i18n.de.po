@@ -5,9 +5,38 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: TLGS/DDLXZC_PRC_PROCESSEDOBJECTTP 06/0000090005TEXT, maxlen=255
+msgid "Additional Messages"
+msgstr "Weitere Nachrichten"
+
+#: TLGS/DDLXZC_PRC_PROCESSEDOBJECTTP 06/0000030005TEXT, maxlen=255
+msgid "Current Status"
+msgstr "Aktueller Status"
+
+#: TLGS/DDLXZC_PRC_PROCESSEDOBJECTTP 06/0000070005TEXT, maxlen=255
+msgid "Error Handling"
+msgstr "Fehlerbehandlung"
+
+#: TLGS/DDLXZC_PRC_PROCESSEDOBJECTTP 06/0000050005TEXT, maxlen=255
+msgid "Execution Information"
+msgstr "Ausführungsinformationen"
+
 #: TLGS/DDLXZC_PRC_PROCESSEDOBJECTTP 06/0000010005TEXT, maxlen=255
+#: TLGS/DDLXZC_PRC_PROCESSEDOBJECTTP 06/0000020005TEXT, maxlen=255
 msgid "Processed Object"
 msgstr "Verarbeitetes Objekt"
+
+#: TLGS/DDLXZC_PRC_PROCESSEDOBJECTTP 06/0000060005TEXT, maxlen=255
+msgid "Processed Object IDs"
+msgstr "IDs des verarbeiteten Objekts"
+
+#: TLGS/DDLXZC_PRC_PROCESSEDOBJECTTP 06/0000080005TEXT, maxlen=255
+msgid "Processed Steps"
+msgstr "Verarbeitete Schritte"
+
+#: TLGS/DDLXZC_PRC_PROCESSEDOBJECTTP 06/0000040005TEXT, maxlen=255
+msgid "Queue and Delay"
+msgstr "Queue und Verzögerung"
 
 #: TLGS/DDLXZC_PRC_PROCESSEDOBJECTTP 02/0000010004DESCRIPTION, maxlen=60
 msgid "UI annotations Processed Object app"

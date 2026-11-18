@@ -5,7 +5,9 @@
 "! the end state. Hands the transition out by reference, also on failure.
 "!
 "! Violations of the process definition raise ZCX_PRC_PROCESS_DEFINITION, which
-"! the layer for unexpected errors catches.
+"! the layer for unexpected errors catches. In a simulation run this includes a
+"! process that may not run in a simulation (ZCL_PRC_SIMULATION): its
+"! transition is not called.
 CLASS zcl_prc_step_1_core DEFINITION PUBLIC FINAL CREATE PUBLIC.
 
   PUBLIC SECTION.
@@ -33,6 +35,18 @@ CLASS zcl_prc_step_1_core IMPLEMENTATION.
     r_state = i_state.
 
     DATA(process) = create_process( i_state ).
+
+    " A process that does not allow simulation is never called in one: its transition
+    " could have effects outside the LUW that no rollback undoes
+    IF i_state-Simulation = abap_true.
+      DATA(not_allowed) = zcl_prc_simulation=>check( i_process    = process
+                                                     i_class_name = i_state-FactoryClassName ).
+      IF not_allowed IS NOT INITIAL.
+        RAISE EXCEPTION TYPE zcx_prc_process_definition
+              MESSAGE ID not_allowed-msgid TYPE 'E' NUMBER not_allowed-msgno
+              WITH not_allowed-msgv1 not_allowed-msgv2 not_allowed-msgv3 not_allowed-msgv4.
+      ENDIF.
+    ENDIF.
 
     e_transition = process->get_transition_handler( i_start_state      = i_state-State
                                                     i_processed_object = i_state-ExternalProcessedObjectID ).
@@ -95,4 +109,3 @@ CLASS zcl_prc_step_1_core IMPLEMENTATION.
   ENDMETHOD.
 
 ENDCLASS.
-

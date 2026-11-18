@@ -27,6 +27,8 @@ authorization master ( instance )
   delete;
   field ( readonly, numbering : managed ) UUID;
   field ( mandatory : create, readonly : update ) ApplicationName;
+  // Set when the run is created; the processed objects of the run read it
+  field ( readonly : update ) Simulation;
   // Derived from the processed objects of the run (ZR_PRC_RunProgress), not persisted
   field ( readonly ) NumberOfErrors, NumberOfSuccess, CurrentlyProcessedNumber;
 
@@ -46,6 +48,7 @@ authorization master ( instance )
       JobStart                 = job_start;
       JobEnd                   = job_end;
       ExecutionStatus          = execution_status;
+      Simulation               = simulation;
       TotalNumber              = total_number;
       CreatedBy                = created_by;
       // Reason of an aborted run, written by the run job

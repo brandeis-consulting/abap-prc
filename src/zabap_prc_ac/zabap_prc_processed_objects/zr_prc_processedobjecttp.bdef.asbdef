@@ -25,6 +25,8 @@ authorization master ( instance )
   field ( readonly ) CreatedAt, CreatedBy, LastChangedAt, LastChangedBy, LocalLastChangedAt;
   // Derived from the latest step, not persisted with the object
   field ( readonly ) MessageText, MessageSeverity, MessageSeverityCode, StepCounter;
+  // Derived from the run, not persisted with the object
+  field ( readonly ) Simulation;
 
   internal create;
   update;

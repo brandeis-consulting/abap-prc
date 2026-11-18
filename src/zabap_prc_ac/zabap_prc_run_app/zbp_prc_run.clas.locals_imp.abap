@@ -170,14 +170,16 @@ CLASS lhc_Run IMPLEMENTATION.
       ENDTRY.
 
       IF ls_error IS INITIAL.
+        " Simulation is a property of the run: the run job and the processed objects read it
         MODIFY ENTITIES OF zr_prc_runtp
                IN LOCAL MODE
                ENTITY Run
-               CREATE FIELDS ( ExecutionStatus ApplicationName JobName )
+               CREATE FIELDS ( ExecutionStatus ApplicationName JobName Simulation )
                WITH VALUE #( ( %cid            = key-%cid
                                ExecutionStatus = zif_prc_run=>co_execution_status-planned
                                ApplicationName = key-%param-applicationName
-                               JobName         = key-%param-jobName ) )
+                               JobName         = key-%param-jobName
+                               Simulation      = key-%param-simulation ) )
                FAILED DATA(ls_failed)
                REPORTED DATA(ls_reported)
                MAPPED DATA(ls_mapped).

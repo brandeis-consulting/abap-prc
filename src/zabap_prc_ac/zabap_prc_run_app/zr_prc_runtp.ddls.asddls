@@ -21,6 +21,7 @@ define root view entity ZR_PRC_RunTP
       MessageSeverity,
       CurrentlyProcessedNumber,
       ExecutionStatus,
+      Simulation,
       NumberOfSuccess,
       SeverityCodeSuccess,
       NumberOfErrors,

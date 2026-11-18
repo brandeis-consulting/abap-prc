@@ -28,6 +28,7 @@ define root view entity ZR_PRC_ProcessedObjectTP
       QueueID,
       QueuePosition,
       StepTotal,
+      Simulation,
       MessageText,
       MessageSeverity,
       MessageSeverityCode,

@@ -96,6 +96,7 @@ define root view entity ZC_PRC_ProcessedObject
       MessageSeverityCode,
       StepCounter,
       StepTotal,
+      Simulation,
 
       _ProcessedStep      : redirected to composition child ZC_PRC_ProcessedStep,
       _LatestStep         : redirected to ZC_PRC_ProcessedStep,

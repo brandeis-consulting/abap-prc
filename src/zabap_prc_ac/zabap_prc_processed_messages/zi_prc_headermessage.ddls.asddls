@@ -6,6 +6,7 @@
 // One row per step header, with a flag whether it is the header of the latest step of
 // its object. The message app groups over all of them, so a group does not vanish when
 // its last object is resumed (the event side effect re-reads the group).
+// Objects of a simulation run are shown with their run only: they cannot be resumed.
 define view entity ZI_PRC_HeaderMessage
   as select from ZI_PRC_ProcessedMessage as Message
     inner join   ZI_PRC_ProcessedObject  as ProcessedObject on ProcessedObject.UUID = Message.ProcessedObjectUUID
@@ -30,4 +31,6 @@ define view entity ZI_PRC_HeaderMessage
                  then 1 else 0 end as abap.int4 ) as IsLatestHeader
 }
 where
-  Message.IsHeader = 'X'
+      Message.IsHeader = 'X'
+  and (    ProcessedObject.Simulation is null
+        or ProcessedObject.Simulation = '' )

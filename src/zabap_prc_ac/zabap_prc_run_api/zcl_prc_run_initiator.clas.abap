@@ -7,6 +7,10 @@
 "! No COMMIT: the run is saved and its job is scheduled with the commit of the
 "! caller's LUW. A rejected run (unknown template or parameter, no authorization)
 "! is not created; the reasons are returned to be passed on as REPORTED.
+"!
+"! A simulation run processes its objects, but saves only the steps. Whether
+"! the process of the run job allows it is checked when the run job starts
+"! (ZCL_PRC_SIMULATION); if not, the run is aborted before any object exists.
 CLASS zcl_prc_run_initiator DEFINITION
   PUBLIC
   FINAL
@@ -31,6 +35,7 @@ CLASS zcl_prc_run_initiator DEFINITION
     "! @parameter i_application_name  | Application of the run (authorization ZPRC_RUN)
     "! @parameter i_job_name          | Name of the job, shown in the Runs app
     "! @parameter i_job_template_name | Job template of the run job
+    "! @parameter i_simulation        | Simulation: the objects are processed, nothing is saved
     "! @parameter e_messages          | Reasons of a rejection (e.g. ZPRC_RUN/001 unknown parameter,
     "!                                  ZPRC_RUN/010 unknown template), to pass on as REPORTED
     "! @parameter r_run_uuid          | The new run; initial if the run was rejected
@@ -39,6 +44,7 @@ CLASS zcl_prc_run_initiator DEFINITION
                                    i_application_name  TYPE zprc_run_app_name
                                    i_job_name          TYPE string
                                    i_job_template_name TYPE zif_prc_run=>ty_job_template_name
+                                   i_simulation        TYPE abap_boolean DEFAULT abap_false
                          EXPORTING e_messages          TYPE tt_messages
                          RETURNING VALUE(r_run_uuid)   TYPE zprc_run-uuid.
   PROTECTED SECTION.
@@ -74,7 +80,8 @@ CLASS zcl_prc_run_initiator IMPLEMENTATION.
                  %param = VALUE #( applicationName    = i_application_name
                                    jobName            = i_job_name
                                    jobTemplateName    = i_job_template_name
-                                   selectOptionString = json ) ) )
+                                   selectOptionString = json
+                                   simulation         = i_simulation ) ) )
            MAPPED DATA(mapped)
            REPORTED DATA(reported)
            FAILED DATA(failed).

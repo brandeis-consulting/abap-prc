@@ -16,6 +16,7 @@ define view entity ZR_PRC_Run
       MessageSeverity,
       CurrentlyProcessedNumber,
       ExecutionStatus,
+      Simulation,
       NumberOfSuccess,
       SeverityCodeSuccess,
       NumberOfErrors,

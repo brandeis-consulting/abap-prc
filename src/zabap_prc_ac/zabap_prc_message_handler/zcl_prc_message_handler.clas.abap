@@ -271,9 +271,9 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
   METHOD zif_prc_message_handler~add_bapi_result.
     r_message_handler = me.
 
-    DATA(lt_msg) = zcl_prc_message_mapper=>from_bapiret( i_bapiret ).
-    append_messages( lt_msg ).
-    IF contains_error( lt_msg ).
+    DATA(messages) = zcl_prc_message_mapper=>from_bapiret( i_bapiret ).
+    append_messages( messages ).
+    IF contains_error( messages ).
       on_error( i_fail_step ).
     ENDIF.
   ENDMETHOD.
@@ -282,9 +282,9 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
     r_message_handler = me.
 
     IF i_reported IS SUPPLIED.
-      DATA(lt_msg) = zcl_prc_message_mapper=>from_reported( i_reported ).
-      append_messages( lt_msg ).
-      IF contains_error( lt_msg ).
+      DATA(messages) = zcl_prc_message_mapper=>from_reported( i_reported ).
+      append_messages( messages ).
+      IF contains_error( messages ).
         on_error( i_fail_step ).
       ENDIF.
     ENDIF.
@@ -297,9 +297,9 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
   METHOD zif_prc_message_handler~add_exception.
     r_message_handler = me.
 
-    DATA(lt_msg) = exception_chain_to_messages( i_exception ).
-    append_messages( lt_msg ).
-    IF contains_error( lt_msg ).
+    DATA(messages) = exception_chain_to_messages( i_exception ).
+    append_messages( messages ).
+    IF contains_error( messages ).
       on_error( i_fail_step ).
     ENDIF.
   ENDMETHOD.
@@ -317,10 +317,10 @@ CLASS zcl_prc_message_handler IMPLEMENTATION.
   METHOD zif_prc_message_handler~add_message_from_text.
     r_message_handler = me.
 
-    DATA(ls_msg) = zcl_prc_message_mapper=>from_text( text  = i_message_text
-                                                      msgty = i_message_severity ).
-    append_message( ls_msg ).
-    IF normalize_severity( ls_msg-msgty ) = 'E'.
+    DATA(message) = zcl_prc_message_mapper=>from_text( text  = i_message_text
+                                                       msgty = i_message_severity ).
+    append_message( message ).
+    IF normalize_severity( message-msgty ) = 'E'.
       on_error( i_fail_step ).
     ENDIF.
   ENDMETHOD.

@@ -28,6 +28,7 @@ define root view entity ZC_PRC_RunTP
       JobEnd,
       MessageSeverity,
       ExecutionStatus,
+      Simulation,
       NumberOfErrors,
       SeverityCodeError,
       NumberOfSuccess,

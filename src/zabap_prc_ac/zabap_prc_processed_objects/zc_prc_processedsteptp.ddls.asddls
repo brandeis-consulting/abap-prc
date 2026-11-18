@@ -8,8 +8,10 @@
 
 @UI.lineItem: [ { criticality: 'MessageSeverityCode' } ]
 
-// Table on the object page of the processed object: the newest step first
-@UI.presentationVariant: [ { sortOrder: [ { by: 'CreatedAt', direction: #DESC } ],
+// Table on the object page of the processed object: the newest step first.
+// Referenced by the facet (PRESENTATIONVARIANT_REFERENCE) - a table does not pick it up by itself.
+@UI.presentationVariant: [ { qualifier: 'pvNewestFirst',
+                             sortOrder: [ { by: 'CreatedAt', direction: #DESC } ],
                              visualizations: [ { type: #AS_LINEITEM } ] } ]
 
 define view entity ZC_PRC_ProcessedStepTP

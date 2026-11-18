@@ -46,6 +46,13 @@ annotate entity ZI_PRC_Run with
   @UI.textArrangement: #TEXT_ONLY
   ExecutionStatus;
 
+  @EndUserText.label: 'Simulation'
+  @UI.fieldGroup: [ { qualifier: 'qExecRun', position: 7 },
+                    { qualifier: 'ExecutionStatus', position: 7, label: 'Simulation' } ]
+  @UI.lineItem: [ { position: 16, importance: #MEDIUM } ]
+  @UI.selectionField: [ { position: 17 } ]
+  Simulation;
+
   @EndUserText.label: 'Processed'
   @UI.dataPoint: { qualifier: 'CurrentlyProcessedNumber',
                    targetValueElement: 'TotalNumber',
