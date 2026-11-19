@@ -120,104 +120,93 @@ CLASS lhc_Run IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD initiateRun.
-    DATA lt_parameter TYPE cl_apj_rt_api=>tt_job_parameter_value.
-    DATA lr_template_parameter TYPE REF TO data.
-    FIELD-SYMBOLS <lt_template_parameter> TYPE ANY TABLE.
+    DATA parameters TYPE cl_apj_rt_api=>tt_job_parameter_value.
 
     LOOP AT keys INTO DATA(key).
-      CLEAR lt_parameter.
+      CLEAR parameters.
       /ui2/cl_json=>deserialize( EXPORTING json = key-%param-selectOptionString
-                                 CHANGING  data = lt_parameter ).
+                                 CHANGING  data = parameters ).
 
       " Check before the run exists: the save phase can no longer change the run,
-      " so a run whose job cannot be scheduled would stay "planned" forever
-      DATA(ls_error) = VALUE symsg( ).
-      DATA(lv_template_name) = CONV cl_apj_rt_api=>ty_template_name( key-%param-jobTemplateName ).
+      " so a run whose job cannot be scheduled would stay "planned" forever.
+      " Via the scheduler: an ABAP Cloud caller may not check a Standard ABAP template
+      DATA(error) = VALUE symsg( ).
+      DATA(template_name) = CONV cl_apj_rt_api=>ty_template_name( key-%param-jobTemplateName ).
+      DATA(scheduler) = zcl_prc_job_scheduler=>get( ).
       TRY.
-          IF cl_apj_rt_api=>can_schedule_job( iv_job_template_name = lv_template_name ) = abap_false.
+          IF scheduler->can_schedule( template_name ) = abap_false.
             " Job template &1 does not exist or you are not authorized to schedule it
-            ls_error = VALUE #( msgid = 'ZPRC_RUN' msgno = '010' msgv1 = key-%param-jobTemplateName ).
+            error = VALUE #( msgid = 'ZPRC_RUN' msgno = '010' msgv1 = key-%param-jobTemplateName ).
           ELSE.
-            " Parameters of the template: GET_TEMPLATE_PARAM_VALUES and its result type do not
-            " exist in S/4HANA 2023, so both are addressed dynamically. Without them the check is
-            " skipped; an unknown parameter then only fails when the job is scheduled.
-            TRY.
-                CREATE DATA lr_template_parameter TYPE ('\CLASS=CL_APJ_RT_API\TYPE=TT_TEMPL_PARAM_VAL_MULTISTEP').
-                ASSIGN lr_template_parameter->* TO <lt_template_parameter>.
-                CALL METHOD ('CL_APJ_RT_API')=>('GET_TEMPLATE_PARAM_VALUES')
-                  EXPORTING
-                    iv_job_template_name = lv_template_name
-                  RECEIVING
-                    rt_parameters        = <lt_template_parameter>.
-
-                " P_UUID is added by the framework below
-                LOOP AT lt_parameter INTO DATA(ls_parameter) WHERE name <> zif_prc_run=>co_parameter-p_uuid.
-                  READ TABLE <lt_template_parameter> WITH KEY ('NAME') = ls_parameter-name TRANSPORTING NO FIELDS.
-                  IF sy-subrc <> 0.
-                    " Parameter &1 is not defined in job &2
-                    ls_error = VALUE #( msgid = 'ZPRC_RUN' msgno = '001'
-                                        msgv1 = ls_parameter-name msgv2 = key-%param-jobTemplateName ).
-                    EXIT.
-                  ENDIF.
-                ENDLOOP.
-              CATCH cx_sy_create_data_error cx_sy_dyn_call_error ##NO_HANDLER.
-                " S/4HANA 2023: no parameter check
-            ENDTRY.
+            " Without the parameters of the template (S/4HANA 2023) the check is skipped;
+            " an unknown parameter then only fails when the job is scheduled
+            scheduler->get_template_parameters( EXPORTING i_template_name = template_name
+                                                IMPORTING e_supported     = DATA(supported)
+                                                          e_names         = DATA(template_parameters) ).
+            IF supported = abap_true.
+              " P_UUID is added by the framework below
+              LOOP AT parameters INTO DATA(parameter) WHERE name <> zif_prc_run=>co_parameter-p_uuid.
+                IF NOT line_exists( template_parameters[ table_line = CONV string( parameter-name ) ] ).
+                  " Parameter &1 is not defined in job &2
+                  error = VALUE #( msgid = 'ZPRC_RUN' msgno = '001'
+                                   msgv1 = parameter-name msgv2 = key-%param-jobTemplateName ).
+                  EXIT.
+                ENDIF.
+              ENDLOOP.
+            ENDIF.
           ENDIF.
         CATCH cx_apj_rt.
           " Job template &1 does not exist or you are not authorized to schedule it
-          ls_error = VALUE #( msgid = 'ZPRC_RUN' msgno = '010' msgv1 = key-%param-jobTemplateName ).
+          error = VALUE #( msgid = 'ZPRC_RUN' msgno = '010' msgv1 = key-%param-jobTemplateName ).
       ENDTRY.
 
-      IF ls_error IS INITIAL.
-        " Simulation is a property of the run: the run job and the processed objects read it
+      IF error IS INITIAL.
         MODIFY ENTITIES OF zr_prc_runtp
                IN LOCAL MODE
                ENTITY Run
-               CREATE FIELDS ( ExecutionStatus ApplicationName JobName Simulation )
+               CREATE FIELDS ( ExecutionStatus ApplicationName JobName )
                WITH VALUE #( ( %cid            = key-%cid
                                ExecutionStatus = zif_prc_run=>co_execution_status-planned
                                ApplicationName = key-%param-applicationName
-                               JobName         = key-%param-jobName
-                               Simulation      = key-%param-simulation ) )
-               FAILED DATA(ls_failed)
-               REPORTED DATA(ls_reported)
-               MAPPED DATA(ls_mapped).
-        IF ls_failed IS NOT INITIAL OR ls_mapped-run IS INITIAL.
+                               JobName         = key-%param-jobName ) )
+               FAILED DATA(create_failed)
+               REPORTED DATA(create_reported)
+               MAPPED DATA(create_mapped).
+        IF create_failed IS NOT INITIAL OR create_mapped-run IS INITIAL.
           " The run could not be created for application &1
-          ls_error = VALUE #( msgid = 'ZPRC_RUN' msgno = '011' msgv1 = key-%param-applicationName ).
+          error = VALUE #( msgid = 'ZPRC_RUN' msgno = '011' msgv1 = key-%param-applicationName ).
         ENDIF.
       ENDIF.
 
-      IF ls_error IS NOT INITIAL.
+      IF error IS NOT INITIAL.
         APPEND VALUE #( %cid        = key-%cid
                         %fail-cause = if_abap_behv=>cause-unspecific ) TO failed-run.
         APPEND VALUE #( %cid = key-%cid
-                        %msg = new_message( id       = ls_error-msgid
-                                            number   = ls_error-msgno
+                        %msg = new_message( id       = error-msgid
+                                            number   = error-msgno
                                             severity = if_abap_behv_message=>severity-error
-                                            v1       = ls_error-msgv1
-                                            v2       = ls_error-msgv2 ) ) TO reported-run.
+                                            v1       = error-msgv1
+                                            v2       = error-msgv2 ) ) TO reported-run.
         " The cause from the create (e.g. a check), if there is one
-        LOOP AT ls_reported-run INTO DATA(ls_cause) WHERE %msg IS BOUND.
-          APPEND VALUE #( %cid = key-%cid %msg = ls_cause-%msg ) TO reported-run.
+        LOOP AT create_reported-run INTO DATA(cause) WHERE %msg IS BOUND.
+          APPEND VALUE #( %cid = key-%cid %msg = cause-%msg ) TO reported-run.
         ENDLOOP.
-        CLEAR ls_reported.
+        CLEAR create_reported.
         CONTINUE.
       ENDIF.
 
       " Mapped to the caller's %cid, so a caller can address the new run
-      DATA(lv_run_uuid) = ls_mapped-run[ 1 ]-uuid.
+      DATA(run_uuid) = create_mapped-run[ 1 ]-uuid.
       APPEND VALUE #( %cid = key-%cid
-                      uuid = lv_run_uuid ) TO mapped-run.
+                      uuid = run_uuid ) TO mapped-run.
 
       APPEND VALUE #( name    = zif_prc_run=>co_parameter-p_uuid
-                      t_value = VALUE #( ( low = lv_run_uuid sign = 'I' option = 'EQ' ) ) ) TO lt_parameter.
+                      t_value = VALUE #( ( low = run_uuid sign = 'I' option = 'EQ' ) ) ) TO parameters.
 
-      APPEND VALUE #( run_uuid          = lv_run_uuid
+      APPEND VALUE #( run_uuid          = run_uuid
                       job_template_name = key-%param-jobTemplateName
                       job_name          = key-%param-jobName
-                      parameter         = lt_parameter ) TO lcl_buffer=>initiate_run.
+                      parameter         = parameters ) TO lcl_buffer=>initiate_run.
     ENDLOOP.
   ENDMETHOD.
 

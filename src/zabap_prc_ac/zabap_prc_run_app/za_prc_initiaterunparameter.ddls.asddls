@@ -10,7 +10,4 @@ define root abstract entity ZA_PRC_InitiateRunParameter
   jobTemplateName : abap.char(30);
   
   applicationName : zprc_run_app_name;
-
-  // Simulation: the objects are processed, but nothing is saved
-  simulation : abap_boolean;
 }

@@ -74,6 +74,18 @@
      <MSGNR>011</MSGNR>
      <TEXT>The run could not be created for application &amp;1</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_RUN</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>Run &amp;1 of application &amp;2: &amp;3 objects selected</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_RUN</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>Run &amp;1 finished</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

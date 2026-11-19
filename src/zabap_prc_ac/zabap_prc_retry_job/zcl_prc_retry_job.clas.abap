@@ -46,10 +46,11 @@ CLASS zcl_prc_retry_job IMPLEMENTATION.
           kind       = if_apj_dt_exec_object=>select_option
           length     = 30
           param_text = 'Process Name' )
-        ( selname    = co_parameter-ignore_restart
-          kind       = if_apj_dt_exec_object=>parameter
-          length     = 1
-          param_text = 'Overrule Resume Scheduling' )
+        ( selname      = co_parameter-ignore_restart
+          kind         = if_apj_dt_exec_object=>parameter
+          length       = 1
+          param_text   = 'Overrule Resume Scheduling'
+          checkbox_ind = abap_true )
         ( selname    = co_parameter-uuid
           kind       = if_apj_dt_exec_object=>select_option
           length     = 32

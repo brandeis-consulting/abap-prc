@@ -105,6 +105,20 @@ CLASS zcl_prc_run_job DEFINITION
     METHODS abort_run FINAL IMPORTING i_message TYPE symsg
                             RAISING   cx_apj_rt_content.
 
+    "! Whether this run is a simulation: its objects are processed, but only the
+    "! steps are saved. Default: no. Redefine to decide it, e.g. from a parameter
+    "! of the job - its name is up to the job; started from an app, the app passes
+    "! the value like any other job parameter. The process has to allow it
+    "! (ZIF_PRC_PROCESS~SUPPORTS_SIMULATION), otherwise the run is aborted before
+    "! any object exists.
+    "!
+    "! @parameter i_select_options   | Select options of the job, by name.
+    "! @parameter i_parameter_values | Parameter values of the job, by name.
+    "! @parameter r_simulation       | ABAP_TRUE for a simulation.
+    METHODS is_simulation IMPORTING i_select_options    TYPE tt_select_options
+                                    i_parameter_values  TYPE tt_parameter_values
+                          RETURNING VALUE(r_simulation) TYPE abap_boolean.
+
   PRIVATE SECTION.
     CONSTANTS co_message_class TYPE symsgid VALUE 'ZPRC_RUN'.
 
@@ -125,7 +139,7 @@ CLASS zcl_prc_run_job DEFINITION
                                          RAISING   cx_apj_rt_content.
     METHODS _notify_run_completed.
 
-    "! A simulation run (set by initiateRun) whose process may not run in a
+    "! A simulation run (IS_SIMULATION) whose process may not run in a
     "! simulation is aborted before any object exists (ZCL_PRC_SIMULATION).
     METHODS _check_simulation            RAISING   cx_apj_rt_content.
 
@@ -135,6 +149,13 @@ CLASS zcl_prc_run_job DEFINITION
                                i_v2             TYPE simple OPTIONAL
                                i_v3             TYPE simple OPTIONAL
                      RETURNING VALUE(r_message) TYPE symsg.
+    "! The whole log at the application job: start of the run, the messages of all
+    "! packages (step log, external ID = run UUID) and the end - finished or the
+    "! reason of the abort. Own log with the application name as external ID, so the
+    "! logs of the run are not doubled. Only in an application job.
+    "!
+    "! @parameter i_reason | Reason of the abort; initial when the run has finished.
+    METHODS _write_job_log IMPORTING i_reason TYPE symsg OPTIONAL.
 ENDCLASS.
 
 
@@ -154,6 +175,7 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
     _create_and_process( select( i_select_options   = mt_select_options
                                  i_parameter_values = mt_parameter_values ) ).
     _finalize_run( ).
+    _write_job_log( ).
     IF notify_on_completion( ) = abap_true.
       _notify_run_completed( ).
     ENDIF.
@@ -179,15 +201,13 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
 
 
   METHOD get_range.
+    " Without a data reference: the job class may be Standard ABAP, and a line created
+    " like a range of a Standard ABAP class cannot be assigned in this ABAP Cloud class
     CLEAR e_range.
     DATA(option) = VALUE #( i_select_options[ name = i_name ] OPTIONAL ).
-    DATA line TYPE REF TO data.
-    CREATE DATA line LIKE LINE OF e_range.
-    ASSIGN line->* TO FIELD-SYMBOL(<line>).
     LOOP AT option-ranges INTO DATA(range_line).
-      CLEAR <line>.
+      INSERT INITIAL LINE INTO TABLE e_range ASSIGNING FIELD-SYMBOL(<line>).
       MOVE-CORRESPONDING range_line TO <line>.
-      INSERT <line> INTO TABLE e_range.
     ENDLOOP.
   ENDMETHOD.
 
@@ -255,6 +275,10 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
 
     GET TIME STAMP FIELD DATA(lv_timestamp).
 
+    " The job decides whether the run is a simulation - also for a run started by initiateRun
+    DATA(simulation) = is_simulation( i_select_options   = mt_select_options
+                                      i_parameter_values = mt_parameter_values ).
+
     DATA lt_parameter TYPE TABLE FOR CREATE ZR_PRC_RunTP\_Parameter.
 
     READ TABLE it_parameters INTO DATA(ls_uuid_parameter) WITH KEY selname = zif_prc_run=>co_parameter-p_uuid.
@@ -286,14 +310,15 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
       " ApplicationName is readonly on update, it was already set by initiateRun
       MODIFY ENTITIES OF ZR_PRC_RunTP PRIVILEGED
              ENTITY Run
-             UPDATE FIELDS ( JobName JobCount JobID JobStart ExecutionStatus CreatedBy )
+             UPDATE FIELDS ( JobName JobCount JobID JobStart ExecutionStatus CreatedBy Simulation )
              WITH VALUE #( ( uuid            = mv_current_run_uuid
                              JobID           = lv_job_id
                              JobCount        = lv_job_count
                              JobName         = ls_job_details-job_text
                              JobStart        = lv_timestamp
                              ExecutionStatus = zif_prc_run=>co_execution_status-started
-                             CreatedBy       = sy-uname ) )
+                             CreatedBy       = sy-uname
+                             Simulation      = simulation ) )
              CREATE BY \_Parameter FIELDS ( ParameterName Operator Sign Low High )
              WITH lt_parameter
              FAILED DATA(failed)
@@ -306,7 +331,7 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
     ELSE. " create new entry
       MODIFY ENTITIES OF ZR_PRC_RunTP PRIVILEGED
              ENTITY Run
-             CREATE FIELDS ( ApplicationName JobName JobCount JobID JobStart ExecutionStatus CreatedBy )
+             CREATE FIELDS ( ApplicationName JobName JobCount JobID JobStart ExecutionStatus CreatedBy Simulation )
              WITH VALUE #( ( %cid            = lv_cid
                              ApplicationName = get_application_name( )
                              JobID           = lv_job_id
@@ -314,7 +339,8 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
                              JobName         = ls_job_details-job_text
                              JobStart        = lv_timestamp
                              ExecutionStatus = zif_prc_run=>co_execution_status-started
-                             CreatedBy       = sy-uname ) )
+                             CreatedBy       = sy-uname
+                             Simulation      = simulation ) )
              CREATE BY \_Parameter FIELDS ( ParameterName Operator Sign Low High )
              WITH lt_parameter
              FAILED DATA(create_failed)
@@ -388,6 +414,9 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
   METHOD abort_run.
     " Nothing half-done is saved
     ROLLBACK ENTITIES.
+
+    " Job log before the log of the reason below: the reason is not copied twice
+    _write_job_log( i_message ).
 
     " Application log: own database connection, independent of the LUW;
     " same retention as the processed data (cleanup job)
@@ -470,5 +499,81 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
     IF not_allowed IS NOT INITIAL.
       abort_run( not_allowed ).
     ENDIF.
+  ENDMETHOD.
+  METHOD is_simulation.
+    r_simulation = abap_false.
+  ENDMETHOD.
+  METHOD _write_job_log.
+    " Only in an application job: tests and classruns have no job to assign the log to
+    TRY.
+        cl_apj_rt_api=>get_job_runtime_info( IMPORTING ev_jobname = DATA(job_name) ).
+      CATCH cx_apj_rt.
+        RETURN.
+    ENDTRY.
+    IF job_name IS INITIAL.
+      RETURN.
+    ENDIF.
+
+    TRY.
+        " Same retention as the processed data (cleanup job)
+        DATA(expiry) = CONV d( cl_abap_context_info=>get_system_date( ) + zcl_prc_cleanup_job=>co_default_days ).
+        DATA(log) = cl_bali_log=>create_with_header(
+                        cl_bali_header_setter=>create( object      = zcl_prc_step_log=>co_log_object
+                                                       subobject   = zcl_prc_step_log=>co_log_subobject
+                                                       external_id = CONV #( get_application_name( ) )
+                          )->set_expiry( expiry_date       = expiry
+                                         keep_until_expiry = abap_true ) ).
+
+        IF mv_current_run_uuid IS NOT INITIAL.
+          SELECT SINGLE FROM ZI_PRC_Run WITH PRIVILEGED ACCESS
+            FIELDS TotalNumber
+            WHERE UUID = @mv_current_run_uuid
+            INTO @DATA(total_number).
+          " Run &1 of application &2: &3 objects selected
+          DATA(start) = _message( i_number = '012'
+                                  i_v1     = mv_current_run_uuid
+                                  i_v2     = get_application_name( )
+                                  i_v3     = total_number ).
+          log->add_item( cl_bali_message_setter=>create( severity   = if_bali_constants=>c_severity_status
+                                                         id         = start-msgid
+                                                         number     = start-msgno
+                                                         variable_1 = start-msgv1
+                                                         variable_2 = start-msgv2
+                                                         variable_3 = start-msgv3 ) ).
+
+          " The messages of all packages of the run, as written by the step log
+          TRY.
+              DATA(package_logs) = cl_bali_log_db=>get_instance( )->load_logs_via_filter(
+                  cl_bali_log_filter=>create( )->set_descriptor( object      = zcl_prc_step_log=>co_log_object
+                                                                 subobject   = zcl_prc_step_log=>co_log_subobject
+                                                                 external_id = CONV #( |{ mv_current_run_uuid }| ) ) ).
+              LOOP AT package_logs INTO DATA(package_log).
+                log->add_all_items_from_other_log( package_log ).
+              ENDLOOP.
+            CATCH cx_bali_runtime ##NO_HANDLER.
+              " No package wrote a message
+          ENDTRY.
+        ENDIF.
+
+        " End: finished, or the reason of the abort
+        DATA(end) = COND symsg( WHEN i_reason IS NOT INITIAL THEN i_reason
+                                " Run &1 finished
+                                ELSE _message( i_number = '013' i_v1 = mv_current_run_uuid ) ).
+        log->add_item( cl_bali_message_setter=>create(
+                           severity   = COND #( WHEN i_reason IS NOT INITIAL THEN if_bali_constants=>c_severity_error
+                                                ELSE if_bali_constants=>c_severity_status )
+                           id         = end-msgid
+                           number     = end-msgno
+                           variable_1 = end-msgv1
+                           variable_2 = end-msgv2
+                           variable_3 = end-msgv3
+                           variable_4 = end-msgv4 ) ).
+
+        " Own database connection: independent of the LUW, also after the rollback of an abort
+        cl_bali_log_db=>get_instance( )->save_log_2nd_db_connection( log                        = log
+                                                                     assign_to_current_appl_job = abap_true ).
+      CATCH cx_bali_runtime ##NO_HANDLER.
+        " The run and the logs of its packages are complete without the job log
+    ENDTRY.
   ENDMETHOD.
 ENDCLASS.
