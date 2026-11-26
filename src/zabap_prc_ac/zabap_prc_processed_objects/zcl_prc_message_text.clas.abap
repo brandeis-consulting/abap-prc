@@ -9,6 +9,10 @@
 "! Entities with the message fields (steps, messages, message groups) are translated
 "! row by row; for processed objects (only LATESTSTEPUUID) the header message of the
 "! latest step is read first.
+"!
+"! Deliberately without static dependencies on other ABAP-PRC objects (built-in types,
+"! dynamic SELECT): abapGit activates CDS views before classes, so this class is pulled
+"! first on its own and must activate without the rest of ABAP-PRC.
 CLASS zcl_prc_message_text DEFINITION
   PUBLIC
   FINAL
@@ -27,13 +31,13 @@ CLASS zcl_prc_message_text DEFINITION
     "! @parameter r_text        | Text to display.
     CLASS-METHODS translate IMPORTING i_message     TYPE symsg
                                       i_stored_text TYPE csequence
-                            RETURNING VALUE(r_text) TYPE zprc_message_text.
+                            RETURNING VALUE(r_text) TYPE string.
 
   PRIVATE SECTION.
     TYPES: BEGIN OF ty_header,
              step_uuid TYPE sysuuid_x16,
              message   TYPE symsg,
-             text      TYPE zprc_message_text,
+             text      TYPE string,
            END OF ty_header,
            tt_header TYPE HASHED TABLE OF ty_header WITH UNIQUE KEY step_uuid.
 
@@ -66,7 +70,20 @@ CLASS zcl_prc_message_text IMPLEMENTATION.
 
 
   METHOD read_headers.
+    " Field types as in ZI_PRC_ProcessedMessage (message number is CHAR 3 there)
+    TYPES: BEGIN OF ty_row,
+             step_uuid TYPE sysuuid_x16,
+             msgid     TYPE symsgid,
+             msgno     TYPE c LENGTH 3,
+             msgv1     TYPE symsgv,
+             msgv2     TYPE symsgv,
+             msgv3     TYPE symsgv,
+             msgv4     TYPE symsgv,
+             text      TYPE string,
+           END OF ty_row.
+    DATA rows TYPE STANDARD TABLE OF ty_row WITH EMPTY KEY.
     DATA steps TYPE RANGE OF sysuuid_x16.
+
     LOOP AT i_original_data ASSIGNING FIELD-SYMBOL(<original>).
       ASSIGN COMPONENT 'LATESTSTEPUUID' OF STRUCTURE <original> TO FIELD-SYMBOL(<step>).
       IF sy-subrc = 0 AND <step> IS NOT INITIAL.
@@ -77,18 +94,26 @@ CLASS zcl_prc_message_text IMPLEMENTATION.
       RETURN.
     ENDIF.
 
-    SELECT FROM ZI_PRC_ProcessedMessage
-      FIELDS ProcessedStepUUID, MessageClass, MessageNumber, MessageVariable1, MessageVariable2,
-             MessageVariable3, MessageVariable4, MessageText
-      WHERE ProcessedStepUUID IN @steps
-        AND IsHeader          = @abap_true
-      INTO TABLE @DATA(messages).
-    LOOP AT messages INTO DATA(message).
-      INSERT VALUE #( step_uuid = message-ProcessedStepUUID
-                      message   = VALUE #( msgid = message-MessageClass     msgno = message-MessageNumber
-                                           msgv1 = message-MessageVariable1 msgv2 = message-MessageVariable2
-                                           msgv3 = message-MessageVariable3 msgv4 = message-MessageVariable4 )
-                      text      = message-MessageText ) INTO TABLE r_headers.
+    " Dynamic on purpose, see class documentation
+    DATA(fields) = `ProcessedStepUUID AS step_uuid, MessageClass AS msgid, MessageNumber AS msgno, `
+                && `MessageVariable1 AS msgv1, MessageVariable2 AS msgv2, MessageVariable3 AS msgv3, `
+                && `MessageVariable4 AS msgv4, MessageText AS text`.
+    DATA(where) = `ProcessedStepUUID IN @steps AND IsHeader = 'X'`.
+    TRY.
+        SELECT (fields)
+          FROM ('ZI_PRC_PROCESSEDMESSAGE')
+          WHERE (where)
+          INTO CORRESPONDING FIELDS OF TABLE @rows.
+      CATCH cx_sy_dynamic_osql_error.
+        RETURN.
+    ENDTRY.
+
+    LOOP AT rows INTO DATA(row).
+      INSERT VALUE #( step_uuid = row-step_uuid
+                      message   = VALUE #( msgid = row-msgid msgno = row-msgno
+                                           msgv1 = row-msgv1 msgv2 = row-msgv2
+                                           msgv3 = row-msgv3 msgv4 = row-msgv4 )
+                      text      = row-text ) INTO TABLE r_headers.
     ENDLOOP.
   ENDMETHOD.
 
@@ -159,10 +184,10 @@ CLASS zcl_prc_message_text IMPLEMENTATION.
       ASSIGN COMPONENT 'LATESTSTEPUUID' OF STRUCTURE <original> TO FIELD-SYMBOL(<step>).
       IF sy-subrc = 0.
         DATA(header) = VALUE #( headers[ step_uuid = <step> ] OPTIONAL ).
-        <text> = COND zprc_message_text( WHEN header IS INITIAL
-                                         THEN <stored>
-                                         ELSE translate( i_message     = header-message
-                                                         i_stored_text = header-text ) ).
+        <text> = COND string( WHEN header IS INITIAL
+                              THEN <stored>
+                              ELSE translate( i_message     = header-message
+                                              i_stored_text = header-text ) ).
         CONTINUE.
       ENDIF.
 

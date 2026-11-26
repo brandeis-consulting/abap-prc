@@ -14,27 +14,28 @@ ENDCLASS.
 CLASS ltc_translate IMPLEMENTATION.
 
   METHOD t100_from_key_not_stored.
-    MESSAGE s017(zprc_process_message) WITH 'A' INTO DATA(lv_expected).
+    " Message class dynamically: the class must activate without the rest of ABAP-PRC
+    MESSAGE ID 'ZPRC_PROCESS_MESSAGE' TYPE 'S' NUMBER '017' WITH 'A' INTO DATA(lv_expected).
 
     DATA(lv_text) = zcl_prc_message_text=>translate(
                         i_message     = VALUE #( msgid = 'ZPRC_PROCESS_MESSAGE' msgno = '017' msgv1 = 'A' )
                         i_stored_text = co_stored ).
 
-    cl_abap_unit_assert=>assert_equals( act = CONV string( lv_text ) exp = lv_expected
+    cl_abap_unit_assert=>assert_equals( act = lv_text exp = lv_expected
                                         msg = 'Text of the message key in the logon language' ).
-    cl_abap_unit_assert=>assert_differs( act = CONV string( lv_text ) exp = co_stored ).
+    cl_abap_unit_assert=>assert_differs( act = lv_text exp = co_stored ).
   ENDMETHOD.
 
   METHOD free_text_as_stored.
     DATA(lv_text) = zcl_prc_message_text=>translate(
                         i_message     = VALUE #( msgid = 'SY' msgno = '499' msgv1 = 'Free' )
                         i_stored_text = co_stored ).
-    cl_abap_unit_assert=>assert_equals( act = CONV string( lv_text ) exp = co_stored ).
+    cl_abap_unit_assert=>assert_equals( act = lv_text exp = co_stored ).
   ENDMETHOD.
 
   METHOD no_class_as_stored.
     DATA(lv_text) = zcl_prc_message_text=>translate( i_message     = VALUE #( )
                                                      i_stored_text = co_stored ).
-    cl_abap_unit_assert=>assert_equals( act = CONV string( lv_text ) exp = co_stored ).
+    cl_abap_unit_assert=>assert_equals( act = lv_text exp = co_stored ).
   ENDMETHOD.
 ENDCLASS.

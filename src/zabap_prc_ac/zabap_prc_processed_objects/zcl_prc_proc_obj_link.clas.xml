@@ -5,18 +5,12 @@
    <VSEOCLASS>
     <CLSNAME>ZCL_PRC_PROC_OBJ_LINK</CLSNAME>
     <LANGU>E</LANGU>
-    <DESCRIPT>Calculation of the links</DESCRIPT>
+    <DESCRIPT>ABAP-PRC: Link to the processed object (calc. exit)</DESCRIPT>
     <STATE>1</STATE>
     <CLSCCINCL>X</CLSCCINCL>
     <FIXPT>X</FIXPT>
     <UNICODE>5</UNICODE>
    </VSEOCLASS>
-   <DESCRIPTIONS_CLASS>
-    <SEOCLASSTX>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Berechnung der Links</DESCRIPT>
-    </SEOCLASSTX>
-   </DESCRIPTIONS_CLASS>
   </asx:values>
  </asx:abap>
 </abapGit>

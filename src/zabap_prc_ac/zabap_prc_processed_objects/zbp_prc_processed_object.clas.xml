@@ -13,12 +13,6 @@
     <UNICODE>5</UNICODE>
     <CLSDEFINT>ZR_PRC_PROCESSEDOBJECTTP</CLSDEFINT>
    </VSEOCLASS>
-   <DESCRIPTIONS_CLASS>
-    <SEOCLASSTX>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Verhaltensimplementierung für ZR_PRC_PROCESSEDOBJECT</DESCRIPT>
-    </SEOCLASSTX>
-   </DESCRIPTIONS_CLASS>
   </asx:values>
  </asx:abap>
 </abapGit>

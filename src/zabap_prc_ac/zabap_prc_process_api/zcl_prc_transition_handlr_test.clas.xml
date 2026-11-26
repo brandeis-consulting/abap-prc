@@ -14,12 +14,6 @@
     <DURATION_TYPE>12</DURATION_TYPE>
     <RISK_LEVEL>11</RISK_LEVEL>
    </VSEOCLASS>
-   <DESCRIPTIONS_CLASS>
-    <SEOCLASSTX>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Testbasis für Transition-Handler</DESCRIPT>
-    </SEOCLASSTX>
-   </DESCRIPTIONS_CLASS>
   </asx:values>
  </asx:abap>
 </abapGit>

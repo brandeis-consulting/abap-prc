@@ -11,12 +11,6 @@
     <FIXPT>X</FIXPT>
     <UNICODE>5</UNICODE>
    </VSEOCLASS>
-   <DESCRIPTIONS_CLASS>
-    <SEOCLASSTX>
-     <LANGU>D</LANGU>
-     <DESCRIPT>Konvertiert RAP- und BAPI-Antworten in SYMSG</DESCRIPT>
-    </SEOCLASSTX>
-   </DESCRIPTIONS_CLASS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -10,12 +10,6 @@
     <STATE>1</STATE>
     <UNICODE>5</UNICODE>
    </VSEOINTERF>
-   <DESCRIPTIONS_INTERFACE>
-    <SEOCLASSTX>
-     <LANGU>D</LANGU>
-     <DESCRIPT>ABAP-PRC: Benachrichtigungskanal</DESCRIPT>
-    </SEOCLASSTX>
-   </DESCRIPTIONS_INTERFACE>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -127,8 +127,8 @@ CLASS lhc_Run IMPLEMENTATION.
       /ui2/cl_json=>deserialize( EXPORTING json = key-%param-selectOptionString
                                  CHANGING  data = parameters ).
 
-      " Check before the run exists: the save phase can no longer change the run,
-      " so a run whose job cannot be scheduled would stay "planned" forever.
+      " Check before the run exists: a job that cannot be scheduled in the save
+      " aborts the whole LUW of the caller.
       " Via the scheduler: an ABAP Cloud caller may not check a Standard ABAP template
       DATA(error) = VALUE symsg( ).
       DATA(template_name) = CONV cl_apj_rt_api=>ty_template_name( key-%param-jobTemplateName ).
@@ -218,7 +218,8 @@ CLASS lhc_Run IMPLEMENTATION.
 
 ENDCLASS.
 
-CLASS lsc_saver DEFINITION INHERITING FROM cl_abap_behavior_saver.
+"! Saver with FAILED in the late save: a job that cannot be scheduled aborts the LUW
+CLASS lsc_saver DEFINITION INHERITING FROM cl_abap_behavior_saver_failed.
   PROTECTED SECTION.
     METHODS save_modified REDEFINITION.
     METHODS cleanup       REDEFINITION.
@@ -240,25 +241,46 @@ CLASS lsc_saver IMPLEMENTATION.
                                                                i_parameters    = job-parameter ).
         CATCH cx_apj_rt INTO DATA(scheduling_error).
           " Template, authorization and parameters are checked in initiateRun; what is left are
-          " technical errors. The run cannot be changed here anymore (the managed save writes it
-          " after this method), so it stays "planned" - the caller is told why
+          " technical errors. The run is reported as failed: the whole LUW is aborted, so no run
+          " is saved without its job. The message belongs to the run - with %other, RAP cannot
+          " determine the aborted BO and the request fails with CX_ABAP_BEHVDESCR.
           DATA(text) = scheduling_error->get_text( ).
           DATA(previous) = scheduling_error->previous.
           WHILE previous IS BOUND.
             text = |{ text } - { previous->get_text( ) }|.
             previous = previous->previous.
           ENDWHILE.
-          DATA reason TYPE c LENGTH 150.
-          reason = text.
+
+          " Message variables lose trailing blanks: split at word boundaries,
+          " the blank between two words starts the next variable
+          DATA variables TYPE STANDARD TABLE OF symsgv WITH EMPTY KEY.
+          CLEAR variables.
+          DATA(part) = ``.
+          SPLIT text AT space INTO TABLE DATA(words).
+          LOOP AT words INTO DATA(word) WHERE table_line IS NOT INITIAL.
+            DATA(extended) = COND string( WHEN part IS NOT INITIAL THEN |{ part } { word }|
+                                          WHEN variables IS INITIAL THEN word
+                                          ELSE | { word }| ).
+            IF strlen( extended ) > 50 AND part IS NOT INITIAL.
+              APPEND CONV #( part ) TO variables.
+              part = | { word }|.
+            ELSE.
+              part = extended.
+            ENDIF.
+          ENDLOOP.
+          APPEND CONV #( part ) TO variables.
+
+          APPEND VALUE #( %key-UUID = job-run_uuid ) TO failed-run.
           " Job template &1 could not be scheduled: &2&3&4
-          APPEND new_message( id       = 'ZPRC_RUN'
-                              number   = '009'
-                              severity = if_abap_behv_message=>severity-error
-                              v1       = job-job_template_name
-                              v2       = reason(50)
-                              v3       = reason+50(50)
-                              v4       = reason+100(50) )
-                 TO reported-%other.
+          APPEND VALUE #( %key-UUID = job-run_uuid
+                          %msg      = new_message( id       = 'ZPRC_RUN'
+                                                   number   = '009'
+                                                   severity = if_abap_behv_message=>severity-error
+                                                   v1       = job-job_template_name
+                                                   v2       = VALUE #( variables[ 1 ] OPTIONAL )
+                                                   v3       = VALUE #( variables[ 2 ] OPTIONAL )
+                                                   v4       = VALUE #( variables[ 3 ] OPTIONAL ) ) )
+                 TO reported-run.
       ENDTRY.
     ENDLOOP.
 
