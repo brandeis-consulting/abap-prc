@@ -1,0 +1,35 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "An SAP Fiori application.",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_UI5_REPO_UIAD",
+    "targetMappingTitle": "Processing Center"
+  },
+  "ui5AppDetails": {
+    "appId": "abap.processing_center.run"
+  },
+  "navigation": {
+    "targetMappingId": "UI5R_A52AB6F9D20D6183A3BFEBEC3D4361CFDCB2653B_TM",
+    "semanticObject": "ABAP_PRC_Run",
+    "action": "show",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "UI5R_A52AB6F9D20D6183A3BFEBEC3D4361CFDCB2653B_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Processing Center",
+        "subtitle": "Runs"
+      }
+    }
+  ]
+}
