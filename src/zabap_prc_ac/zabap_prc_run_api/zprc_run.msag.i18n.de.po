@@ -17,6 +17,10 @@ msgstr "Jobvorlage &1 konnte nicht eingeplant werden: &2&3&4"
 msgid "Job template &1 does not exist or you are not authorized to schedule it"
 msgstr "Jobvorlage &1 existiert nicht oder Sie dürfen sie nicht einplanen"
 
+#: MESS/ZPRC_RUN 014/TEXT, maxlen=73
+msgid "No authorization to start runs of application &1"
+msgstr ""
+
 #: MESS/ZPRC_RUN 001/TEXT, maxlen=73
 msgid "Parameter &1 is not defined in job &2"
 msgstr "Parameter &1 ist in Job &2 nicht definiert"

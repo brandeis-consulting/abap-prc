@@ -156,6 +156,15 @@ CLASS zcl_prc_run_job DEFINITION
     "!
     "! @parameter i_reason | Reason of the abort; initial when the run has finished.
     METHODS _write_job_log IMPORTING i_reason TYPE symsg OPTIONAL.
+    "! The user of the job needs ZPRC_RUN 01 for the application - the same check as
+    "! initiateRun of the run app, so a job template started directly in Application
+    "! Jobs is no way around it. Otherwise the run is aborted before anything is
+    "! selected; a run created by initiateRun (P_UUID) is marked aborted.
+    "!
+    "! @parameter it_parameters    | Parameters of the job.
+    "! @raising   cx_apj_rt_content | Not authorized (ABORT_RUN).
+    METHODS _check_authorization IMPORTING it_parameters TYPE zif_prc_processing_engine=>tt_parameters
+                                 RAISING   cx_apj_rt_content.
 ENDCLASS.
 
 
@@ -170,6 +179,7 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
 
   METHOD _execute.
     _initialize_parameter_values( it_parameters ).
+    _check_authorization( it_parameters ).
     _initialize_run( it_parameters ).
     _check_simulation( ).
     _create_and_process( select( i_select_options   = mt_select_options
@@ -302,9 +312,10 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
              TO lt_parameter.
     ENDLOOP.
 
-    " The run is maintained technically by the framework: privileged access,
-    " the job user does not need authorizations for ZPRC_RUN. The severity of the
-    " run is derived from its objects (ZR_PRC_RunProgress), not set here.
+    " The run is maintained technically by the framework: privileged access. Whether the
+    " job user may start runs of the application at all is checked before
+    " (_CHECK_AUTHORIZATION, ZPRC_RUN 01). The severity of the run is derived from its
+    " objects (ZR_PRC_RunProgress), not set here.
     IF lv_update_Scenario = abap_true.
 
       " ApplicationName is readonly on update, it was already set by initiateRun
@@ -575,5 +586,20 @@ CLASS zcl_prc_run_job IMPLEMENTATION.
       CATCH cx_bali_runtime ##NO_HANDLER.
         " The run and the logs of its packages are complete without the job log
     ENDTRY.
+  ENDMETHOD.
+  METHOD _check_authorization.
+    IF zcl_prc_auth_run=>is_authorized( i_application_name = get_application_name( )
+                                        i_activity         = zcl_prc_auth_run=>co_activity-create ) = abap_true.
+      RETURN.
+    ENDIF.
+
+    " Started by initiateRun: the run exists already and is marked aborted with the reason
+    READ TABLE it_parameters INTO DATA(uuid_parameter) WITH KEY selname = zif_prc_run=>co_parameter-p_uuid.
+    IF sy-subrc = 0 AND uuid_parameter-low IS NOT INITIAL.
+      mv_current_run_uuid = uuid_parameter-low.
+    ENDIF.
+
+    " No authorization to start runs of application &1
+    abort_run( _message( i_number = '014' i_v1 = get_application_name( ) ) ).
   ENDMETHOD.
 ENDCLASS.

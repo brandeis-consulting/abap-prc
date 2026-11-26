@@ -3,6 +3,9 @@
 @Metadata.allowExtensions: true
 @Search.searchable: true
 
+// Semantic key for deep links (navigation parameter UUID opens the object page)
+@ObjectModel.semanticKey: [ 'UUID' ]
+
 @UI.headerInfo: { typeName: 'Application Run',
                   typeNamePlural: 'Application Runs',
                   title: { type: #STANDARD, value: 'JobName' } }

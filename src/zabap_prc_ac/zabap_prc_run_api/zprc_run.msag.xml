@@ -86,6 +86,12 @@
      <MSGNR>013</MSGNR>
      <TEXT>Run &amp;1 finished</TEXT>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZPRC_RUN</ARBGB>
+     <MSGNR>014</MSGNR>
+     <TEXT>No authorization to start runs of application &amp;1</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
