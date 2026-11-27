@@ -10,6 +10,12 @@
     <STATE>1</STATE>
     <UNICODE>5</UNICODE>
    </VSEOINTERF>
+   <DESCRIPTIONS_INTERFACE>
+    <SEOCLASSTX>
+     <LANGU>D</LANGU>
+     <DESCRIPT>Plant die Verarbeitung per bgPF ein</DESCRIPT>
+    </SEOCLASSTX>
+   </DESCRIPTIONS_INTERFACE>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: CLAS/ZCL_PRC_LIST_PACKAGE_TASK/CLASS 00001, maxlen=60
+msgid "ABAP-PRC: Package of objects running in a session of its own"
+msgstr "ABAP-PRC: Objektpaket in eigener Session"

@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: DEVC/PACKAGE/CTEXT, maxlen=60
+msgid "ABAP-PRC: Run API (base class for run jobs)"
+msgstr "ABAP-PRC: Lauf-API (Basisklasse für Lauf-Jobs)"

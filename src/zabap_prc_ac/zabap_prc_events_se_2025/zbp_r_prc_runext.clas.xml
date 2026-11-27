@@ -13,6 +13,12 @@
     <UNICODE>5</UNICODE>
     <CLSDEFINT>ZR_PRC_RUNTP</CLSDEFINT>
    </VSEOCLASS>
+   <DESCRIPTIONS_CLASS>
+    <SEOCLASSTX>
+     <LANGU>D</LANGU>
+     <DESCRIPT>Verhaltensimplementierung für ZR_PRC_RUNEXT</DESCRIPT>
+    </SEOCLASSTX>
+   </DESCRIPTIONS_CLASS>
   </asx:values>
  </asx:abap>
 </abapGit>

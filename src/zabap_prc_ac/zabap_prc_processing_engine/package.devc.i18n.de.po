@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: DEVC/PACKAGE/CTEXT, maxlen=60
+msgid "ABAP-PRC: Processing engine (steps, isolation, log)"
+msgstr "ABAP-PRC: Verarbeitungs-Engine (Schritte, Isolation, Log)"

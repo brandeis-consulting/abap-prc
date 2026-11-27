@@ -19,7 +19,7 @@ msgstr "Jobvorlage &1 existiert nicht oder Sie dürfen sie nicht einplanen"
 
 #: MESS/ZPRC_RUN 014/TEXT, maxlen=73
 msgid "No authorization to start runs of application &1"
-msgstr ""
+msgstr "Keine Berechtigung, Runs der Anwendung &1 zu starten"
 
 #: MESS/ZPRC_RUN 001/TEXT, maxlen=73
 msgid "Parameter &1 is not defined in job &2"
@@ -31,11 +31,11 @@ msgstr "Lauf &1 abgebrochen, Details siehe Anwendungsprotokoll"
 
 #: MESS/ZPRC_RUN 013/TEXT, maxlen=73
 msgid "Run &1 finished"
-msgstr ""
+msgstr "Run &1 beendet"
 
 #: MESS/ZPRC_RUN 012/TEXT, maxlen=73
 msgid "Run &1 of application &2: &3 objects selected"
-msgstr ""
+msgstr "Run &1 der Anwendung &2: &3 Objekte selektiert"
 
 #: MESS/ZPRC_RUN 011/TEXT, maxlen=73
 msgid "The run could not be created for application &1"

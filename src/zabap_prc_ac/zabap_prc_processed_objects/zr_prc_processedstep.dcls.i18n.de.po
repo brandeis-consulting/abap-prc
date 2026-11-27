@@ -1,0 +1,10 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: TLGS/DCLSZR_PRC_PROCESSEDSTEP 02/0000010004DDTEXT, maxlen=60
+msgid "DCL for ZR_PRC_ProcessedStep"
+msgstr "DCL für ZR_PRC_ProcessedStep"
