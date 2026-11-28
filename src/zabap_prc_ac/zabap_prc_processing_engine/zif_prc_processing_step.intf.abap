@@ -14,10 +14,15 @@ INTERFACE zif_prc_processing_step PUBLIC.
   "!                                        well. Unbound if instantiation failed.
   "! @parameter r_state                   | State after the step.
   "! @raising   zcx_prc_unit_of_work_failed | Between the layers of this level only.
+  "! @raising   cx_abap_lock_failure        | The lock object of the processed object is not
+  "!                                        available (lock layer): a technical error. The step
+  "!                                        session ends with a short dump, the isolation layer
+  "!                                        writes it as failed step.
   METHODS execute IMPORTING i_state           TYPE zif_prc_processing_engine=>ty_state
                             i_message_handler TYPE REF TO zif_prc_message_handler
                   EXPORTING e_transition      TYPE REF TO zif_prc_transition_handler
                   RETURNING VALUE(r_state)    TYPE zif_prc_processing_engine=>ty_state
-                  RAISING   zcx_prc_unit_of_work_failed.
+                  RAISING   zcx_prc_unit_of_work_failed
+                            cx_abap_lock_failure.
 
 ENDINTERFACE.

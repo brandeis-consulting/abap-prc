@@ -101,7 +101,8 @@ CLASS zcl_prc_step_1_core IMPLEMENTATION.
       RAISE EXCEPTION TYPE zcx_prc_process_definition
             MESSAGE e008(zprc_process_message) WITH i_state-FactoryClassName i_state-State.
     ENDIF.
-    IF NOT line_exists( targets[ end_state = i_proposed_end_state ] ).
+    " Few targets per state: a sequential read is fine
+    IF NOT line_exists( targets[ end_state = i_proposed_end_state ] ). "#EC CI_SORTSEQ
       RAISE EXCEPTION TYPE zcx_prc_process_definition
             MESSAGE e006(zprc_process_message) WITH i_state-State i_proposed_end_state i_state-FactoryClassName.
     ENDIF.

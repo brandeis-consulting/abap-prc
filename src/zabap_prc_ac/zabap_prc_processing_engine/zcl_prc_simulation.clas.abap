@@ -37,11 +37,12 @@ CLASS zcl_prc_simulation IMPLEMENTATION.
       RETURN.
     ENDIF.
 
+    " Few transitions per process: a sequential read is fine
     DATA(transitions) = i_process->get_transitions( ).
     LOOP AT transitions TRANSPORTING NO FIELDS
          WHERE    start_state <> zif_prc_process=>co_start
                OR (     end_state <> zif_prc_process=>co_start
-                    AND end_state <> zif_prc_process=>co_finished ).
+                    AND end_state <> zif_prc_process=>co_finished ). "#EC CI_SORTSEQ
       " Simulation needs a process with the states START and FINISHED only (&1)
       MESSAGE e027(zprc_process_message) WITH i_class_name INTO DATA(more_states) ##NEEDED.
       r_message = VALUE #( msgid = sy-msgid msgty = sy-msgty msgno = sy-msgno msgv1 = sy-msgv1 ).

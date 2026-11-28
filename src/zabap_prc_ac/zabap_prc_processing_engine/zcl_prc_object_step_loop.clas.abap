@@ -38,8 +38,10 @@ CLASS zcl_prc_object_step_loop IMPLEMENTATION.
           r_state = mo_step->execute(
                         i_state           = before
                         i_message_handler = zcl_prc_message_handler=>create_message_handler( ) ).
-        CATCH zcx_prc_unit_of_work_failed.
-          " The step level never raises; should it happen anyway, stop driving the object
+        CATCH zcx_prc_unit_of_work_failed
+              cx_abap_lock_failure.
+          " The step level never raises (a lock failure ends the isolated step session and is
+          " written there as failed step); should it happen anyway, stop driving the object
           RETURN.
       ENDTRY.
 

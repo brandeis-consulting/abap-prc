@@ -174,6 +174,10 @@ CLASS zcl_prc_transition_handlr_test IMPLEMENTATION.
       CATCH zcx_prc_process_definition INTO DATA(definition_error).
         " In the engine an unexpected error; here an error in the process class under test
         cl_abap_unit_assert=>fail( msg = definition_error->get_text( ) ).
+
+      CATCH cx_abap_lock_failure INTO DATA(lock_failure).
+        " Only the lock layer raises it - not part of this test double (layers 1 and 2)
+        cl_abap_unit_assert=>fail( msg = lock_failure->get_text( ) ).
     ENDTRY.
 
     r_new_state  = state_after-State.

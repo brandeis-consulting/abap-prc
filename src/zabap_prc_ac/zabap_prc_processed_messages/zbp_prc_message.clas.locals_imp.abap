@@ -166,7 +166,7 @@ CLASS lsc_ZR_PRC_MESSAGE IMPLEMENTATION.
           CALL METHOD ('ZBP_R_PRC_MESSAGEEXT')=>raise_message
             EXPORTING i_group_keys = lcl_buffer=>trigger_changed_event.
         CATCH cx_sy_dyn_call_illegal_class
-              cx_sy_dyn_call_illegal_method.
+              cx_sy_dyn_call_illegal_method ##NO_HANDLER.
           " nothing to do, the event raiser class is not available in this installation
       ENDTRY.
     ENDIF.

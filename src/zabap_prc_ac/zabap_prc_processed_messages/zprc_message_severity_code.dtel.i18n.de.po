@@ -8,3 +8,16 @@ msgstr ""
 #: DTEL/ZPRC_MESSAGE_SEVERITY_CODE/DDTEXT, maxlen=60
 msgid "Message Severity"
 msgstr "Schweregrad"
+
+#: DTEL/ZPRC_MESSAGE_SEVERITY_CODE/SCRTEXT_L, maxlen=40
+msgid "Message Severity Code"
+msgstr "Schweregrad-Code"
+
+#: DTEL/ZPRC_MESSAGE_SEVERITY_CODE/SCRTEXT_S, maxlen=10
+msgid "Sev. Code"
+msgstr "Schw.-Code"
+
+#: DTEL/ZPRC_MESSAGE_SEVERITY_CODE/REPTEXT, maxlen=55
+#: DTEL/ZPRC_MESSAGE_SEVERITY_CODE/SCRTEXT_M, maxlen=20
+msgid "Severity Code"
+msgstr "Schweregrad-Code"

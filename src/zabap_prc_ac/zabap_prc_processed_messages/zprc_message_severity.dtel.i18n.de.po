@@ -6,5 +6,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: DTEL/ZPRC_MESSAGE_SEVERITY/DDTEXT, maxlen=60
+#: DTEL/ZPRC_MESSAGE_SEVERITY/SCRTEXT_L, maxlen=40
 msgid "Message Severity"
+msgstr "Schweregrad"
+
+#: DTEL/ZPRC_MESSAGE_SEVERITY/REPTEXT, maxlen=55
+#: DTEL/ZPRC_MESSAGE_SEVERITY/SCRTEXT_M, maxlen=20
+#: DTEL/ZPRC_MESSAGE_SEVERITY/SCRTEXT_S, maxlen=10
+msgid "Severity"
 msgstr "Schweregrad"

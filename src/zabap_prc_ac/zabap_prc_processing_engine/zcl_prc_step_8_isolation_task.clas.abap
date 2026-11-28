@@ -58,6 +58,10 @@ CLASS zcl_prc_step_8_isolation_task IMPLEMENTATION.
       CATCH zcx_prc_unit_of_work_failed.
         " The layers inside write every failure themselves and never raise
         m_result = m_state.
+      CATCH cx_abap_lock_failure INTO DATA(lock_failure).
+        " Lock object not available: a technical error. The session ends with a short dump,
+        " the isolation layer writes it as failed step.
+        RAISE SHORTDUMP lock_failure.
     ENDTRY.
   ENDMETHOD.
 

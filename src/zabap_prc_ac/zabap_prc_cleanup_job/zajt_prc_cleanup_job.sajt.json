@@ -1,7 +1,7 @@
 {
   "formatVersion": "1",
   "header": {
-    "description": "ABAP Processing Center: Cleanup job for old Runs, Proc. Obj.",
+    "description": "ABAP Processing Center: Clean-up Job for Runs and Proc. Obj.",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
   },

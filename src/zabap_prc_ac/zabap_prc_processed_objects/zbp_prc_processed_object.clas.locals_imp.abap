@@ -266,7 +266,7 @@ CLASS lsc_ProcessedObject IMPLEMENTATION.
             EXPORTING i_uuids = event_uuids.
         ENDIF.
       CATCH cx_sy_dyn_call_illegal_class
-            cx_sy_dyn_call_illegal_method.
+            cx_sy_dyn_call_illegal_method ##NO_HANDLER.
         " nothing to do, the event raiser class is not available in this installation
     ENDTRY.
   ENDMETHOD.

@@ -120,8 +120,9 @@ CLASS ltc_db_writer IMPLEMENTATION.
         ( UUID = '000000000000000000000000000000E4' ProcessedStepUUID = s1 ProcessedObjectUUID = o1 MessageSeverity = 'I' )
         ( UUID = '000000000000000000000000000000E5' ProcessedStepUUID = s1 ProcessedObjectUUID = o1 MessageSeverity = 'A' ) ) ) ).
 
+    " All rows of the test double table
     DATA codes TYPE tt_code.
-    SELECT FROM zprc_proc_msg FIELDS msgty, message_severity_code ORDER BY msgty INTO TABLE @codes.
+    SELECT FROM zprc_proc_msg FIELDS msgty, message_severity_code ORDER BY msgty INTO TABLE @codes. "#EC CI_NOWHERE
     cl_abap_unit_assert=>assert_equals( exp = VALUE tt_code( ( msgty = 'A' message_severity_code = 1 )
                                                              ( msgty = 'E' message_severity_code = 1 )
                                                              ( msgty = 'I' message_severity_code = 5 )
@@ -213,9 +214,10 @@ CLASS ltc_db_writer IMPLEMENTATION.
 
     cut->save( i_delete = VALUE #( processedobject = VALUE #( ( UUID = o1 ) ) ) ).
 
-    SELECT COUNT(*) FROM zprc_proc_object INTO @DATA(objects).
-    SELECT COUNT(*) FROM zprc_proc_step   INTO @DATA(steps).
-    SELECT COUNT(*) FROM zprc_proc_msg    INTO @DATA(messages).
+    " All rows of the test double tables: nothing may be left
+    SELECT COUNT(*) FROM zprc_proc_object INTO @DATA(objects).  "#EC CI_NOWHERE
+    SELECT COUNT(*) FROM zprc_proc_step   INTO @DATA(steps).    "#EC CI_NOWHERE
+    SELECT COUNT(*) FROM zprc_proc_msg    INTO @DATA(messages). "#EC CI_NOWHERE
     cl_abap_unit_assert=>assert_equals( exp = 0 act = objects + steps + messages ).
   ENDMETHOD.
 

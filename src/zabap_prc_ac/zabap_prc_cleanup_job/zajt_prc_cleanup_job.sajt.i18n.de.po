@@ -6,5 +6,5 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: TLGS/SAJTZAJT_PRC_CLEANUP_JOB 02/0000010004TEXT, maxlen=120
-msgid "ABAP Processing Center: Cleanup job for old Runs, Proc. Obj."
-msgstr "ABAP Processing Center: Bereinigungsjob für alte Läufe, verarb. Obj."
+msgid "ABAP Processing Center: Clean-up Job for Runs and Proc. Obj."
+msgstr "ABAP Processing Center: Bereinigungsjob für Läufe und verarb. Obj."
